@@ -1,0 +1,151 @@
+<project name="jedi" basedir="." default="build">
+
+    <!-- yes, this all blows up a bit .. need to remove duplication -->
+
+    <property name="project.name" value="jedi"/>
+
+    <property name="lib" location="lib"/>
+    <property name="java.src.dir" location="src/java"/>
+    <property name="test.src.dir" location="src/test"/>
+    <property name="meta-inf.dir" location="src/META-INF"/>
+	
+    <property name="build.dir" value="build"/>
+    <property name="build.classes.1.4.dir" value="${build.dir}/classes/1.4"/>
+    <property name="build.classes.1.5.dir" value="${build.dir}/classes/1.5"/>
+
+    <property name="dist" location="dist"/>
+    <property name="1.4_jar_file" location="${dist}/${project.name}_1.4.jar"/>
+    <property name="1.5_jar_file" location="${dist}/${project.name}_1.5.jar"/>
+
+    <property name="build.test.dir" value="${build.dir}/classes/test"/>
+    <property name="report.dir" location="${build.dir}/report"/>
+
+    <path id="test.classpath">
+        <pathelement path="${build.classes.1.5.dir}"/>
+        <fileset dir="${lib}" includes="*.jar"/>
+        <pathelement path="${build.test.dir}"/>
+    </path>
+
+    <target name="init">
+        <tstamp/>
+        <echo message="Initializing project ${project.name}"/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist}"/>
+    </target>
+
+    <target name="clean" description="Clean the build">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+    <target name="build_1.4_jar">
+        <jar file="${1.4_jar_file}">
+            <fileset dir="${build.classes.1.4.dir}" includes="**/*"/>
+			<metainf dir="${meta-inf.dir}" includes="**/*"/>
+        </jar>
+    </target>
+
+    <target name="build_1.5_jar">
+        <jar file="${1.5_jar_file}">
+            <fileset dir="${build.classes.1.5.dir}" includes="**/*"/>
+			<metainf dir="${meta-inf.dir}" includes="**/*"/>
+        </jar>
+    </target>
+
+    <target name="compile_1.4">
+        <mkdir dir="${build.classes.1.4.dir}"/>
+        <javac destdir="${build.classes.1.4.dir}" debug="on" target="jsr14">
+            <src path="${java.src.dir}"/>
+        </javac>
+    </target>
+
+    <target name="compile_1.5">
+        <mkdir dir="${build.classes.1.5.dir}"/>
+        <javac destdir="${build.classes.1.5.dir}" debug="on">
+            <src path="${java.src.dir}"/>
+        </javac>
+    </target>
+
+    <target name="compile_test">
+        <mkdir dir="${build.test.dir}"/>
+        <javac destdir="${build.test.dir}" debug="on">
+            <classpath refid="test.classpath"/>
+            <src path="${test.src.dir}"/>
+        </javac>
+    </target>
+
+    <target name="compile" depends="clean, init, compile_1.4, compile_1.5"/>
+
+    <target name="build" depends="compile, unit_test, build_1.4_jar, build_1.5_jar, docs, examples"/>
+    
+    <target name="docs">
+    	<copy todir="${dist}/docs">
+    		<fileset dir="docs" includes="*"/>
+    	</copy>
+        <javadoc destdir="${dist}/docs/javadoc" defaultexcludes="yes" link="http://java.sun.com/j2se/1.4.2/docs/api/">
+        	<packageset dir="src/java" includes="**/*" excludes="jedi/annotation/**"/>
+        </javadoc>
+    </target>
+    
+    <target name="examples">
+        <copy todir="${dist}/examples">
+            <fileset dir="examples" includes="**/*"/>
+        </copy>
+    </target>
+
+    <target name="unit_test" depends="compile_test">
+        <mkdir dir="${report.dir}/xml"/>
+        <junit fork="true" forkmode="once" printsummary="withOutAndErr" showoutput="true" haltonerror="false"
+               haltonfailure="false" errorproperty="testFailure" failureproperty="testFailure"
+               newenvironment="false" includeantruntime="true" reloading="false" maxmemory="512m">
+            <classpath refid="test.classpath"/>
+            <batchtest todir="${report.dir}/xml">
+                <formatter type="xml"/>
+                <fileset dir="${build.test.dir}" includes="**/*Test.class"/>
+            </batchtest>
+        </junit>
+
+        <antcall target="produce_test_report"/>
+        <fail if="testFailure" message="Test Failure"/>
+    </target>
+
+    <target name="produce_test_report">
+        <junitreport todir="${report.dir}">
+            <fileset dir="${report.dir}/xml">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${report.dir}"/>
+        </junitreport>
+    </target>
+    
+    <target name="deployBNP" depends="build">
+        <copy todir="../ExcessManager/lib/runtime" file="${1.4_jar_file}"/>
+        <copy todir="../ExcessManager/lib/developtime" file="${1.5_jar_file}"/>
+        <copy todir="../CPA/lib/runtime" file="${1.4_jar_file}"/>
+        <copy todir="../CPA/lib/developtime" file="${1.5_jar_file}"/>
+        <copy todir="../RiskReconciliation/lib/runtime" file="${1.4_jar_file}"/>
+        <copy todir="../RiskReconciliation/lib/developtime" file="${1.5_jar_file}"/>
+        <copy todir="../CatTestTools/lib" file="${1.4_jar_file}"/>
+        <copy todir="../CatTestTools/lib/developtime" file="${1.5_jar_file}"/>
+    </target>
+
+    <target name="deployNH" depends="build">
+        <copy todir="../../argus/lib/runtime" file="${1.5_jar_file}"/>
+        <copy todir="../Gerbil/lib" file="${1.4_jar_file}"/>
+        <copy todir="../Gerbil/lib" file="${1.5_jar_file}"/>
+    </target>
+
+    <target name="aptExample" depends="build">
+        <mkdir dir="${build.dir}/example"/>
+        <apt srcdir="src/example"
+             classpath="${1.5_jar_file}"
+             debug="on"
+             compile="false"
+             preprocessdir="${build.dir}/example">
+            <factorypath>
+                <pathelement location="${1.5_jar_file}"/>
+            </factorypath>
+        </apt>
+    </target>
+
+</project>

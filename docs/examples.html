@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>Jedi - Decluttering Java - Examples</title>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <meta name="author" content="Lance Walton" lang="en-uk"/>
+    </head>
+    <body>
+        <div class="main">
+            <div class="pageTitle">Jedi Examples</div>
+            <div class="contents">
+                <div class="contentsTitle">Contents</div>
+                <ul>
+                    <li> <a href="#quickSort" title="Quick Sort">Quick Sort</a>
+                    </li>
+                    <li> <a href="#stormtroopers" title="Stormtroopers">Stormtroopers</a>
+                    </li>
+                    <li> <a href="index.html" title="Back to Jedi">Back to Jedi</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <p>More examples can be found in the 'examples' directory of the distribution. The 'empire' example found there includes an <a href="http://ant.apache.org/"
+                    title="Ant homepage"> Ant</a> build file, showing the use of the <code>apt</code> task for both JDK 1.4 and JDK 1.5 targets.</p>
+            
+            <div class="sectionHeading"> <a name="quickSort">Quick Sort</a>
+            </div>
+            <p>Here is a quick sort in Haskell:</p>
+            <ul class="codeBlock">
+                <li>qsort [] = []</li>
+                <li>qsort (x:xs) = qsort (filter (&lt; x) xs) ++ [x] ++ qsort (filter (&gt;= x) xs)</li>
+            </ul>
+            
+            <p>There is no way Java can beat Haskell here but here it is with Jedi:</p>
+            <ul class="codeBlock">
+                <li>
+                    <span class="keyword">public static</span> &lt;T&gt; Collection&lt;T&gt; sort(Collection&lt;T&gt;
+                    <span class="variable">collection</span>, Comparator&lt;T&gt;
+                    <span class="variable">comparator</span>) {</li>
+                <li>&nbsp;if (
+                    <span class="variable">collection</span>.size() &lt; 2) {</li>
+                <li>&nbsp;&nbsp;return
+                    <span class="variable">collection</span>;</li>
+                <li>&nbsp;}</li>
+                <li>&nbsp;T
+                    <span class="variable">head</span> = head(
+                    <span class="variable">collection</span>);</li>
+                <li>&nbsp;List&lt;T&gt;
+                    <span class="variable">lower</span> = select(
+                    <span class="variable">collection</span>, lessThan(
+                    <span class="variable">head</span>,
+                    <span class="variable">comparator</span>));</li>
+                <li>&nbsp;List&lt;T&gt;
+                    <span class="variable">upper</span> = select(
+                    <span class="variable">collection</span>, greaterThan(
+                    <span class="variable">head</span>,
+                    <span class="variable">comparator</span>));</li>
+                <li>&nbsp;<span class="keyword">return</span> append(sort(
+                    <span class="variable">lower</span>,
+                    <span class="variable">comparator</span>), list(
+                    <span class="variable">head</span>), sort(
+                    <span class="variable">upper</span>,
+                    <span class="variable">comparator</span>));</li>
+                <li>}</li>
+            </ul>
+            <p>Both the Haskell and Jedi examples communicate what is going on and is understandable even if the reader did not know how the Quick sort works.</p>
+            <p>Here it is in C which is pretty much how it would look in Java:</p>
+            <ul class="codeBlock">
+                <li>void qsort(int a[], int lo, int hi) {</li>
+                <li>{</li>
+                <li>&nbsp;int h, l, p, t;</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;if (lo &lt; hi) {</li>
+                <li>&nbsp;l = lo;</li>
+                <li>&nbsp;h = hi;</li>
+                <li>&nbsp;p = a[hi];</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;do {</li>
+                <li>&nbsp;&nbsp;while ((l &lt; h) &amp;&amp; (a[l] &lt;= p)) </li>
+                <li>&nbsp;&nbsp;&nbsp;l = l+1;</li>
+                <li>&nbsp;&nbsp;while ((h > l) &amp;&amp; (a[h] &gt;= p))</li>
+                <li>&nbsp;&nbsp;&nbsp;h = h-1;</li>
+                <li>&nbsp;&nbsp;if (l &lt; h) {</li>
+                <li>&nbsp;&nbsp;&nbsp;t = a[l];</li>
+                <li>&nbsp;&nbsp;&nbsp;a[l] = a[h];</li>
+                <li>&nbsp;&nbsp;&nbsp;a[h] = t;</li>
+                <li>&nbsp;&nbsp;}</li>
+                <li>&nbsp;} while (l &lt; h);</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;t = a[l];</li>
+                <li>&nbsp;a[l] = a[hi];</li>
+                <li>&nbsp;a[hi] = t;</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;qsort( a, lo, l-1 );</li>
+                <li>&nbsp;qsort( a, l+1, hi );</li>
+                <li>&nbsp;}</li>
+                <li>}</li>
+            </ul>
+            
+            <div class="sectionHeading"> <a name="stormtroopers">Storm Troopers</a>
+            </div>
+            <p>Suppose you have a galactic empire policed by stormtroopers and you wanted to tell all stormtroopers that are currently in the vicinity of the planet Dantooine (which you
+                intend to destroy as a demonstration of the power of your new Death Star) to return to the Death Star. You might (using JDK 1.5) conventionally write something like
+                this:</p>
+            <ul class="codeBlock">
+                <li>
+                    <span class="keyword">public class</span> Empire {</li>
+                <li>&nbsp;&nbsp;<span class="keyword">private</span> Set&lt;Stormtrooper&gt;
+                    <span class="variable">stormtroopers</span>;</li>
+                <li>&nbsp;&nbsp;<span class="keyword">private</span> Planet
+                    <span class="variable">planetToBlowUpNext</span>;</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;&#8230;
+                </li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;<span class="keyword">public void</span> extractStormtroopers() {</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> (Stormtrooper
+                    <span class="variable">stormtrooper</span> :
+                    <span class="variable">stormtroopers</span>) {</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> (
+                    <span class="variable">stormtrooper</span>.isCloseTo(
+                    <span class="variable">planetToBlowUpNext</span>)) {</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">stormtrooper</span>.returnToDeathStar();</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+                <li>&nbsp;&nbsp;}</li>
+                <li>}</li>
+            </ul>
+            <p>Code like that seen in the <code>extractStormtroopers()</code> method can be found in pretty much all Java projects world-wide. It suffers from the following
+                problems:</p>
+            <ul>
+                <li>Logic for iteration, querying and commanding are intermingled and are therefore not independently usable.</li>
+                <li>Because of the above, you will see repetitions of the 'loop over stormtroopers' code in several methods, with a different condition and / or a different command
+                    applied.</li>
+                <li>Because of the above, structurally similar unit tests will also be repeated.</li>
+            </ul>
+            <p>Using Jedi, the 5 lines of code in the <code>extractStormtroopers()</code> method above can be reduced to this rather more expressive and compact version:</p>
+            <ul class="codeBlock">
+                <li>
+                    <span class="keyword">public class</span> Empire {</li>
+                <li>&nbsp;&nbsp;<span class="keyword">private</span> Set&lt;Stormtrooper&gt;
+                    <span class="variable">stormtroopers</span>;</li>
+                <li>&nbsp;&nbsp;<span class="keyword">private</span> Planet
+                    <span class="variable">planetToBlowUpNext</span>;</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;&#8230;
+                </li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;<span class="keyword">public void</span> extractStormtroopers() {</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;Collection&lt;Stormtrooper&gt;
+                    <span class="variable">endangeredStormtroopers</span> = select(stormtroopers, isCloseToFilter(planetToBlowUpNext));</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;forEach(
+                    <span class="variable">endangeredStormtroopers</span>, returnToDeathStarCommand());</li>
+                <li>&nbsp;&nbsp;}</li>
+                <li>}</li>
+            </ul>
+            <p>Of course, once you are used to the <a href="javadoc/index.html" title="Jedi JavaDoc">API</a>
+                , you could inline the <code>endangeredStormtroopers</code> variable, reducing the original 5 lines of code to 1, and a <a
+                    href="http://en.wikipedia.org/wiki/Cyclomatic_complexity" title="Wikipedia page about Cyclomatic Complexity"> cyclomatic complexity</a>
+                reduction of 3 to 1. This scale of complexity reduction is common with Jedi.</p>
+            <p>The <code>xxxCommand()</code> and <code>xxxFilter()</code> methods are factory methods created by Jedi due to annotations added to the <code>Stormtrooper</code>
+                class:</p>
+            <ul class="codeBlock">
+                <li>
+                    <span class="keyword">public class</span> Stormtrooper {</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;&#8230;
+                </li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;@JediFilter</li>
+                <li>&nbsp;&nbsp;<span class="keyword">public boolean</span> isCloseTo(Planet planet) {&nbsp;&#8230;&nbsp;}</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;@JediCommand</li>
+                <li>&nbsp;&nbsp;<span class="keyword">public void</span> returnToDeathStar() {&nbsp;&#8230;&nbsp;}</li>
+                <li>}</li>
+            </ul>
+            <p>They are used in the <code>Empire</code> code above using <code>static import</code>s for brevity (not shown).</p>
+        </div>
+    </body>
+</html>

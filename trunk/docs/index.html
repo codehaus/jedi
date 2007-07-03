@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>Jedi - Decluttering Java</title>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <meta name="author" content="Lance Walton" lang="en-uk"/>
+    </head>
+    <body>
+        <div class="main">
+            <div class="pageTitle">Jedi</div>
+            <div class="contents">
+                <div class="contentsTitle">Contents</div>
+                <ul>
+                    <li><a href="#introduction" title="Introduction">Introduction</a>
+                    </li>
+                    <li><a href="examples.html" title="Examples">Examples</a>
+                    </li>
+                    <li><a href="#compiling" title="Compiling">Compiling &amp; Deploying</a>
+                    </li>
+                    <li><a href="#features" title="Features">Features</a>
+                    </li>
+                    <li><a href="annotations.html" title="Annotations in Jedi">Annotations</a>
+                    </li>
+                    <li><a href="#ide" title="IDE Integration">IDE Integration</a>
+                    </li>
+                    <li><a href="faq.html" title="Frequenty Asked Questions">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sectionHeading"> <a name="introduction">Introduction</a>
+            </div>
+            <p>In his <a href="http://www.norvig.com/luv-slides.ps" title="Peter Norvig's Tutorial on Good Lisp Programming Style"> Tutorial on
+                Good Lisp Programming Style</a> (which all developers should read, regardless of whether they like Lisp or not), Peter Norvig notes that most
+                algorithms are a combination of the following:</p>
+            <ul>
+                <li>Searching</li>
+                <li>Sorting</li>
+                <li>Filtering</li>
+                <li>Mapping</li>
+                <li>Combining</li>
+                <li>Counting</li>
+            </ul>
+            <p>Java's syntactic and library support for these components tends to cause the above concerns to be mixed with each other, with other concerns, and
+                with low-level implementation details. This means that the code is cluttered, verbose and does not express intent very well.</p>
+            <p>Also, as a consequence of this mixing of concerns, unit testing is more difficult than necessary and often less robust against changes to
+                implementation than it should be.</p>
+            <p>Jedi aims to repair this. It does so by providing a library of routines which provide, for example, filtering, iteration, conversion from one
+                collection type to another, first order logic functions, etc. It makes extensive use of higher order functions and closures (also known as
+                'blocks' or 'lambdas' - if you are unsure what these things are, you have almost certainly used instances of them, such as 'listeners' in AWT / Swing,
+                commands or actions in Struts / Webwork, or any 'callback' mechanism).</p>
+            <p>The problem with closures in Java is that, while they really represent functions, they must be presented as objects. Since methods / functions are
+                not first class objects in Java, any closure must be 'wrapped' in an object, which means creating a class, either named or anonymous. Jedi helps with
+                this by providing JDK 1.5 annotations which will generate the necessary code. Although JDK 1.5 is required at build time, the compiled code can be
+                run under JDK 1.4 (using the <code>javac&nbsp;-target&nbsp;jsr14</code> flag). No use is made of JDK 1.5 APIs in the generated code or the Jedi
+                APIs.</p>
+            <p>The generated code supports unit testing by providing several different ways to inject dependencies. You can therefore select the mechanism which
+                supports your style of programming and testing.</p>
+            
+            <div class="sectionHeading"> <a name="compiling">Compiling</a>
+            </div>
+            <p>Two jars are provided with Jedi:</p>
+            <ul>
+                <li>jedi_1.4.jar - Byte code compatible with JDK 1.4</li>
+                <li>jedi_1.5.jar - Requires JDK 1.5 (but see below). This jar also contains annotations and an annotation processor.</li>
+            </ul>
+            <p>If you want to make use of JDK 1.5 syntax enhancements but need to deploy to a JDK 1.4 compatible environment, you can safely develop using the
+                jedi_1.5.jar, compile using the <code>-target jsr14</code> compiler flag and deploy with the jedi_1.4.jar</p>
+            <div class="subSectionHeading"> <a name="compiling">Processing Annotations</a>
+            </div>
+            <p>JDK 1.5 comes with Sun's Annotation Processing Tool, <a href="http://java.sun.com/j2se/1.5.0/docs/guide/apt/index.html"
+                    title="Sun's APT tool">APT</a>. <a href="http://ant.apache.org/" title="Ant homepage">Ant</a> version 1.7, in beta when this page
+                was written, comes with an <code>apt</code> task.</p>
+            <p>For those that want to develop with the JDK 1.5 syntax enhancements but who need to deploy to a JDK 1.4 compatible environment can get
+                <code>apt</code> to process annotations, producing additional source code, which can then be compiled with <code>javac</code> using the
+                <code>-target jsr14</code> compiler flag. For an example of this, see the <code>build.xml</code> file in the Empire example, which can be found
+                in the 'examples' directory of the distribution.</p>
+            
+            <div class="sectionHeading"> <a name="features">Features</a>
+            </div>
+            <div class="subSectionHeading">API</div>
+            <p>The full Jedi JavaDoc can be found <a href="javadoc/index.html" title="Jedi JavaDoc">here</a>.</p>
+            <p>The core classes in Jedi are:</p>
+            <ul>
+                <li><a href="javadoc/jedi/functional/Coercions.html" title="JavaDoc for jedi.functional.Coercions.html">
+                    jedi.functional.Coercions</a>
+                </li>
+                <li><a href="javadoc/jedi/functional/Comparables.html" title="JavaDoc for jedi.functional.Comparables.html">
+                    jedi.functional.Comparables</a>
+                </li>
+                <li><a href="javadoc/jedi/functional/FunctionalPrimitives.html" title="JavaDoc for jedi.functional.FunctionalPrimitives">
+                    jedi.functional.FunctionalPrimitives</a>
+                </li>
+                <li><a href="javadoc/jedi/functional/FirstOrderLogic.html" title="JavaDoc for jedi.functional.FirstOrderLogic">
+                    jedi.functional.FirstOrderLogic</a>
+                </li>
+            </ul>
+            <p>These classes make extensive use of the three closure interfaces: <a href="javadoc/jedi/functional/Command.html"
+                    title="JavaDoc for jedi.functional.Command">jedi.functional.Command</a>, <a href="javadoc/jedi/functional/Filter.html"
+                    title="JavaDoc for jedi.functional.Filter"> jedi.functional.Filter</a> and <a href="javadoc/jedi/functional/Functor.html"
+                    title="JavaDoc for jedi.functional.Functor">jedi.functional.Functor</a>. Each of these interfaces declares an
+                <code>execute</code> method which takes a single parameter. This parameter is the item to be commanded, filtered or mapped. Instances of these
+                interfaces can be produced manually, or by using <a href="annotations.html" title="Jedi Annotations">annotations</a>.</p>
+            
+            <div class="sectionHeading"> <a name="ide">IDE Integration</a>
+            </div>
+            <p>Use <a href="http://www.eclipse.org" title="Eclipse homepage">Eclipse</a>. Do <a
+                    href="http://www.eclipse.org/jdt/apt/introToAPT.html"
+                    title="Introduction to the Annotation Processing Feature in Eclipse">this</a>.</p>
+        </div>
+    </body>
+</html>

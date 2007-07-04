@@ -137,7 +137,7 @@ public class FunctionalPrimitives {
      *           };
      *           fold(10, summer, list(1, 2, 3, 4)) will return 20 (initial value of 10 + the sum of 1 .. 4)
      * </pre>
-     * 
+     *  
      * <p/>For a more comprehensive description, see <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#FoldUnfoldMap">SRFI-1</a>
      */
     public static <T, R, I extends R> R fold(final I initialValue, final Collection<T> collection, final Functor2<R, ? super T, R> functor2) {

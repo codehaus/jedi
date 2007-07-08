@@ -1,4 +1,4 @@
-<project name="jedi" basedir="." default="build">
+<project name="jedi" basedir="." default="distribution">
 
     <!-- yes, this all blows up a bit .. need to remove duplication -->
 
@@ -13,10 +13,6 @@
     <property name="build.classes.1.4.dir" value="${build.dir}/classes/1.4"/>
     <property name="build.classes.1.5.dir" value="${build.dir}/classes/1.5"/>
 
-    <property name="dist" location="dist"/>
-    <property name="1.4_jar_file" location="${dist}/${project.name}_1.4.jar"/>
-    <property name="1.5_jar_file" location="${dist}/${project.name}_1.5.jar"/>
-
     <property name="build.test.dir" value="${build.dir}/classes/test"/>
     <property name="report.dir" location="${build.dir}/report"/>
 
@@ -28,6 +24,12 @@
 
     <target name="init">
         <tstamp/>
+    	
+    	<property name="dist.name" value="jedi_${DSTAMP}${TSTAMP}"/>
+        <property name="dist" location="${build.dir}/${dist.name}"/>
+        <property name="1.4_jar_file" location="${dist}/${project.name}_1.4.jar"/>
+        <property name="1.5_jar_file" location="${dist}/${project.name}_1.5.jar"/>
+    	
         <echo message="Initializing project ${project.name}"/>
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist}"/>
@@ -77,6 +79,10 @@
     <target name="compile" depends="clean, init, compile_1.4, compile_1.5"/>
 
     <target name="build" depends="compile, unit_test, build_1.4_jar, build_1.5_jar, docs, examples"/>
+	
+	<target name="distribution" depends="clean, build">
+		<zip basedir="${dist}" destfile="${build.dir}/${dist.name}.zip"/>
+	</target>
     
     <target name="docs">
     	<copy todir="${dist}/docs">
@@ -116,23 +122,6 @@
             </fileset>
             <report format="frames" todir="${report.dir}"/>
         </junitreport>
-    </target>
-    
-    <target name="deployBNP" depends="build">
-        <copy todir="../ExcessManager/lib/runtime" file="${1.4_jar_file}"/>
-        <copy todir="../ExcessManager/lib/developtime" file="${1.5_jar_file}"/>
-        <copy todir="../CPA/lib/runtime" file="${1.4_jar_file}"/>
-        <copy todir="../CPA/lib/developtime" file="${1.5_jar_file}"/>
-        <copy todir="../RiskReconciliation/lib/runtime" file="${1.4_jar_file}"/>
-        <copy todir="../RiskReconciliation/lib/developtime" file="${1.5_jar_file}"/>
-        <copy todir="../CatTestTools/lib" file="${1.4_jar_file}"/>
-        <copy todir="../CatTestTools/lib/developtime" file="${1.5_jar_file}"/>
-    </target>
-
-    <target name="deployNH" depends="build">
-        <copy todir="../../argus/lib/runtime" file="${1.5_jar_file}"/>
-        <copy todir="../Gerbil/lib" file="${1.4_jar_file}"/>
-        <copy todir="../Gerbil/lib" file="${1.5_jar_file}"/>
     </target>
 
     <target name="aptExample" depends="build">

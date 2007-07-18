@@ -8,6 +8,7 @@ import org.jmock.util.Dummy;
 import java.util.*;
 
 public class FunctionalPrimitivesTest extends ClosureTestCase {
+    
     @SuppressWarnings("unchecked")
     public void testListWithDifferentTypes() {
         List<? extends Number> list = Coercions.list(INTEGER_ONE, DOUBLE_TWO);
@@ -123,8 +124,14 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		Set in = Coercions.set(FOO, BAR, INTEGER_ONE, DOUBLE_TWO);
 		assertTrue(in.contains(head(in)));
 	}
+    
+    public void testTailReturnsAllItemsExceptTheFirst() {
+        assertEquals(list("b", "c"), tail(list("a", "b", "c")));
+        assertEquals(list("b"), tail(list("a", "b")));
+        assertEquals(list(), tail(list("a")));
+    }
 
-	public void testHeadOrNullIfEmptyReturnsNullIfTheCollectionIsEmpty() {
+    public void testHeadOrNullIfEmptyReturnsNullIfTheCollectionIsEmpty() {
 		assertNull(headOrNullIfEmpty(Coercions.list()));
 	}
     

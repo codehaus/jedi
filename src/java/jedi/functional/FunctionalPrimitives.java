@@ -209,6 +209,25 @@ public class FunctionalPrimitives {
     }
 
     /**
+     * Get all item's (in iteration order) from a collection except the first. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
+     * thrown.
+     *
+     * @return all items except the first
+     * @throws jedi.assertion.AssertionError
+     *             if the collection contains less or more than one item
+     * @see #only(Collection)
+     * @see #headOrNullIfEmpty(Collection)
+     * @see #headOrDefaultIfEmpty(Collection,Object)
+     */
+    public static <T> List<T> tail(final List<T> items) {
+        assertNotNull(items, "items");
+        assertFalse(items.isEmpty(), "items not empty");
+
+        return drop(1, items);
+    }
+
+
+    /**
      * Get the first item (in iteration order) from a collection or <code>defaultValue</code> (which may be null) if the collection is empty.
      * 
      * @return the first item in the collection or <code>defaultValue</code> if the collection is empty

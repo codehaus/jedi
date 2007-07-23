@@ -5,14 +5,16 @@ import jedi.annotation.jedi.JediMethod;
 import com.sun.mirror.apt.Messager;
 
 public class FactoryWriterException extends RuntimeException {
-    private JediMethod method;
+	private static final long serialVersionUID = -5943860218162527130L;
 
-    public FactoryWriterException(String message, JediMethod method) {
-        super(message);
-        this.method = method;
-    }
+	private JediMethod method;
 
-    public void write(Messager messager) {
-        messager.printError(method.getPosition(), getMessage());
-    }
+	public FactoryWriterException(String message, JediMethod method) {
+		super(message);
+		this.method = method;
+	}
+
+	public void write(Messager messager) {
+		messager.printError(method.getPosition(), getMessage());
+	}
 }

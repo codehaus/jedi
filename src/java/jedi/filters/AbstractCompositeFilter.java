@@ -1,9 +1,9 @@
 package jedi.filters;
 
-import static jedi.assertion.Assert.*;
-import static jedi.functional.Coercions.*;
+import static jedi.assertion.Assert.assertNotNull;
+import static jedi.functional.Coercions.asSet;
+import static jedi.functional.FunctionalPrimitives.join;
 import jedi.functional.Filter;
-import static jedi.functional.FunctionalPrimitives.*;
 
 public abstract class AbstractCompositeFilter<T> implements Filter<T> {
     private Filter<T>[] components;
@@ -17,11 +17,14 @@ public abstract class AbstractCompositeFilter<T> implements Filter<T> {
         return components;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return asSet(components).hashCode();
     }
 
-    public boolean equals(Object obj) {
+    @SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) {
         if (obj == this) {
             return true;
         }
@@ -30,14 +33,15 @@ public abstract class AbstractCompositeFilter<T> implements Filter<T> {
             return false;
         }
 
-        AbstractCompositeFilter that = (AbstractCompositeFilter) obj;
+        AbstractCompositeFilter<T> that = (AbstractCompositeFilter<T>) obj;
 
         return asSet(getComponents()).equals(asSet(that.getComponents()));
     }
 
     protected abstract String getFunctionName();
 
-    public String toString() {
+    @Override
+	public String toString() {
         return getFunctionName() + "(" + join(asSet(getComponents()), ", ") + ")";
     }
 }

@@ -1,13 +1,16 @@
 package jedi.example;
 
-import static jedi.functional.Coercions.*;
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.Coercions.list;
+import static jedi.functional.FunctionalPrimitives.append;
+import static jedi.functional.FunctionalPrimitives.head;
+import static jedi.functional.FunctionalPrimitives.select;
+import static jedi.functional.Comparables.lessThan;
+import static jedi.functional.Comparables.greaterThan;
 
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-import jedi.functional.Comparables;
 
 public class QuickSort {
 
@@ -18,8 +21,8 @@ public class QuickSort {
 		}
 
 		T head = head(collection);
-		List<T> lower = select(collection, Comparables.lessThan(head, comparator));
-		List<T> upper = select(collection, Comparables.greaterThan(head, comparator));
+		List<T> lower = select(collection, lessThan(head, comparator));
+		List<T> upper = select(collection, greaterThan(head, comparator));
 		return append(sort(lower, comparator), list(head), sort(upper, comparator));
 	}
 

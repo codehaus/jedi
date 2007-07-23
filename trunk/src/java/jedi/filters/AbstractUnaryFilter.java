@@ -15,11 +15,14 @@ public abstract class AbstractUnaryFilter<T, U> implements Filter<T> {
         return testValue;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return testValue.hashCode();
     }
 
-    public boolean equals(Object obj) {
+    @SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) {
         if (obj == this) {
             return true;
         }
@@ -28,10 +31,11 @@ public abstract class AbstractUnaryFilter<T, U> implements Filter<T> {
             return false;
         }
 
-        return getTestValue().equals(((AbstractUnaryFilter) obj).getTestValue());
+        return getTestValue().equals(((AbstractUnaryFilter<T,U>) obj).getTestValue());
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return getFunctionName() + "(" + getTestValue() + ")";
     }
 

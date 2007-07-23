@@ -1,6 +1,6 @@
 package jedi.functional;
 
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.FunctionalPrimitives.makeList;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -79,7 +79,8 @@ public class CoercionsTest extends ClosureTestCase {
         assertEquals(expected, Coercions.asList(collection));
     }
 
-    public void testAsMapReturnsAMapOfItemsKeyedOnTheGivenKeysWithValuesOfTheGivenValues() {
+    @SuppressWarnings("unchecked")
+	public void testAsMapReturnsAMapOfItemsKeyedOnTheGivenKeysWithValuesOfTheGivenValues() {
         final List<Object> keys = Coercions.list(new Object(), new Object());
         final List<Object> values = Coercions.list(new Object(), new Object());
 

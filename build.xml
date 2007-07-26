@@ -1,5 +1,4 @@
 <project name="jedi" basedir="." default="distribution">
-
     <!-- yes, this all blows up a bit .. need to remove duplication -->
 
     <property name="project.name" value="jedi"/>
@@ -16,6 +15,15 @@
     <property name="build.test.dir" value="${build.dir}/classes/test"/>
     <property name="report.dir" location="${build.dir}/report"/>
 
+	<property name="version.number" value="V2_0"/>
+
+	<property name="dist.name" value="jedi_${version.number}"/>
+    <property name="dist" location="${build.dir}/${dist.name}"/>
+	<property name="distfile.base.name" value="${dist}/${project.name}_${version.number}_"/>
+    <property name="1.4_jar_file" location="${distfile.base.name}jdk1.4.jar"/>
+    <property name="1.5_jar_file" location="${distfile.base.name}jdk1.5.jar"/>
+	<property name="src.zip.file" location="${distfile.base.name}src.zip"/>
+	
     <path id="test.classpath">
         <pathelement path="${build.classes.1.5.dir}"/>
         <fileset dir="${lib}" includes="*.jar"/>
@@ -24,11 +32,6 @@
 
     <target name="init">
         <tstamp/>
-    	
-    	<property name="dist.name" value="jedi_${DSTAMP}${TSTAMP}"/>
-        <property name="dist" location="${build.dir}/${dist.name}"/>
-        <property name="1.4_jar_file" location="${dist}/${project.name}_1.4.jar"/>
-        <property name="1.5_jar_file" location="${dist}/${project.name}_1.5.jar"/>
     	
         <echo message="Initializing project ${project.name}"/>
         <mkdir dir="${build.dir}"/>
@@ -77,11 +80,17 @@
     </target>
 
     <target name="compile" depends="clean, init, compile_1.4, compile_1.5"/>
+	
+	<target name="zipsource" depends="init">
+		<zip basedir="${java.src.dir}" destfile="${src.zip.file}"/>
+	</target>
 
-    <target name="build" depends="compile, unit_test, build_1.4_jar, build_1.5_jar, docs, examples"/>
+    <target name="build" depends="compile, unit_test, build_1.4_jar, build_1.5_jar, docs, examples, zipsource"/>
 	
 	<target name="distribution" depends="clean, build">
-		<zip basedir="${dist}" destfile="${build.dir}/${dist.name}.zip"/>
+		<zip destfile="${build.dir}/${dist.name}_${DSTAMP}${TSTAMP}.zip">
+			<zipfileset dir="${dist}" prefix="${dist.name}"/>
+		</zip>
 	</target>
     
     <target name="docs">

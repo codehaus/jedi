@@ -1,6 +1,9 @@
 package jedi.annotation.jedi;
 
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.FunctionalPrimitives.collect;
+import static jedi.functional.FunctionalPrimitives.flatten;
+import static jedi.functional.FunctionalPrimitives.head;
+import static jedi.functional.FunctionalPrimitives.select;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -47,7 +50,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
                 }
             }));
     }
-    
+
     @SuppressWarnings("unchecked")
     private Set<JediMethod> getRequiredMethods(final AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method) {
         AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(method, annotationTypeDeclaration)));
@@ -68,24 +71,24 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 				    public JediMethod execute(AnnotationValue value) {
 				        return createCutMethod(annotationTypeDeclaration, method, ((AnnotationMirror) value.getValue()), factoryPrefix);
 				    }
-				}), 
+				}),
                     new NotNullFilter<JediMethod>()));
     }
 
     @SuppressWarnings("unchecked")
     private JediMethod createCutMethod(AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method, AnnotationMirror cut, String factoryPrefix) {
         AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(cut);
-        
+
         String name = (String) interpreter.getValue("name");
         if (name == null) {
             name = factoryPrefix;
         }
         List<String> parameterNames = getCutParameterNames((List<AnnotationValue>) interpreter.getValue("parameters"));
-        
+
         return validateCutParameters(method, parameterNames)
             ? new JediMethod(method, annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), name, Coercions.asSet(parameterNames))
             : null;
-       
+
     }
 
     private boolean validateCutParameters(MethodDeclaration method, List<String> parameterNames) {
@@ -94,7 +97,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
         if (outstanding.isEmpty()) {
             return true;
         }
-        
+
         environment.getMessager().printError(method.getPosition(), "Cut parameters do not exist in formal parameter list: " + outstanding);
         return false;
     }
@@ -107,8 +110,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
         });
     }
 
-    @SuppressWarnings("unchecked")
     private List<String> getCutParameterNames(List<AnnotationValue> values) {
-        return values == null ? Collections.EMPTY_LIST : collect(values, new AnnotationValueValueFunctor<String>());
+        return values == null ? Collections.<String>emptyList() : collect(values, new AnnotationValueValueFunctor<String>());
     }
 }

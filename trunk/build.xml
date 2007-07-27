@@ -15,7 +15,7 @@
     <property name="build.test.dir" value="${build.dir}/classes/test"/>
     <property name="report.dir" location="${build.dir}/report"/>
 
-	<property name="version.number" value="V2_0"/>
+	<property name="version.number" value="2.0"/>
 
 	<property name="dist.name" value="jedi_${version.number}"/>
     <property name="dist" location="${build.dir}/${dist.name}"/>
@@ -66,7 +66,7 @@
 
     <target name="compile_1.5">
         <mkdir dir="${build.classes.1.5.dir}"/>
-        <javac destdir="${build.classes.1.5.dir}" debug="on">
+        <javac destdir="${build.classes.1.5.dir}" debug="on" target="1.5">
             <src path="${java.src.dir}"/>
         </javac>
     </target>

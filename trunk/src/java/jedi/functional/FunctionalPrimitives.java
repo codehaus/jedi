@@ -30,7 +30,17 @@ public class FunctionalPrimitives {
         }
     };
 
-    private static <K, V> void addToGroup(final K key, final V value, final Map<K, List<V>> groups) {
+    /**
+	 * Append all of the elements in all of the given <code>collections</code> into one list. All of the elements of the first item in <code>collections</code> are appended
+	 * first, then the items in the second collection, etc. Equivalent to <code>append(list(collections))</code>
+	 *
+	 * @see #append(Collection)
+	 */
+	public static <T> List<T> append(final Collection< ? extends T>... collections) {
+	    return append(list(collections));
+	}
+
+	private static <K, V> void addToGroup(final K key, final V value, final Map<K, List<V>> groups) {
         List<V> group = groups.get(key);
         if (group == null) {
             groups.put(key, group = new ArrayList<V>());
@@ -51,16 +61,6 @@ public class FunctionalPrimitives {
                 return (Collection<T>) value;
             }
         });
-    }
-
-    /**
-     * Append all of the elements in all of the given <code>collections</code> into one list. All of the elements of the first item in <code>collections</code> are appended
-     * first, then the items in the second collection, etc. Equivalent to <code>append(list(collections))</code>
-     *
-     * @see #append(Collection)
-     */
-    public static <T> List<T> append(final Collection< ? extends T>... collections) {
-        return append(list(collections));
     }
 
     /**
@@ -354,7 +354,7 @@ public class FunctionalPrimitives {
     }
 
     /**
-     * Create the Cartesian product od two collections, using a {@link Functor2 functor} as a factory of objects to represent the pair-wise products.
+     * Create the Cartesian product of two collections, using a {@link Functor2 functor} as a factory of objects to represent the pair-wise products.
      */
     public static <T, U, R> List<R> produce(final Collection<T> left, final Collection<U> right, final Functor2< ? super T, ? super U, R> factory) {
         final List<R> product = new ArrayList<R>(left.size() * right.size());

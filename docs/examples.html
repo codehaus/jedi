@@ -47,15 +47,18 @@
                     <span class="variable">head</span> = head(
                     <span class="variable">collection</span>);</li>
                 <li>&nbsp;List&lt;T&gt;
+                    <span class="variable">tail</span> = tail(
+                    <span class="variable">collection</span>);</li>
+                <li>&nbsp;List&lt;T&gt;
                     <span class="variable">lower</span> = select(
                     <span class="variable">collection</span>, lessThan(
                     <span class="variable">head</span>,
                     <span class="variable">comparator</span>));</li>
                 <li>&nbsp;List&lt;T&gt;
                     <span class="variable">upper</span> = select(
-                    <span class="variable">collection</span>, greaterThan(
+                    <span class="variable">collection</span>, not(lessThan(
                     <span class="variable">head</span>,
-                    <span class="variable">comparator</span>));</li>
+                    <span class="variable">comparator</span>)));</li>
                 <li>&nbsp;<span class="keyword">return</span> append(sort(
                     <span class="variable">lower</span>,
                     <span class="variable">comparator</span>), list(

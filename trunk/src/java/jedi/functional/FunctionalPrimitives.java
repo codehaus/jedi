@@ -94,7 +94,7 @@ public class FunctionalPrimitives {
     public static <T> List<T> drop(final int n, final Collection<T> items) {
         assertNotNull(items, "list");
         assertLessThanOrEqualTo(items.size(), n, "n <= list size");
-        return asList(items).subList(n, items.size());
+        return asList(asList(items).subList(n, items.size()));
     }
 
     /**
@@ -442,7 +442,7 @@ public class FunctionalPrimitives {
     public static <T> List<T> take(final int n, final Collection<T> items) {
         assertNotNull(items, "list");
         assertLessThanOrEqualTo(items.size(), n, "n <= list size");
-        return asList(items).subList(0, n);
+        return asList(asList(items).subList(0, n));
     }
 
     /**

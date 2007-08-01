@@ -112,7 +112,7 @@ public class Box {
 		return boxShorts(unboxed);
 	}
 
-	public static short[] unbox(Short[] boxed) {
+	public static short[] unbox(Short... boxed) {
 		assertNothingNull(boxed);
 
 		short[] unboxed = new short[boxed.length];
@@ -144,7 +144,7 @@ public class Box {
 		return boxInts(unboxed);
 	}
 
-	public static int[] unbox(Integer[] boxed) {
+	public static int[] unbox(Integer... boxed) {
 		assertNothingNull(boxed);
 
 		int[] unboxed = new int[boxed.length];
@@ -175,7 +175,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static long[] unbox(Long[] boxed) {
+	public static long[] unbox(Long... boxed) {
 		assertNothingNull(boxed);
 
 		long[] unboxed = new long[boxed.length];
@@ -206,7 +206,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static float[] unbox(Float[] boxed) {
+	public static float[] unbox(Float... boxed) {
 		assertNothingNull(boxed);
 
 		float[] unboxed = new float[boxed.length];
@@ -237,7 +237,7 @@ public class Box {
 		return boxDoubles(unboxed);
 	}
 
-	public static double[] unbox(Double[] boxed) {
+	public static double[] unbox(Double... boxed) {
 		assertNothingNull(boxed);
 
 		double[] unboxed = new double[boxed.length];

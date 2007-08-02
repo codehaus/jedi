@@ -1,15 +1,17 @@
 package jedi.functional;
 
-import static jedi.assertion.Assert.*;
-import static jedi.functional.Coercions.*;
-import static jedi.functional.FunctionalPrimitives.*;
-import jedi.functors.MaxFunctor;
-import jedi.functors.MinFunctor;
+import static jedi.assertion.Assert.assertNotNull;
+import static jedi.functional.Coercions.asList;
+import static jedi.functional.FunctionalPrimitives.fold;
+import static jedi.functional.FunctionalPrimitives.head;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import jedi.functors.MaxFunctor;
+import jedi.functors.MinFunctor;
 
 public class Comparables {
 
@@ -136,6 +138,6 @@ public class Comparables {
         });
     }
 
-    protected Comparables() {
+    private Comparables() {
     }
 }

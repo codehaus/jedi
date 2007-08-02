@@ -1,6 +1,8 @@
 package jedi.functional;
 
-import static jedi.assertion.Assert.*;
+import static jedi.assertion.Assert.assertEqual;
+import static jedi.assertion.Assert.assertNotNull;
+import static jedi.assertion.Assert.assertTrue;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -162,6 +164,6 @@ public class Coercions {
         return asSet(items);
     }
 
-    protected Coercions() {
+    private Coercions() {
     }
 }

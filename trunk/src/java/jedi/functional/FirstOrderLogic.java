@@ -1,14 +1,15 @@
 package jedi.functional;
 
-import static jedi.assertion.Assert.*;
-import jedi.filters.Conjunction;
-import jedi.filters.Disjunction;
-import jedi.filters.Inverter;
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.assertion.Assert.assertNotNull;
+import static jedi.functional.FunctionalPrimitives.select;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import jedi.filters.Conjunction;
+import jedi.filters.Disjunction;
+import jedi.filters.Inverter;
 
 
 public class FirstOrderLogic {
@@ -91,6 +92,6 @@ public class FirstOrderLogic {
     }
 
 
-    protected FirstOrderLogic() {
+    private FirstOrderLogic() {
     }
 }

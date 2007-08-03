@@ -1,6 +1,6 @@
 package jedi.functional;
 
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.FunctionalPrimitives.makeList;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +18,18 @@ public class CoercionsTest extends ClosureTestCase {
 
         assertSame(INTEGER_ONE, a[0]);
         assertSame(DOUBLE_TWO, a[1]);
+    }
+
+    @SuppressWarnings("unchecked")
+	public void testAsFilter() {
+    	Mock functor = mock(Functor.class);
+    	Mock filter = mock(Filter.class);
+    	Filter asFilter = Coercions.asFilter((Functor) functor.proxy(), (Filter) filter.proxy());
+
+    	functor.expects(once()).method("execute").with(ANYTHING).will(returnValue("functorResult"));
+    	filter.expects(once()).method("execute").with(eq("functorResult")).will(returnValue(true));
+
+    	assertEquals(true, asFilter.execute(ANYTHING));
     }
 
     public void testArrayWithSingleClass() {
@@ -172,6 +184,11 @@ public class CoercionsTest extends ClosureTestCase {
         assertEquals(FOO, result[0]);
         assertEquals(BAR, result[1]);
     }
+
+    public void testCast() throws Exception {
+    	List<CharSequence> expected = Coercions.list((CharSequence)"a");
+    	assertEquals(expected, Coercions.cast(CharSequence.class, Coercions.list("a")));
+	}
 
     @SuppressWarnings("unchecked")
     private void verifyAsFunctorWithValidArgument(final int key, final Integer returnValue, final boolean containsKey, final boolean allowUncontainedKeys) {

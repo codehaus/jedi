@@ -16,7 +16,7 @@ public class Box {
 
 	private static final NotNullFilter<Object> NOT_NULL_FILTER = new NotNullFilter<Object>();
 
-	public static Boolean[] box(boolean[] unboxed) {
+	public static Boolean[] box(boolean... unboxed) {
 		assertNotNull(unboxed, "unboxed must not be null");
 
 		Boolean[] boxed = new Boolean[unboxed.length];

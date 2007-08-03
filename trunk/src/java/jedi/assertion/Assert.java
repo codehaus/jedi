@@ -1,6 +1,6 @@
 package jedi.assertion;
 
-import static jedi.functional.Coercions.*;
+import static jedi.functional.Coercions.asList;
 
 import java.util.Collection;
 
@@ -12,7 +12,7 @@ public class Assert {
 		Assert.delegate = delegate;
 	}
 
-	protected Assert() {
+	private Assert() {
 	}
 
     public static void assertSame(Object value1, Object value2, String assertionName) {

@@ -38,7 +38,7 @@ public class Coercions {
 
     /**
      * Create a {@link jedi.functional.Filter Filter} which uses the given <code>functor</code> to map from one domain (T) to another (R) and then applies the given
-     * <code>filter</code> to R. <i>i.e.</i> the result of <code>execut</code>ing the returned filter with a value <code>t</code> is equivalent to
+     * <code>filter</code> to R. <i>i.e.</i> the result of <code>executing</code> the returned filter with a value <code>t</code> is equivalent to
      * <code>filter.execute(functor.execute(t))</code>.
      */
     public static <T, R> Filter<T> asFilter(final Functor<T, R> functor, final Filter< ? super R> filter) {

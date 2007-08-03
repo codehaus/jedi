@@ -1,7 +1,10 @@
 package jedi.functional;
 
+import static jedi.functional.Coercions.list;
+
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 
 public class ComparablesTest extends ClosureTestCase {
 
@@ -60,24 +63,58 @@ public class ComparablesTest extends ClosureTestCase {
         }
     }
 
-    public void testSortWithComparable() {
-    	assertEquals(Coercions.list(1, 2), Comparables.sortInPlace(Coercions.list(2, 1)));
-    }
+    public void testSort() throws Exception {
+		List<String> toSort = list("b","b", "a", "z");
+		List<String> sorted = Comparables.sort(toSort);
+		assertEquals(list("a", "b", "b", "z"), sorted);
+		assertFalse(toSort == sorted);
+	}
 
-    public void testSortWithComparator() {
-    	assertEquals(Coercions.list(3, 2, 1), Comparables.sortInPlace(Coercions.list(1, 3, 2), new Comparator<Integer>() {
-    		public int compare(Integer o1, Integer o2) {
-    			return o2.compareTo(o1);
-    		}
-    	}));
+    public void testSortWithComparator() throws Exception {
+    	List<String> toSort = list("b","b", "a", "z");
+    	List<String> sorted = Comparables.sort(toSort, String.CASE_INSENSITIVE_ORDER);
+    	assertEquals(list("a", "b", "b", "z"), sorted);
+    	assertFalse(toSort == sorted);
     }
 
     public void testSortWithEvaluator() {
-        assertEquals(Coercions.list("1", "2", "3"), Comparables.sortInPlace(Coercions.list("3", "1", "2"), new Functor<String, Integer>() {
+        List<String> list = list("3", "1", "2");
+		List<String> result = Comparables.sort(list, new Functor<String, Integer>() {
             public Integer execute(String value) {
                 return Integer.parseInt(value);
             }
-        }));
+        });
+		assertEquals(list("1", "2", "3"), result);
+		assertFalse(list == result);
+    }
+
+    public void testSortInPlaceWithComparable() {
+    	List<Integer> list = list(2, 1);
+		List<Integer> result = Comparables.sortInPlace(list);
+		assertEquals(list(1, 2), result);
+		assertSame(list, result);
+    }
+
+    public void testSortInPlaceWithComparator() {
+    	List<Integer> list = list(1, 3, 2);
+		List<Integer> result = Comparables.sortInPlace(list, new Comparator<Integer>() {
+    		public int compare(Integer o1, Integer o2) {
+    			return o2.compareTo(o1);
+    		}
+    	});
+		assertEquals(list(3, 2, 1), result);
+		assertSame(list, result);
+    }
+
+    public void testSortInPlaceWithEvaluator() {
+        List<String> list = list("3", "1", "2");
+		List<String> result = Comparables.sortInPlace(list, new Functor<String, Integer>() {
+            public Integer execute(String value) {
+                return Integer.parseInt(value);
+            }
+        });
+		assertEquals(list("1", "2", "3"), result);
+		assertSame(list, result);
     }
 
 }

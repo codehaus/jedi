@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="src" path="src/test"/>
-	<classpathentry kind="src" path="examples/quicksort/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jmock-cglib-20050628.jar"/>
 	<classpathentry kind="lib" path="lib/jmock-20050628.jar"/>

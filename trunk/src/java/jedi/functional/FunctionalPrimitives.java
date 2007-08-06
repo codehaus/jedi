@@ -461,6 +461,16 @@ public class FunctionalPrimitives {
     }
 
     /**
+     * Get n middle elements of a list.
+     */
+    public static <T> List<T> takeMiddle(final int start, final int n, final Collection<T> list) {
+    	assertNotNull(list, "list");
+    	assertLessThanOrEqualTo(list.size(), start + n, "from + n <= list size");
+
+    	return take(n, drop(start, list));
+    }
+
+    /**
      * Zip interleaves a list of lists. If zip is passed n lists, it returns a list as long as the shortest of these lists, each element of which is an n-element list comprised of
      * the corresponding elements from the parameter lists.
      *

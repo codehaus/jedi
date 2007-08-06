@@ -1,7 +1,33 @@
 package jedi.functional;
 
-import static jedi.functional.Coercions.*;
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.Coercions.list;
+import static jedi.functional.FunctionalPrimitives.append;
+import static jedi.functional.FunctionalPrimitives.collect;
+import static jedi.functional.FunctionalPrimitives.drop;
+import static jedi.functional.FunctionalPrimitives.dropRight;
+import static jedi.functional.FunctionalPrimitives.flatten;
+import static jedi.functional.FunctionalPrimitives.fold;
+import static jedi.functional.FunctionalPrimitives.forEach;
+import static jedi.functional.FunctionalPrimitives.group;
+import static jedi.functional.FunctionalPrimitives.head;
+import static jedi.functional.FunctionalPrimitives.headOrDefaultIfEmpty;
+import static jedi.functional.FunctionalPrimitives.headOrNullIfEmpty;
+import static jedi.functional.FunctionalPrimitives.join;
+import static jedi.functional.FunctionalPrimitives.listTabulate;
+import static jedi.functional.FunctionalPrimitives.longest;
+import static jedi.functional.FunctionalPrimitives.only;
+import static jedi.functional.FunctionalPrimitives.reject;
+import static jedi.functional.FunctionalPrimitives.reverse;
+import static jedi.functional.FunctionalPrimitives.select;
+import static jedi.functional.FunctionalPrimitives.sequence;
+import static jedi.functional.FunctionalPrimitives.shortest;
+import static jedi.functional.FunctionalPrimitives.slice;
+import static jedi.functional.FunctionalPrimitives.split;
+import static jedi.functional.FunctionalPrimitives.tail;
+import static jedi.functional.FunctionalPrimitives.take;
+import static jedi.functional.FunctionalPrimitives.takeMiddle;
+import static jedi.functional.FunctionalPrimitives.takeRight;
+import static jedi.functional.FunctionalPrimitives.zip;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -321,10 +347,15 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals(list(3, 4, 5), result);
     }
 
+    public void testTakeMiddle() {
+    	assertEquals(list(2,3,4), takeMiddle(1, 3, list(1,2,3,4,5)));
+    }
+
     @SuppressWarnings("unchecked")
     public void testZip() throws Exception {
         final List list = list(list("one", "two", "three"), list(1, 2, 3), list(true, false, true, false));
         final List expected = list(list("one", 1, true), list("two", 2, false), list("three", 3, true));
         assertEquals(expected, zip(list));
     }
+
 }

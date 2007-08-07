@@ -24,10 +24,12 @@ import static jedi.functional.FunctionalPrimitives.shortest;
 import static jedi.functional.FunctionalPrimitives.slice;
 import static jedi.functional.FunctionalPrimitives.split;
 import static jedi.functional.FunctionalPrimitives.tail;
+
 import static jedi.functional.FunctionalPrimitives.take;
 import static jedi.functional.FunctionalPrimitives.takeMiddle;
 import static jedi.functional.FunctionalPrimitives.takeRight;
 import static jedi.functional.FunctionalPrimitives.zip;
+import static jedi.functional.FunctionalPrimitives.tabulate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,8 +40,8 @@ import java.util.Set;
 
 import org.jmock.Mock;
 import org.jmock.util.Dummy;
-
 public class FunctionalPrimitivesTest extends ClosureTestCase {
+
 
     @SuppressWarnings("unchecked")
     public void testAppend() {
@@ -349,6 +351,27 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 
     public void testTakeMiddle() {
     	assertEquals(list(2,3,4), takeMiddle(1, 3, list(1,2,3,4,5)));
+    }
+
+    @SuppressWarnings("unchecked")
+	public void testTabulate() throws Exception {
+		List<Integer> line = list(1,1,1,2,2,2);
+		List<List<Integer>> result = list(list(1,1,1), list(2,2,2));
+		assertEquals(result, tabulate(line, 3));
+	}
+
+    @SuppressWarnings("unchecked")
+    public void testTabulateWithEmptyList() throws Exception {
+    	assertEquals(Collections.EMPTY_LIST, tabulate(Collections.EMPTY_LIST, 3));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testTabulateThrowsAssertionErrorIfTheGivenListIsTheWrongLength() throws Exception {
+    	try {
+    		tabulate(list(1,1,2), 2);
+		} catch (jedi.assertion.AssertionError expected) {
+			assertEquals("list length is a multiple of required length: context {[[1, 1, 2]], [2]}", expected.getMessage());
+		}
     }
 
     @SuppressWarnings("unchecked")

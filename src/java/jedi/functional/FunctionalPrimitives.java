@@ -5,6 +5,7 @@ import static jedi.assertion.Assert.assertFalse;
 import static jedi.assertion.Assert.assertGreaterThanOrEqualTo;
 import static jedi.assertion.Assert.assertLessThanOrEqualTo;
 import static jedi.assertion.Assert.assertNotNull;
+import static jedi.assertion.Assert.assertTrue;
 import static jedi.functional.Coercions.asList;
 import static jedi.functional.Coercions.list;
 import static jedi.functional.FirstOrderLogic.invert;
@@ -487,6 +488,21 @@ public class FunctionalPrimitives {
             result.add(slice(i, lists));
         }
         return result;
+    }
+
+    /**
+     * @param <T>
+     * @param line
+     * @param length
+     * @return a list of lists by splitting the given list into lists of length <code>length</code>.
+     */
+    public static <T> List<List<T>> tabulate(final List<T> line, int length) {
+    	assertTrue(line.size() % length == 0, "list length is a multiple of required length", line, length);
+    	List<List<T>> result = new ArrayList<List<T>>();
+    	for (int i = 0; i < line.size(); i+=length) {
+    		result.add(takeMiddle(i,length, line));
+    	}
+    	return result;
     }
 
     private FunctionalPrimitives() {

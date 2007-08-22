@@ -12,7 +12,7 @@ public class Assert {
 		Assert.delegate = delegate;
 	}
 
-	private Assert() {
+	protected Assert() {
 	}
 
     public static void assertSame(Object value1, Object value2, String assertionName) {

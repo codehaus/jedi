@@ -1,45 +1,12 @@
 package jedi.functional;
 
-import static jedi.functional.Coercions.list;
-import static jedi.functional.FunctionalPrimitives.append;
-import static jedi.functional.FunctionalPrimitives.collect;
-import static jedi.functional.FunctionalPrimitives.drop;
-import static jedi.functional.FunctionalPrimitives.dropRight;
-import static jedi.functional.FunctionalPrimitives.flatten;
-import static jedi.functional.FunctionalPrimitives.fold;
-import static jedi.functional.FunctionalPrimitives.forEach;
-import static jedi.functional.FunctionalPrimitives.group;
-import static jedi.functional.FunctionalPrimitives.head;
-import static jedi.functional.FunctionalPrimitives.headOrDefaultIfEmpty;
-import static jedi.functional.FunctionalPrimitives.headOrNullIfEmpty;
-import static jedi.functional.FunctionalPrimitives.join;
-import static jedi.functional.FunctionalPrimitives.listTabulate;
-import static jedi.functional.FunctionalPrimitives.longest;
-import static jedi.functional.FunctionalPrimitives.only;
-import static jedi.functional.FunctionalPrimitives.reject;
-import static jedi.functional.FunctionalPrimitives.reverse;
-import static jedi.functional.FunctionalPrimitives.select;
-import static jedi.functional.FunctionalPrimitives.sequence;
-import static jedi.functional.FunctionalPrimitives.shortest;
-import static jedi.functional.FunctionalPrimitives.slice;
-import static jedi.functional.FunctionalPrimitives.split;
-import static jedi.functional.FunctionalPrimitives.tail;
-
-import static jedi.functional.FunctionalPrimitives.take;
-import static jedi.functional.FunctionalPrimitives.takeMiddle;
-import static jedi.functional.FunctionalPrimitives.takeRight;
-import static jedi.functional.FunctionalPrimitives.zip;
-import static jedi.functional.FunctionalPrimitives.tabulate;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import static jedi.functional.FunctionalPrimitives.pop;
+import static jedi.functional.Coercions.*;
+import static jedi.functional.FunctionalPrimitives.*;
 import org.jmock.Mock;
 import org.jmock.util.Dummy;
+
+import java.util.*;
 public class FunctionalPrimitivesTest extends ClosureTestCase {
 
 
@@ -380,5 +347,10 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         final List expected = list(list("one", 1, true), list("two", 2, false), list("three", 3, true));
         assertEquals(expected, zip(list));
     }
-
+    
+    public void testPop() {
+        List<String> list = list("foo", "bar", "baz");
+        assertEquals("baz", pop(list));
+        assertEquals(list("foo", "bar"), list);
+    }
 }

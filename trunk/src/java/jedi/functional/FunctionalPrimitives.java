@@ -1,22 +1,10 @@
 package jedi.functional;
 
-import static jedi.assertion.Assert.assertEqual;
-import static jedi.assertion.Assert.assertFalse;
-import static jedi.assertion.Assert.assertGreaterThanOrEqualTo;
-import static jedi.assertion.Assert.assertLessThanOrEqualTo;
-import static jedi.assertion.Assert.assertNotNull;
-import static jedi.assertion.Assert.assertTrue;
-import static jedi.functional.Coercions.asList;
-import static jedi.functional.Coercions.list;
-import static jedi.functional.FirstOrderLogic.invert;
+import static jedi.assertion.Assert.*;
+import static jedi.functional.Coercions.*;
+import static jedi.functional.FirstOrderLogic.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * I provide operations of the kind found in Functional Programming languages. This allows you to remove a great deal of clutter from production code. Ideally, you will never need
@@ -505,6 +493,23 @@ public class FunctionalPrimitives {
     	return result;
     }
 
-    private FunctionalPrimitives() {
+    /**
+     * Removes the last item (in iteration order) from a collection. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
+     * thrown.
+     *
+     * @return the last item in the collection
+     * @throws jedi.assertion.AssertionError
+     *             if the collection contains less or more than one item
+     * @see #only(Collection)
+     * @see #headOrNullIfEmpty(Collection)
+     * @see #headOrDefaultIfEmpty(Collection,Object)
+     */
+
+    public static <T> T pop(List<T> items) {
+        assertNotNullOrEmpty(items, "items");
+        return items.remove(items.size() - 1);
+    }
+
+    protected FunctionalPrimitives() {
     }
 }

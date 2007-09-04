@@ -2,6 +2,7 @@ package jedi.annotation.sith;
 
 import static jedi.functional.FunctionalPrimitives.*;
 
+import java.util.Collections;
 import java.util.List;
 
 import jedi.annotation.util.AnnotationValueValueFunctor;
@@ -17,45 +18,44 @@ import com.sun.mirror.type.TypeMirror;
 class SithMethodAnnotation extends AnnotationMirrorInterpreter {
     private final SithAnnotation type;
 
-    public SithMethodAnnotation(SithAnnotation sithAnnotation, AnnotationMirror annotationMirror) {
+    public SithMethodAnnotation(final SithAnnotation sithAnnotation, final AnnotationMirror annotationMirror) {
         super(annotationMirror);
         this.type = sithAnnotation;
     }
-    
-    private String getName() {
-        return (String) getValue("name");
-    }
-    
-    @SuppressWarnings("unchecked")
-    private List<TypeMirror> getParameterTypes() {
-        return collect((List<AnnotationValue>) getValue("parameterTypes"), new AnnotationValueValueFunctor<TypeMirror>());
-    }
-    
-    public MethodDeclaration getMethodDeclaration(Messager messager) {
-        for (MethodDeclaration methodDeclaration : type.getType().getMethods()) {
+
+    public MethodDeclaration getMethodDeclaration(final Messager messager) {
+        for (final MethodDeclaration methodDeclaration : type.getType().getMethods()) {
             if (isMatch(methodDeclaration)) {
                 return methodDeclaration;
             }
         }
-        
+
         messager.printError(type.getPosition(), "No such method. name : " + getName() + ", parameters : " + getParameterTypes());
         return null;
     }
-    
-    
-    private boolean isMatch(MethodDeclaration declaration) {
+
+    private String getName() {
+        return (String) getValue("name");
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<TypeMirror> getParameterTypes() {
+        final List<AnnotationValue> parameterTypes = (List<AnnotationValue>) getValue("parameterTypes");
+        return parameterTypes == null ? Collections.<TypeMirror> emptyList() : collect(parameterTypes, new AnnotationValueValueFunctor<TypeMirror>());
+    }
+
+    private boolean isMatch(final MethodDeclaration declaration) {
         if (!declaration.getSimpleName().equals(getName())) {
             return false;
         }
-        
+
         final List<TypeMirror> requiredParameterTypes = getParameterTypes();
-        final List<TypeMirror> formalTypeParameters = collect(
-                declaration.getParameters(), new Functor<ParameterDeclaration, TypeMirror>() {
-                    public TypeMirror execute(ParameterDeclaration value) {
-                        return value.getType();
-                    }
-                });
-        
+        final List<TypeMirror> formalTypeParameters = collect(declaration.getParameters(), new Functor<ParameterDeclaration, TypeMirror>() {
+            public TypeMirror execute(ParameterDeclaration value) {
+                return value.getType();
+            }
+        });
+
         return requiredParameterTypes.equals(formalTypeParameters);
     }
 

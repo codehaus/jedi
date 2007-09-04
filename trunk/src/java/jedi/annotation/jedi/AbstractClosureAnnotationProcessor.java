@@ -39,75 +39,63 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
     protected final AnnotationProcessorEnvironment environment;
     protected final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap;
 
-    public AbstractClosureAnnotationProcessor(AnnotationProcessorEnvironment environment, Class<?> commandAnnotationClass, Class<?> filterAnnotationClass, Class<?> functorAnnotationClass) {
+    public AbstractClosureAnnotationProcessor(final AnnotationProcessorEnvironment environment, final Class< ? > commandAnnotationClass, final Class< ? > filterAnnotationClass, final Class< ? > functorAnnotationClass) {
         this.environment = environment;
-        
+
         annotationTypeToFactoryMethodWriterMap = new HashMap<AnnotationTypeDeclaration, FactoryMethodWriter>();
-        putAnnotationClassToWriterMapping(commandAnnotationClass,
-                new CompositeFactoryMethodWriter(
-                        new CommandFactoryMethodWriter(),
-                        new ProxyCommandFactoryMethodWriter()));
-        putAnnotationClassToWriterMapping(filterAnnotationClass,
-                new CompositeFactoryMethodWriter(
-                        new FilterFactoryMethodWriter(),
-                        new EqualsFilterFactoryMethodWriter(),
-                        new MembershipFilterFactoryMethodWriter(),
-                        new ProxyFilterFactoryMethodWriter()));
-        putAnnotationClassToWriterMapping(functorAnnotationClass,
-                new CompositeFactoryMethodWriter(
-                        new FunctorFactoryMethodWriter(),
-                        new ProxyFunctorFactoryMethodWriter()));
+        putAnnotationClassToWriterMapping(commandAnnotationClass, new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(), new ProxyCommandFactoryMethodWriter()));
+        putAnnotationClassToWriterMapping(filterAnnotationClass, new CompositeFactoryMethodWriter(new FilterFactoryMethodWriter(), new EqualsFilterFactoryMethodWriter(), new MembershipFilterFactoryMethodWriter(), new ProxyFilterFactoryMethodWriter()));
+        putAnnotationClassToWriterMapping(functorAnnotationClass, new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(), new ProxyFunctorFactoryMethodWriter()));
     }
 
-    private void putAnnotationClassToWriterMapping(Class< ? > commandAnnotationClass, final FactoryMethodWriter writer) {
-        annotationTypeToFactoryMethodWriterMap.put(getTypeDeclaration(commandAnnotationClass), writer);
+    private Set<JediMethod> getInterestingDeclarations() {
+        final Set<JediMethod> interestingMethodDeclarations = new HashSet<JediMethod>();
+        for (final AnnotationTypeDeclaration annotationTypeDeclaration : annotationTypeToFactoryMethodWriterMap.keySet()) {
+            interestingMethodDeclarations.addAll(getInterestingDeclarations(annotationTypeDeclaration));
+        }
+        return interestingMethodDeclarations;
+    }
+
+    abstract protected Collection< ? extends JediMethod> getInterestingDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
+
+    private Map<TypeDeclaration, List<JediMethod>> getMethodsByType() {
+        return group(getInterestingDeclarations(), new Functor<JediMethod, TypeDeclaration>() {
+            public TypeDeclaration execute(final JediMethod method) {
+                return method.getDeclaringType();
+            }
+        });
+    }
+
+    protected Collection<AnnotationMirror> getMirrors(final Declaration declaration, final AnnotationTypeDeclaration annotationTypeDeclaration) {
+        return select(declaration.getAnnotationMirrors(), new Filter<AnnotationMirror>() {
+            public Boolean execute(final AnnotationMirror mirror) {
+                return mirror.getAnnotationType().getDeclaration().equals(annotationTypeDeclaration);
+            }
+        });
+    }
+
+    protected AnnotationTypeDeclaration getTypeDeclaration(final Class< ? > annotationClass) {
+        return (AnnotationTypeDeclaration) environment.getTypeDeclaration(annotationClass.getName());
     }
 
     public void process() {
         process(new InterfaceFactoryType(), new InstanceFactoryType(), new StaticFactoryType());
     }
 
-    protected void process(FactoryType ...types) {
+    protected void process(final FactoryType... types) {
         final Map<TypeDeclaration, List<JediMethod>> methodsByType = getMethodsByType();
-        for (FactoryType type : types) {
+        for (final FactoryType type : types) {
             writeFactories(methodsByType, type);
         }
     }
-    
 
-    private Map<TypeDeclaration, List<JediMethod>> getMethodsByType() {
-        return group(getInterestingDeclarations(), new Functor<JediMethod, TypeDeclaration>() {
-			        public TypeDeclaration execute(JediMethod method) {
-			            return method.getDeclaringType();
-			        }
-			    });
+    private void putAnnotationClassToWriterMapping(final Class< ? > commandAnnotationClass, final FactoryMethodWriter writer) {
+        annotationTypeToFactoryMethodWriterMap.put(getTypeDeclaration(commandAnnotationClass), writer);
     }
-    
-    private Set<JediMethod> getInterestingDeclarations() {
-        Set<JediMethod> interestingMethodDeclarations = new HashSet<JediMethod>();
-        for (AnnotationTypeDeclaration annotationTypeDeclaration : annotationTypeToFactoryMethodWriterMap.keySet()) {
-            interestingMethodDeclarations.addAll(getInterestingDeclarations(annotationTypeDeclaration));
-        }
-        return interestingMethodDeclarations;
-    }
-    
-    abstract protected Collection<? extends JediMethod> getInterestingDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration) ;
 
-    private void writeFactories(final Map<TypeDeclaration, List<JediMethod>> methodsByType, FactoryType type) {
-        for (Entry<TypeDeclaration, List<JediMethod>> entry : methodsByType.entrySet()) {
+    private void writeFactories(final Map<TypeDeclaration, List<JediMethod>> methodsByType, final FactoryType type) {
+        for (final Entry<TypeDeclaration, List<JediMethod>> entry : methodsByType.entrySet()) {
             new FactoryWriter(environment, entry.getKey(), type, annotationTypeToFactoryMethodWriterMap).write(entry.getValue());
         }
-    }
-
-    private AnnotationTypeDeclaration getTypeDeclaration(final Class<?> annotationClass) {
-        return (AnnotationTypeDeclaration) environment.getTypeDeclaration(annotationClass.getName());
-    }
-
-    protected Collection<AnnotationMirror> getMirrors(Declaration declaration, final AnnotationTypeDeclaration annotationTypeDeclaration) {
-        return select(declaration.getAnnotationMirrors(), new Filter<AnnotationMirror>() {
-            public Boolean execute(AnnotationMirror mirror) {
-                return mirror.getAnnotationType().getDeclaration().equals(annotationTypeDeclaration);
-            }
-        });
     }
 }

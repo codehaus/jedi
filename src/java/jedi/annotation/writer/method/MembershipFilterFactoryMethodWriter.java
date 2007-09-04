@@ -12,19 +12,9 @@ public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMet
     private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
 
     public MembershipFilterFactoryMethodWriter() {
-        setReceiverInvocationWriter(new MembershipFilterReceiverInvocationWriter(TEST_VALUE_PARAMETER_NAME));
+        setReceiverInvocationWriter(new MembershipFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
     }
-    
-    @Override
-    public Class< ? > getOneParameterClosureClass() {
-        return Filter.class;
-    }
-    
-    @Override
-    protected boolean isReturnRequired() {
-        return true;
-    }
-    
+
     @Override
     protected String getExecuteMethodReturnType() {
         return Boolean.class.getName();
@@ -41,7 +31,17 @@ public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMet
     }
 
     @Override
-    protected boolean hasCorrectReturnType(JediMethod method) {
+    public Class< ? > getOneParameterClosureClass() {
+        return Filter.class;
+    }
+
+    @Override
+    protected boolean hasCorrectReturnType(final JediMethod method) {
         return !(method.isVoidReturnType() || method.isBooleanReturnType());
+    }
+
+    @Override
+    protected boolean isReturnRequired() {
+        return true;
     }
 }

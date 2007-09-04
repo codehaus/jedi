@@ -16,39 +16,39 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 
 public class FactoryWriter {
-    private StringWriter stringWriter = new StringWriter();
-    private JavaWriter writer = new JavaWriter(stringWriter);
+    private final StringWriter stringWriter = new StringWriter();
+    private final JavaWriter writer = new JavaWriter(stringWriter);
     private final AnnotationProcessorEnvironment environment;
     private final TypeDeclaration typeDeclaration;
     private final FactoryType factoryType;
-    
-    public FactoryWriter(AnnotationProcessorEnvironment environment, TypeDeclaration typeDeclaration, FactoryType type, Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
+
+    public FactoryWriter(final AnnotationProcessorEnvironment environment, final TypeDeclaration typeDeclaration, final FactoryType type, final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
         this.environment = environment;
         this.typeDeclaration = typeDeclaration;
         this.factoryType = type;
         initialiseWriters(factoryType, annotationTypeToFactoryMethodWriterMap);
     }
 
-    public void write(List<JediMethod> methods) {
-        try {
-            startFactory();
-            writeMethods(methods);
-            endFactory();
-        } catch (IOException e) {
-            environment.getMessager().printError(e.getMessage());
-        } catch (FactoryWriterException fwex) {
-            fwex.write(environment.getMessager());
-        }
-    }
-    
-    private void writeMethods(List<JediMethod> methods) {
-        for (JediMethod method : methods) {
-            method.write();
-        }
+    private void endFactory() throws IOException {
+        writer.println("}");
+        writer.close();
+
+        final PrintWriter realWriter = environment.getFiler().createSourceFile(factoryType.getQualifiedTypeName(typeDeclaration));
+        realWriter.print(stringWriter.getBuffer());
+        realWriter.close();
     }
 
-    private void initialiseWriters(FactoryType factoryType, Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
-        for (FactoryMethodWriter factoryMethodWriter : annotationTypeToFactoryMethodWriterMap.values()) {
+    private String getClassName() {
+        return factoryType.getTypeDeclaration(typeDeclaration);
+    }
+
+    private String getPackageName() {
+        final String packageName = typeDeclaration.getPackage().getQualifiedName();
+        return packageName.startsWith("java.") ? ("sith" + packageName.substring(4)) : packageName;
+    }
+
+    private void initialiseWriters(final FactoryType factoryType, final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
+        for (final FactoryMethodWriter factoryMethodWriter : annotationTypeToFactoryMethodWriterMap.values()) {
             factoryMethodWriter.initialise(writer, factoryType);
         }
     }
@@ -62,20 +62,21 @@ public class FactoryWriter {
         factoryType.writeClassHeader(writer, typeDeclaration);
     }
 
-    private String getClassName() {
-        return factoryType.getTypeDeclaration(typeDeclaration);
+    public void write(final List<JediMethod> methods) {
+        try {
+            startFactory();
+            writeMethods(methods);
+            endFactory();
+        } catch (final IOException e) {
+            environment.getMessager().printError(e.getMessage());
+        } catch (final FactoryWriterException fwex) {
+            fwex.write(environment.getMessager());
+        }
     }
 
-    private String getPackageName() {
-        return typeDeclaration.getPackage().getQualifiedName();
-    }
-    
-    private void endFactory() throws IOException {
-        writer.println("}");
-        writer.close();
-        
-        PrintWriter realWriter = environment.getFiler().createSourceFile(factoryType.getQualifiedTypeName(typeDeclaration));
-        realWriter.print(stringWriter.getBuffer());
-        realWriter.close();
+    private void writeMethods(final List<JediMethod> methods) {
+        for (final JediMethod method : methods) {
+            method.write();
+        }
     }
 }

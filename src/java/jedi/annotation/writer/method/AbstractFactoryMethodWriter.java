@@ -29,12 +29,35 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 
     private ReceiverInvocationWriter receiverInvocationWriter = new ReceiverInvocationWriter();
 
-    public final void initialise(JavaWriter writer, FactoryType factoryType) {
-        this.writer = writer;
-        this.factoryType = factoryType;
+    public final boolean canHandle(final JediMethod method) {
+        return hasCorrectNumberOfParameters(getExecuteMethodParameters(method).size()) && hasCorrectReturnType(method);
     }
 
-    public final void execute(JediMethod method) {
+    protected final void checkPrecondition(boolean precondition, final String message) {
+        if (!precondition) {
+            throw new FactoryWriterException(message, method);
+        }
+    }
+
+    private Functor<Attribute, String> createFieldEqualityFunctor() {
+        return new Functor<Attribute, String>() {
+            public String execute(final Attribute attribute) {
+                final String field = getCorrespondingFieldName(attribute);
+                return "(" + field + " == null ? that." + field + " == null : " + field + ".equals(that." + field + "))";
+            }
+        };
+    }
+
+    private Functor2<String, Attribute, String> createHashCodeFoldFunctor() {
+        return new Functor2<String, Attribute, String>() {
+            public String execute(final String accumulator, final Attribute attribute) {
+                final String field = getCorrespondingFieldName(attribute);
+                return "(" + accumulator + ") * 37 + (" + field + " == null ? 0 : " + field + ".hashCode())";
+            }
+        };
+    }
+
+    public final void execute(final JediMethod method) {
         this.method = method;
 
         startMethod();
@@ -43,37 +66,39 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         this.method = null;
     }
 
-    protected abstract List<Attribute> getExecuteMethodParameters(JediMethod method);
-
-    protected abstract Collection<Attribute> getFactoryMethodBasicParameters();
-
-    protected abstract Collection<Attribute> getFactoryMethodAdditionalFormalParameters();
-
-    protected final List<Attribute> getExecuteMethodParameters() {
-        return getExecuteMethodParameters(getMethod());
+    protected final String getBoxedQualifiedTypeName(final TypeMirror type) {
+        return new BoxerFunctor().execute(type);
     }
 
-    protected final void checkPrecondition(boolean precondition, String message) {
-        if (!precondition) {
-            throw new FactoryWriterException(message, method);
-        }
+    private String getCorrespondingFieldName(final Attribute attribute) {
+        return getCorrespondingFieldName(attribute.getName());
     }
 
-    protected JavaWriter getWriter() {
-        return writer;
+    protected String getCorrespondingFieldName(final String parameterName) {
+        return "$" + parameterName;
     }
 
-    protected JediMethod getMethod() {
-        return method;
+    protected final TypeDeclaration getDelegateMethodDeclaringType() {
+        return method.getDeclaringType();
     }
 
     protected final TypeMirror getDelegateMethodReturnType() {
         return method.getReturnType();
     }
 
-    protected final TypeDeclaration getDelegateMethodDeclaringType() {
-        return method.getDeclaringType();
+    protected final List<Attribute> getExecuteMethodParameters() {
+        return getExecuteMethodParameters(getMethod());
     }
+
+    protected abstract List<Attribute> getExecuteMethodParameters(JediMethod method);
+
+    protected String getExecuteMethodReturnType() {
+        return new BoxerFunctor().execute(getDelegateMethodReturnType());
+    }
+
+    protected abstract Collection<Attribute> getFactoryMethodAdditionalFormalParameters();
+
+    protected abstract Collection<Attribute> getFactoryMethodBasicParameters();
 
     public final String getFactoryMethodName() {
         return method.getName() + getFactoryMethodNameSuffix();
@@ -83,11 +108,55 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         return getReturnType().getSimpleName();
     }
 
-    public final void writeClosureDeclaration() {
-        writer.print(getReturnType().getName());
-        writer.print('<');
-        writeClosureTypes();
-        writer.print('>');
+    @SuppressWarnings("unchecked")
+    protected List<Attribute> getFactoryMethodParameters() {
+        return append(getFactoryMethodAdditionalFormalParameters(), getFactoryMethodBasicParameters());
+    }
+
+    protected JediMethod getMethod() {
+        return method;
+    }
+
+    protected abstract Class< ? > getOneParameterClosureClass();
+
+    private Class< ? > getReturnType() {
+        final int n = getExecuteMethodParameters().size();
+        try {
+            return n == 1 ? getOneParameterClosureClass() : Class.forName(getOneParameterClosureClass().getName() + n);
+        } catch (final ClassNotFoundException e) {
+            throw new FactoryWriterException("No appropriate closure for method with " + n + " pararmeters", getMethod());
+        }
+    }
+
+    protected JavaWriter getWriter() {
+        return writer;
+    }
+
+    private boolean hasCorrectNumberOfParameters(final int numberOfParameters) {
+        return numberOfParameters >= 1 && numberOfParameters <= 2;
+    }
+
+    protected abstract boolean hasCorrectReturnType(JediMethod method);
+
+    public final void initialise(final JavaWriter writer, final FactoryType factoryType) {
+        this.writer = writer;
+        this.factoryType = factoryType;
+    }
+
+    protected boolean isReturnRequired() {
+        return false;
+    }
+
+    private void print(final String s) {
+        getWriter().print(s);
+    }
+
+    private void println(final String s) {
+        getWriter().println(s);
+    }
+
+    protected final void setReceiverInvocationWriter(final ReceiverInvocationWriter receiverInvocationWriter) {
+        this.receiverInvocationWriter = receiverInvocationWriter;
     }
 
     private void startMethod() {
@@ -102,29 +171,48 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         print(")");
     }
 
-    private void writeGenericTypeParameters() {
-        if (method.isGeneric()) {
-            print("<");
-            print(FunctionalPrimitives.join(method.getGenericTypeParameters(), ", "))
-;            print(">");
+    public final void writeClosureDeclaration() {
+        writer.print(getReturnType().getName());
+        writer.print('<');
+        writeClosureTypes();
+        writer.print('>');
+    }
+
+    private void writeClosureField(final Attribute attribute) {
+        print("\tprivate final ");
+        print(attribute.getBoxedType());
+        print(" ");
+        print(getCorrespondingFieldName(attribute));
+        print(" = ");
+        print(attribute.getName());
+        println(";");
+    }
+
+    private void writeClosureFields() {
+        for (final Attribute attribute : getFactoryMethodParameters()) {
+            writeClosureField(attribute);
         }
     }
 
-    private void writeFactoryMethodFormalParameters() {
-        getWriter().printFormalParameters(getFactoryMethodParameters(), false);
+    protected void writeClosureTypes() {
+        getWriter().printBoxedCommaSeparatedList(getExecuteMethodParameters());
     }
 
-    @SuppressWarnings("unchecked")
-    protected List<Attribute> getFactoryMethodParameters() {
-        return append(getFactoryMethodAdditionalFormalParameters(), getFactoryMethodBasicParameters());
-    }
+    private void writeEqualsMethod() {
+        println("\tpublic boolean equals(Object obj) {");
+        println("\t\tif (obj == this) { return true; }");
+        println("\t\tif (!(obj instanceof Closure)) { return false; }");
 
-    protected boolean isReturnRequired() {
-        return false;
-    }
+        if (getFactoryMethodParameters().isEmpty()) {
+            println("\t\treturn true;");
+        } else {
+            println("\t\tClosure that = (Closure) obj;");
+            print("\t\treturn ");
+            print(join(collect(getFactoryMethodParameters(), createFieldEqualityFunctor()), " && "));
+            println(";");
+        }
 
-    protected final String getBoxedQualifiedTypeName(TypeMirror type) {
-        return new BoxerFunctor().execute(type);
+        println("\t}");
     }
 
     private void writeExecuteMethod() {
@@ -136,16 +224,21 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         receiverInvocationWriter.write(method, writer, isReturnRequired());
         getWriter().println("}");
     }
-    
-    public final void writeLocalClass(String name) {
-        getWriter().print("class " + name + " implements java.io.Serializable, ");
-        writeClosureDeclaration();
-        getWriter().println(" {");
-        writeClosureFields();
-        writeExecuteMethod();
-        writeEqualsMethod();
-        writeHashCodeMethod();
-        getWriter().println("}");
+
+    public final void writeFactoryMethodActualParameters() {
+        getWriter().printSimpleNamesAsActualParameterListWithoutBrackets(getFactoryMethodParameters(), false);
+    }
+
+    private void writeFactoryMethodFormalParameters() {
+        getWriter().printFormalParameters(getFactoryMethodParameters(), false);
+    }
+
+    private void writeGenericTypeParameters() {
+        if (method.isGeneric()) {
+            print("<");
+            print(FunctionalPrimitives.join(method.getGenericTypeParameters(), ", "));
+            print(">");
+        }
     }
 
     private void writeHashCodeMethod() {
@@ -156,103 +249,14 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         println("\t}");
     }
 
-    private Functor2<String, Attribute, String> createHashCodeFoldFunctor() {
-        return new Functor2<String, Attribute, String>() {
-            public String execute(String accumulator, Attribute attribute) {
-                String field = getCorrespondingFieldName(attribute);
-                return "(" + accumulator + ") * 37 + (" + field + " == null ? 0 : " + field + ".hashCode())";
-            }
-        };
-    }
-
-    private void writeEqualsMethod() {
-        println("\tpublic boolean equals(Object obj) {");
-        println("\t\tif (obj == this) { return true; }");
-        println("\t\tif (!(obj instanceof Closure)) { return false; }");
-        
-        if (getFactoryMethodParameters().isEmpty()) {
-            println("\t\treturn true;");
-        } else {
-            println("\t\tClosure that = (Closure) obj;");
-            print("\t\treturn ");
-            print(join(collect(getFactoryMethodParameters(), createFieldEqualityFunctor()), " && "));
-            println(";");
-        }
-        
-        println("\t}");
-    }
-
-    private Functor<Attribute, String> createFieldEqualityFunctor() {
-        return new Functor<Attribute, String>() {
-            public String execute(Attribute attribute) {
-               String field = getCorrespondingFieldName(attribute);
-               return "(" + field + " == null ? that." + field + " == null : " + field + ".equals(that." + field + "))";
-            }
-        };
-    }
-
-    private void writeClosureFields() {
-        for (Attribute attribute : getFactoryMethodParameters()) {
-            writeClosureField(attribute);
-        }
-    }
-
-    private void writeClosureField(Attribute attribute) {
-        print("\tprivate final ");
-        print(attribute.getBoxedType());
-        print(" ");
-        print(getCorrespondingFieldName(attribute));
-        print(" = ");
-        print(attribute.getName());
-        println(";");
-    }
-
-    private String getCorrespondingFieldName(Attribute attribute) {
-        return "$" + attribute.getName();
-    }
-
-    protected String getExecuteMethodReturnType() {
-        return new BoxerFunctor().execute(getDelegateMethodReturnType());
-    }
-    
-    protected final void setReceiverInvocationWriter(ReceiverInvocationWriter receiverInvocationWriter) {
-        this.receiverInvocationWriter = receiverInvocationWriter;
-    }
-
-    public final void writeFactoryMethodActualParameters() {
-        getWriter().printSimpleNamesAsActualParameterListWithoutBrackets(getFactoryMethodParameters(), false);
-    }
-
-    public final boolean canHandle(JediMethod method) {
-        return hasCorrectNumberOfParameters(getExecuteMethodParameters(method).size()) && hasCorrectReturnType(method);
-    }
-
-    protected abstract boolean hasCorrectReturnType(JediMethod method);
-
-    private boolean hasCorrectNumberOfParameters(int numberOfParameters) {
-        return numberOfParameters >= 1 && numberOfParameters <= 2;
-    }
-
-    private Class<?> getReturnType() {
-        int n = getExecuteMethodParameters().size();
-        try {
-            return n == 1 ? getOneParameterClosureClass() : Class.forName(getOneParameterClosureClass().getName() + n);
-        } catch (ClassNotFoundException e) {
-            throw new FactoryWriterException("No appropriate closure for method with " + n + " pararmeters", getMethod());
-        }
-    }
-    
-    protected abstract Class<?> getOneParameterClosureClass();
-
-    protected void writeClosureTypes() {
-        getWriter().printBoxedCommaSeparatedList(getExecuteMethodParameters());
-    }
-    
-    private void println(String s) {
-        getWriter().println(s);
-    }
-    
-    private void print(String s) {
-        getWriter().print(s);
+    public final void writeLocalClass(final String name) {
+        getWriter().print("class " + name + " implements java.io.Serializable, ");
+        writeClosureDeclaration();
+        getWriter().println(" {");
+        writeClosureFields();
+        writeExecuteMethod();
+        writeEqualsMethod();
+        writeHashCodeMethod();
+        getWriter().println("}");
     }
 }

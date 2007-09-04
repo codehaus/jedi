@@ -1,0 +1,9 @@
+Version Change
+2.1     Add SithMethods to wrap a bunch of Sith annotations because you can only use an annotation once on a particular element
+		When generating Sith factories, if the package of the target class begins with 'java.', replace that prefix with 'sith.'
+		Making Assert constructor protected, so it can be extended
+		Added FunctionalPrimitives.pop()
+		Added FunctionalPrimitives.tabulate()
+		Added FunctionalPrimitives.takeMiddle()
+		
+		

@@ -1,5 +1,6 @@
 package jedi.functional;
 
+import static jedi.functional.FunctionalPrimitives.join;
 import static jedi.functional.FunctionalPrimitives.pop;
 import static jedi.functional.Coercions.*;
 import static jedi.functional.FunctionalPrimitives.*;
@@ -153,6 +154,7 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     public void testJoin() {
         assertEquals("a,b,c", join(list("a", "b", "c"), ","));
         assertEquals("1-2-3", join(list(1, 2, 3), "-"));
+        assertEquals("123", join(list(1, 2, 3)));
     }
 
     public void testListTabulate() throws Exception {

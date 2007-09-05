@@ -234,11 +234,23 @@ public class FunctionalPrimitives {
         return fold(initialValue, collection, functor2);
     }
 
+    /**
+     * Join, with  default delimiter (empty string)
+     *
+     * @see #join(Object[], String)
+     */
+    public static String join(final Collection< ? > items) {
+        return join(items, "");
+    }
+
     public static String join(final Collection< ? > items, final String delimiter) {
         assertNotNull(items, "items");
         return join(items.toArray(), delimiter);
     }
 
+    /**
+     * Returns a string created by converting each element of an array to a string, separated by delimiter.  Emulates Array.join in Ruby.
+     */
     public static String join(final Object[] items, final String delimiter) {
         assertNotNull(items, "items");
         assertNotNull(delimiter, "delimiter");
@@ -495,7 +507,7 @@ public class FunctionalPrimitives {
 
     /**
      * Removes the last item (in iteration order) from a collection. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
-     * thrown.
+     * thrown.  Emulates Array.pop in Ruby.
      *
      * @return the last item in the collection
      * @throws jedi.assertion.AssertionError

@@ -289,7 +289,6 @@ public class FunctionalPrimitives {
      * @param lists
      * @return the shortest list
      */
-    @SuppressWarnings("unchecked")
     public static <U, T extends Collection< ? extends U>> T longest(final Collection<T> lists) {
         assertNotNull(lists, "lists");
         assertGreaterThanOrEqualTo(1, lists.size(), "lists should have at least one item");
@@ -397,7 +396,6 @@ public class FunctionalPrimitives {
      * @param collections
      * @return the shortest list
      */
-    @SuppressWarnings("unchecked")
     public static <U, T extends Collection< ? extends U>> T shortest(final Collection<T> collections) {
         assertNotNull(collections, "lists");
         assertGreaterThanOrEqualTo(1, collections.size(), "lists should have at least one item");

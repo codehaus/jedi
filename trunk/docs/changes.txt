@@ -5,5 +5,9 @@ Version Change
 		Added FunctionalPrimitives.pop()
 		Added FunctionalPrimitives.tabulate()
 		Added FunctionalPrimitives.takeMiddle()
+
+2.2     Added license.txt (MIT)
+        Removal of unnecessary suppress warnings on FunctionalPrimitives
+        FunctionalPrimitives.join now supports a default delimiter (empty string) and more closes matches Ruby's Array.join behaviour
 		
 		

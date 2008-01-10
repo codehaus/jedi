@@ -4,7 +4,13 @@ import static jedi.assertion.Assert.*;
 import static jedi.functional.Coercions.*;
 import static jedi.functional.FirstOrderLogic.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * I provide operations of the kind found in Functional Programming languages. This allows you to remove a great deal of clutter from production code. Ideally, you will never need
@@ -30,7 +36,7 @@ public class FunctionalPrimitives {
     /**
      * Append all of the elements in all of the given <code>collections</code> into one list. All of the elements of the first item in <code>collections</code> are appended
      * first, then the items in the second collection, etc.
-     *
+     * 
      * @see #append(Collection[])
      */
     public static <T> List<T> append(final Collection< ? extends Collection< ? extends T>> collections) {
@@ -45,7 +51,7 @@ public class FunctionalPrimitives {
     /**
      * Append all of the elements in all of the given <code>collections</code> into one list. All of the elements of the first item in <code>collections</code> are appended
      * first, then the items in the second collection, etc. Equivalent to <code>append(list(collections))</code>
-     *
+     * 
      * @see #append(Collection)
      */
     public static <T> List<T> append(final Collection< ? extends T>... collections) {
@@ -54,7 +60,7 @@ public class FunctionalPrimitives {
 
     /**
      * Apply <code>functor</code> to each element of <code>items</code> and return the list of results.
-     *
+     * 
      * @see #collect(Object[],Functor)
      */
     public static <T, R> List<R> collect(final Collection<T> items, final Functor< ? super T, R> functor) {
@@ -75,7 +81,7 @@ public class FunctionalPrimitives {
     /**
      * Apply <code>functor</code> to each element of <code>items</code> and return the list of results. The iteration order of <code>items</code> is preserved in the returned
      * list. <p/> Equivalent to <code>collect(functor, asList(items))</code>
-     *
+     * 
      * @see #collect(Collection,Functor)
      */
     public static <T, R> List<R> collect(final T[] items, final Functor< ? super T, R> functor) {
@@ -103,7 +109,7 @@ public class FunctionalPrimitives {
     /**
      * Suppose there is a collection of items (c1, c2, c3), each of which contains a collection <i>i.e.</i> (c1 = (c1_1, c1_2, ...), c2=(c2_1, c2_2, ...). I can produce a
      * collection containing all of the 'leaf' items <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2)
-     *
+     * 
      * @param items
      *            The collection of items containing the collection of leaves
      * @param functor
@@ -124,7 +130,7 @@ public class FunctionalPrimitives {
 
     /**
      * Fold passes each item of a collection with an accumulated value to a functor. <p/> For example, to sum the elements of a list: <p/>
-     *
+     * 
      * <pre>
      *           Functor2&lt;Integer, Integer&gt; summer = new Functor2&lt;Integer, Integer&gt;() {
      *           	public Integer execute(Integer accumulator, Integer value) {
@@ -133,7 +139,7 @@ public class FunctionalPrimitives {
      *           };
      *           fold(10, summer, list(1, 2, 3, 4)) will return 20 (initial value of 10 + the sum of 1 .. 4)
      * </pre>
-     *
+     * 
      * <p/>For a more comprehensive description, see <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#FoldUnfoldMap">SRFI-1</a>
      */
     public static <T, R, I extends R> R fold(final I initialValue, final Collection<T> collection, final Functor2<R, ? super T, R> functor2) {
@@ -181,7 +187,7 @@ public class FunctionalPrimitives {
     /**
      * Get the first item (in iteration order) from a collection. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
      * thrown.
-     *
+     * 
      * @return the first item in the collection
      * @throws jedi.assertion.AssertionError
      *             if the collection contains less or more than one item
@@ -197,7 +203,7 @@ public class FunctionalPrimitives {
 
     /**
      * Get the first item (in iteration order) from a collection or <code>defaultValue</code> (which may be null) if the collection is empty.
-     *
+     * 
      * @return the first item in the collection or <code>defaultValue</code> if the collection is empty
      * @see #only(Collection)
      * @see #head(Collection)
@@ -215,7 +221,7 @@ public class FunctionalPrimitives {
 
     /**
      * Get the first item (in iteration order) from a collection or <code>null</code> if the collection is empty.
-     *
+     * 
      * @return the first item in the collection or null if the collection is empty
      * @see #only(Collection)
      * @see #head(Collection)
@@ -227,7 +233,7 @@ public class FunctionalPrimitives {
 
     /**
      * An alias for fold.
-     *
+     * 
      * @see #fold(Object, java.util.Collection, Functor2)
      */
     public static <T, R, I extends R> R inject(final I initialValue, final Collection<T> collection, final Functor2<R, ? super T, R> functor2) {
@@ -235,8 +241,8 @@ public class FunctionalPrimitives {
     }
 
     /**
-     * Join, with  default delimiter (empty string)
-     *
+     * Join, with default delimiter (empty string)
+     * 
      * @see #join(Object[], String)
      */
     public static String join(final Collection< ? > items) {
@@ -249,7 +255,7 @@ public class FunctionalPrimitives {
     }
 
     /**
-     * Returns a string created by converting each element of an array to a string, separated by delimiter.  Emulates Array.join in Ruby.
+     * Returns a string created by converting each element of an array to a string, separated by delimiter. Emulates Array.join in Ruby.
      */
     public static String join(final Object[] items, final String delimiter) {
         assertNotNull(items, "items");
@@ -266,9 +272,16 @@ public class FunctionalPrimitives {
     }
 
     /**
+     * Get the last item (in iteration order) from a collection.
+     */
+    public static <T> T last(final Collection<T> items) {
+        return head(takeRight(1, items));
+    }
+
+    /**
      * Returns an n-element list. Element i of the list, where 0 <= i < n, is produced by the functor. For a more comprehensive description, see <a
      * href="http://srfi.schemers.org/srfi-1/srfi-1.html#list-tabulate">SRFI-1</a>
-     *
+     * 
      * @param n
      *            the length of the list
      * @param functor
@@ -285,7 +298,7 @@ public class FunctionalPrimitives {
 
     /**
      * Find the longest list in a list of lists
-     *
+     * 
      * @param lists
      * @return the shortest list
      */
@@ -310,7 +323,7 @@ public class FunctionalPrimitives {
 
     /**
      * Return the one and only item in the given collection.
-     *
+     * 
      * @return the item in the collection
      * @throws jedi.assertion.AssertionError
      *             if the collection contains less or more than one item
@@ -321,6 +334,23 @@ public class FunctionalPrimitives {
         assertNotNull(items, "items");
         assertEqual(1, items.size(), "only one item");
         return head(items);
+    }
+
+    /**
+     * Removes the last item (in iteration order) from a collection. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will
+     * be thrown. Emulates Array.pop in Ruby.
+     * 
+     * @return the last item in the collection
+     * @throws jedi.assertion.AssertionError
+     *             if the collection contains less or more than one item
+     * @see #only(Collection)
+     * @see #headOrNullIfEmpty(Collection)
+     * @see #headOrDefaultIfEmpty(Collection,Object)
+     */
+
+    public static <T> T pop(final List<T> items) {
+        assertNotNullOrEmpty(items, "items");
+        return items.remove(items.size() - 1);
     }
 
     /**
@@ -340,7 +370,7 @@ public class FunctionalPrimitives {
 
     /**
      * Filter a collection of <code>items</code>, returning only those that do not match a given <code>filter</code>, this is the inverse of select.
-     *
+     * 
      * @see #select(java.util.Collection, Filter)
      */
     public static <T> List<T> reject(final Collection<T> items, final Filter< ? super T> filter) {
@@ -359,7 +389,7 @@ public class FunctionalPrimitives {
 
     /**
      * Filter a collection of <code>items</code>, returning only those that match a given <code>filter</code>, this is the inverse of reject.
-     *
+     * 
      * @see #reject(java.util.Collection, Filter)
      */
     public static <T> List<T> select(final Collection<T> items, final Filter< ? super T> filter) {
@@ -392,7 +422,7 @@ public class FunctionalPrimitives {
 
     /**
      * Find the shortest list in a list of lists
-     *
+     * 
      * @param collections
      * @return the shortest list
      */
@@ -423,9 +453,24 @@ public class FunctionalPrimitives {
     }
 
     /**
+     * @param <T>
+     * @param line
+     * @param length
+     * @return a list of lists by splitting the given list into lists of length <code>length</code>.
+     */
+    public static <T> List<List<T>> tabulate(final List<T> line, final int length) {
+        assertTrue(line.size() % length == 0, "list length is a multiple of required length", line, length);
+        final List<List<T>> result = new ArrayList<List<T>>();
+        for (int i = 0; i < line.size(); i += length) {
+            result.add(takeMiddle(i, length, line));
+        }
+        return result;
+    }
+
+    /**
      * Get all item's (in iteration order) from a collection except the first. The collection must contain at least one item or an
      * {@link jedi.assertion.AssertionError AssertionError} will be thrown.
-     *
+     * 
      * @return all items except the first
      * @throws jedi.assertion.AssertionError
      *             if the collection contains less or more than one item
@@ -450,6 +495,16 @@ public class FunctionalPrimitives {
     }
 
     /**
+     * Get n middle elements of a list.
+     */
+    public static <T> List<T> takeMiddle(final int start, final int n, final Collection<T> list) {
+        assertNotNull(list, "list");
+        assertLessThanOrEqualTo(list.size(), start + n, "from + n <= list size");
+
+        return take(n, drop(start, list));
+    }
+
+    /**
      * Get the last n elements of list. See <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#take-right">SRFI-1</a>
      */
     public static <T> List<T> takeRight(final int n, final Collection<T> list) {
@@ -460,21 +515,11 @@ public class FunctionalPrimitives {
     }
 
     /**
-     * Get n middle elements of a list.
-     */
-    public static <T> List<T> takeMiddle(final int start, final int n, final Collection<T> list) {
-    	assertNotNull(list, "list");
-    	assertLessThanOrEqualTo(list.size(), start + n, "from + n <= list size");
-
-    	return take(n, drop(start, list));
-    }
-
-    /**
      * Zip interleaves a list of lists. If zip is passed n lists, it returns a list as long as the shortest of these lists, each element of which is an n-element list comprised of
      * the corresponding elements from the parameter lists.
-     *
+     * 
      * <p/>See <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#zip">SRFI-1</a>
-     *
+     * 
      * @param lists
      * @return zipped lists
      */
@@ -486,38 +531,6 @@ public class FunctionalPrimitives {
             result.add(slice(i, lists));
         }
         return result;
-    }
-
-    /**
-     * @param <T>
-     * @param line
-     * @param length
-     * @return a list of lists by splitting the given list into lists of length <code>length</code>.
-     */
-    public static <T> List<List<T>> tabulate(final List<T> line, int length) {
-    	assertTrue(line.size() % length == 0, "list length is a multiple of required length", line, length);
-    	List<List<T>> result = new ArrayList<List<T>>();
-    	for (int i = 0; i < line.size(); i+=length) {
-    		result.add(takeMiddle(i,length, line));
-    	}
-    	return result;
-    }
-
-    /**
-     * Removes the last item (in iteration order) from a collection. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
-     * thrown.  Emulates Array.pop in Ruby.
-     *
-     * @return the last item in the collection
-     * @throws jedi.assertion.AssertionError
-     *             if the collection contains less or more than one item
-     * @see #only(Collection)
-     * @see #headOrNullIfEmpty(Collection)
-     * @see #headOrDefaultIfEmpty(Collection,Object)
-     */
-
-    public static <T> T pop(List<T> items) {
-        assertNotNullOrEmpty(items, "items");
-        return items.remove(items.size() - 1);
     }
 
     protected FunctionalPrimitives() {

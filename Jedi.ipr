@@ -4,7 +4,7 @@
     <defaultAnt bundledAnt="true" />
     <buildFile url="file://$PROJECT_DIR$/build.xml">
       <additionalClassPath>
-        <entry path="file://C:/dev/projects/argus/lib/test/junit-4.4.jar" />
+        <entry path="file://$PROJECT_DIR$/lib/junit-4.4.jar" />
       </additionalClassPath>
       <antReference projectDefault="true" />
       <customJdkName value="" />
@@ -210,9 +210,7 @@
           <option name="m_reportEmptyBlocks" value="false" />
         </inspection_tool>
         <inspection_tool class="StringEquality" level="WARNING" enabled="false" />
-        <inspection_tool class="SuspiciousMethodCalls" level="WARNING" enabled="false">
-          <option name="REPORT_CONVERTIBLE_METHOD_CALLS" value="true" />
-        </inspection_tool>
+        <inspection_tool class="SuspiciousMethodCalls" level="WARNING" enabled="false" />
         <inspection_tool class="FieldCanBeLocal" level="WARNING" enabled="false" />
         <inspection_tool class="FinalPrivateMethod" level="WARNING" enabled="false" />
         <inspection_tool class="FinalStaticMethod" level="WARNING" enabled="false" />
@@ -486,7 +484,7 @@
         <root url="jar://$PROJECT_DIR$/lib/jmock-cglib-20050628.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/jmock-20050628.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/cglib-nodep-2.1_2.jar!/" />
-        <root url="jar://C:/dev/projects/argus/lib/test/junit-4.4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/junit-4.4.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

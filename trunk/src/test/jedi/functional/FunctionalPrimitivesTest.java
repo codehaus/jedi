@@ -8,15 +8,13 @@ import org.jmock.Mock;
 import org.jmock.util.Dummy;
 
 import java.util.*;
+@SuppressWarnings("unchecked")
 public class FunctionalPrimitivesTest extends ClosureTestCase {
 
-
-    @SuppressWarnings("unchecked")
     public void testAppend() {
         assertEquals(list(1.0, 2, 2, "a"), append(list(1.0, 2), list(2, "a")));
     }
 
-    @SuppressWarnings("unchecked")
     public void testCollectReturnsAListOfItemsMappedByTheGivenFunctor() {
         final List<Object> in = list(new Object(), new Object());
         final List<Object> expectedOut = list(new Object(), new Object());
@@ -24,7 +22,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals(expectedOut, collect(in, setUpFunctorExpectations(in, expectedOut)));
     }
 
-    @SuppressWarnings("unchecked")
     public void testCollectReturnsAnEmptyListWhenTheGivenCollectionIsEmpty() {
         final List list = collect(list(), functor);
         assertTrue(list.isEmpty());
@@ -40,14 +37,12 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals(list(1, 2, 3), result);
     }
 
-    @SuppressWarnings("unchecked")
     public void testFlattenReturnsAggregatedList() {
         final List inputValues = list(1, 2);
         setUpFunctorExpectations(inputValues, list(list("A", "B"), list("C", "D")));
         assertEquals(list("A", "B", "C", "D"), flatten(inputValues, functor));
     }
 
-    @SuppressWarnings("unchecked")
     public void testFlattenReturnsAnEmptyListWhenTheGivenCollectionIsEmpty() {
         assertTrue(flatten(list(), functor).isEmpty());
     }
@@ -72,7 +67,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals(list(4, 3, 2, 1), fold(new ArrayList<Integer>(), list(1, 2, 3, 4), reverser));
     }
 
-    @SuppressWarnings("unchecked")
     public void testForEachAppliesCommandToEachItemInGivenCollection() {
         final List in = list(new Object(), new Object());
 
@@ -83,7 +77,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         forEach(in, (Command) mockCommand.proxy());
     }
 
-    @SuppressWarnings("unchecked")
     public void testGroupPlacesValuesWithEqualKeysIntoTheSameGroup() {
         final Object key = new Object();
 
@@ -97,7 +90,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals("values", list(1, 2, 3), head(groups.values()));
     }
 
-    @SuppressWarnings("unchecked")
     public void testGroupPlacesValuesWithUnequalKeysIntoDifferentGroups() {
         setUpFunctorExpectations(list(1, 2, 3), list("a", "a", "b"));
 
@@ -108,22 +100,16 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals("b values", list(3), groups.get("b"));
     }
 
-    @SuppressWarnings("unchecked")
     public void testGroupWithEmptyCollectionReturnsAnEmptyList() {
         assertTrue(group(Coercions.set(), (Functor) Dummy.newDummy(Functor.class)).isEmpty());
     }
 
-    public void testHeadOrDefaultIfEmptyReturnsDefaultIfTheCollectionIsEmpty() {
-        assertEquals(FOO, headOrDefaultIfEmpty(list(), FOO));
-    }
-
-    @SuppressWarnings("unchecked")
     public void testHeadOrDefaultIfEmptyWhenEmpty() {
-        assertEquals("default", headOrDefaultIfEmpty(Collections.EMPTY_LIST, "default"));
+        assertEquals(FOO, headOrDefaultIfEmpty(Collections.EMPTY_LIST, FOO));
     }
 
     public void testHeadOrDefaultIfEmptyWhenNotEmpty() {
-        assertEquals("foo", headOrDefaultIfEmpty(list("foo"), "default"));
+        assertEquals(FOO, headOrDefaultIfEmpty(list(FOO), BAR));
     }
 
     public void testHeadOrDefaultIfEmptyWithDifferentTypes() {
@@ -131,24 +117,45 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertSame(DOUBLE_TWO, v);
     }
 
-    public void testHeadOrDefaultReturnsHeadIfTheCollectionIsNotEmpty() {
-        assertSame(FOO, headOrDefaultIfEmpty(list(FOO), BAR));
-    }
-
     public void testHeadOrNullIfEmptyReturnsNullIfTheCollectionIsEmpty() {
         assertNull(headOrNullIfEmpty(list()));
     }
 
-    @SuppressWarnings("unchecked")
     public void testHeadReturnsOneOfTheItemsInANonListCollection() {
         final Set in = Coercions.set(FOO, BAR, INTEGER_ONE, DOUBLE_TWO);
         assertTrue(in.contains(head(in)));
     }
 
-    @SuppressWarnings("unchecked")
     public void testHeadReturnsTheFirstItemOfTheGivenList() {
         final List in = list(FOO, BAR, INTEGER_ONE, DOUBLE_TWO);
         assertSame(in.get(0), head(in));
+    }
+
+    public void testLastOrDefaultIfEmptyWhenEmpty() {
+        assertEquals(FOO, lastOrDefaultIfEmpty(Collections.EMPTY_LIST, FOO));
+    }
+
+    public void testLastOrDefaultIfEmptyWhenNotEmpty() {
+        assertEquals(FOO, lastOrDefaultIfEmpty(list(FOO), BAR));
+    }
+
+    public void testLastOrDefaultIfEmptyWithDifferentTypes() {
+        final Number v = lastOrDefaultIfEmpty(list(DOUBLE_TWO), INTEGER_ONE);
+        assertSame(DOUBLE_TWO, v);
+    }
+
+    public void testLastOrNullIfEmptyReturnsNullIfTheCollectionIsEmpty() {
+        assertNull(lastOrNullIfEmpty(list()));
+    }
+
+    public void testLastReturnsOneOfTheItemsInANonListCollection() {
+        final Set in = Coercions.set(FOO, BAR, INTEGER_ONE, DOUBLE_TWO);
+        assertTrue(in.contains(last(in)));
+    }
+
+    public void testLastReturnsTheLastItemOfTheGivenList() {
+        final List in = list(FOO, BAR, INTEGER_ONE, DOUBLE_TWO);
+        assertSame(in.get(in.size() - 1), last(in));
     }
 
     public void testJoin() {
@@ -169,21 +176,18 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals(expected, result);
     }
 
-    @SuppressWarnings("unchecked")
     public void testListWithDifferentTypes() {
         final List< ? extends Number> list = list(INTEGER_ONE, DOUBLE_TWO);
         assertSame(list.get(0), INTEGER_ONE);
         assertSame(list.get(1), DOUBLE_TWO);
     }
 
-    @SuppressWarnings("unchecked")
     public void testLongest() throws Exception {
         final List<Boolean> longest = list(true, false, true, false);
         final List list = list(list("one", "two", "three"), list(1, 2), longest);
         assertEquals(longest, longest(list));
     }
 
-    @SuppressWarnings("unchecked")
     public void testOnlyReturnsTheHeadOfASingleElementCollection() {
         final List<Object> list = list(new Object());
         assertSame(head(list), only(list));
@@ -207,13 +211,11 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void testRejectReturnsAnEmptyListWhenTheGivenCollectionIsEmpty() {
         final List rejected = reject(list(), (Filter) mock(Filter.class).proxy());
         assertTrue(rejected.isEmpty());
     }
 
-    @SuppressWarnings("unchecked")
     public void testRejectReturnsItemsSelectedByTheGivenFilter() {
         final List in = list(new Object(), new Object());
         final List out = list(in.get(0));
@@ -232,13 +234,11 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertNotSame(result, toReverse);
     }
 
-    @SuppressWarnings("unchecked")
     public void testSelectReturnsAnEmptyListWhenTheGivenCollectionIsEmpty() {
         final List selected = select(list(), (Filter) mock(Filter.class).proxy());
         assertTrue(selected.isEmpty());
     }
 
-    @SuppressWarnings("unchecked")
     public void testSelectReturnsItemsSelectedByTheGivenFilter() {
         final List in = list(new Object(), new Object());
         final List out = list(in.get(0));
@@ -250,7 +250,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals(out, select(in, (Filter) mockFilter.proxy()));
     }
 
-    @SuppressWarnings("unchecked")
     public void testSequenceExecutesCommandsInOrder() throws Exception {
         final Mock first = mock(Command.class);
         final Mock second = mock(Command.class);
@@ -261,21 +260,18 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         sequence.execute(null);
     }
 
-    @SuppressWarnings("unchecked")
     public void testShortestWithDifferentCollectedTypes() {
         final List<Integer> first = list(1, 2, 3);
         final Collection< ? extends Number> result = shortest(list(first, list(1, 2), list(1.0, 2, 3, 4)));
         assertEquals(list(1, 2), result);
     }
 
-    @SuppressWarnings("unchecked")
     public void testShortestWithDifferentCollectionAndCollectedTypes() {
         final List<Integer> shortest = list(1, 2);
         final Collection< ? extends Number> result = shortest(list(Coercions.set(1, 2, 3), shortest, list(1.0, 2, 3, 4)));
         assertEquals(shortest, result);
     }
 
-    @SuppressWarnings("unchecked")
     public void testShortestWithDifferentCollectionTypes() {
         final List<Integer> shortest = list(1, 2);
         final List<Collection<Integer>> list = list(list(1, 2, 3), shortest, Coercions.set(1, 2, 3, 4));
@@ -283,7 +279,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals(shortest, result);
     }
 
-    @SuppressWarnings("unchecked")
     public void testShortestWithSameTypeArguments() {
         final List<Integer> shortest = list(1, 2);
         final Collection<List<Integer>> list = list(list(1, 2, 3), shortest, list(1, 2, 3, 4));
@@ -291,7 +286,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals(shortest, result);
     }
 
-    @SuppressWarnings("unchecked")
     public void testSlice() {
         final List list = list(list("one", "two", "three"), list(1, 2, 3), list(true, false, true));
         assertEquals(list("two", 2, false), slice(1, list));
@@ -322,19 +316,16 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     	assertEquals(list(2,3,4), takeMiddle(1, 3, list(1,2,3,4,5)));
     }
 
-    @SuppressWarnings("unchecked")
 	public void testTabulate() throws Exception {
 		List<Integer> line = list(1,1,1,2,2,2);
 		List<List<Integer>> result = list(list(1,1,1), list(2,2,2));
 		assertEquals(result, tabulate(line, 3));
 	}
 
-    @SuppressWarnings("unchecked")
     public void testTabulateWithEmptyList() throws Exception {
     	assertEquals(Collections.EMPTY_LIST, tabulate(Collections.EMPTY_LIST, 3));
     }
 
-    @SuppressWarnings("unchecked")
     public void testTabulateThrowsAssertionErrorIfTheGivenListIsTheWrongLength() throws Exception {
     	try {
     		tabulate(list(1,1,2), 2);
@@ -343,7 +334,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		}
     }
 
-    @SuppressWarnings("unchecked")
     public void testZip() throws Exception {
         final List list = list(list("one", "two", "three"), list(1, 2, 3), list(true, false, true, false));
         final List expected = list(list("one", 1, true), list("two", 2, false), list("three", 3, true));

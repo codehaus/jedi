@@ -348,13 +348,14 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     }
 
 	public void testProduce() {
-		Mock factory = mock(Functor2.class);
-		Collection<Integer> right = asList(boxInts(1,2));
-		Collection<String> left = list("a","b");
-		factory.expects(once()).method("execute").with(eq("a"), eq(1));
-		factory.expects(once()).method("execute").with(eq("a"), eq(2));
-		factory.expects(once()).method("execute").with(eq("b"), eq(1));
-		factory.expects(once()).method("execute").with(eq("b"), eq(2));
-		produce(left, right, (Functor2) factory.proxy());
+		Functor2<Integer, String, String> factory = new Functor2<Integer, String, String>() {
+			public String execute(Integer t, String u) {
+				return t + u;
+			}
+		};
+		Collection<Integer> left = asList(boxInts(1,2));
+		Collection<String> right = list("a","b");
+		List<String> result = produce(left, right, factory);
+		assertEquals(list("1a","1b", "2a", "2b"), result);
 	}
 }

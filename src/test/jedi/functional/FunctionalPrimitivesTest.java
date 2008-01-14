@@ -2,6 +2,7 @@ package jedi.functional;
 
 import static jedi.functional.FunctionalPrimitives.join;
 import static jedi.functional.FunctionalPrimitives.pop;
+import static jedi.functional.Box.boxInts;
 import static jedi.functional.Coercions.*;
 import static jedi.functional.FunctionalPrimitives.*;
 import org.jmock.Mock;
@@ -345,4 +346,15 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals("baz", pop(list));
         assertEquals(list("foo", "bar"), list);
     }
+
+	public void testProduce() {
+		Mock factory = mock(Functor2.class);
+		Collection<Integer> right = asList(boxInts(1,2));
+		Collection<String> left = list("a","b");
+		factory.expects(once()).method("execute").with(eq("a"), eq(1));
+		factory.expects(once()).method("execute").with(eq("a"), eq(2));
+		factory.expects(once()).method("execute").with(eq("b"), eq(1));
+		factory.expects(once()).method("execute").with(eq("b"), eq(2));
+		produce(left, right, (Functor2) factory.proxy());
+	}
 }

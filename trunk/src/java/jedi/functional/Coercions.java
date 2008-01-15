@@ -23,7 +23,7 @@ public class Coercions {
      * Create an array from the given parameter list
      */
     public static <T> T[] array(final T... items) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
         return items;
     }
 
@@ -32,7 +32,7 @@ public class Coercions {
      */
     @SuppressWarnings("unchecked")
     public static <T> T[] asArray(final Collection<T> items) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
         return items.toArray((T[]) Array.newInstance(FunctionalPrimitives.head(FunctionalPrimitives.select(items, new NotNullFilter<T>())).getClass(), items.size()));
     }
 
@@ -42,8 +42,8 @@ public class Coercions {
      * <code>filter.execute(functor.execute(t))</code>.
      */
     public static <T, R> Filter<T> asFilter(final Functor<T, R> functor, final Filter< ? super R> filter) {
-        assertNotNull(functor, "functor");
-        assertNotNull(filter, "filter");
+        assertNotNull(functor, "functor must not be null");
+        assertNotNull(filter, "filter must not be null");
 
         return new Filter<T>() {
             public Boolean execute(final T t) {
@@ -58,7 +58,7 @@ public class Coercions {
      * returning <code>null</code>.
      */
     public static <T, R> Functor<T, R> asFunctor(final Map<T, R> map, final boolean allowUncontainedKeys) {
-        assertNotNull(map, "map");
+        assertNotNull(map, "map must not be null");
 
         return new Functor<T, R>() {
             public R execute(final T key) {
@@ -72,7 +72,7 @@ public class Coercions {
      * Copy the given collection into a new list
      */
     public static <T> List<T> asList(final Collection<T> items) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
         return new ArrayList<T>(items);
     }
 
@@ -88,9 +88,9 @@ public class Coercions {
      * Create a Map from the given <code>keys</code> and the given <code>values</code>.
      */
     public static <K, V> Map<K, V> asMap(final Collection<K> keys, final Collection<V> values) {
-        assertNotNull(keys, "keys");
-        assertNotNull(values, "values");
-        assertEqual(keys.size(), values.size(), "keys.size == values.size");
+        assertNotNull(keys, "keys must not be null");
+        assertNotNull(values, "values must not be null");
+        assertEqual(keys.size(), values.size(), "keys.size should be the same as values.size but is not");
 
         final Map<K, V> map = new HashMap<K, V>();
 
@@ -106,8 +106,8 @@ public class Coercions {
      * Create a map whose values are the given <code>items</code> each of which is keyed on the result of applying the given <code>keyFunctor</code> to the item.
      */
     public static <K, T> Map<K, T> asMap(final Collection<T> items, final Functor< ? super T, K> keyFunctor) {
-        assertNotNull(items, "items");
-        assertNotNull(keyFunctor, "keyFunctor");
+        assertNotNull(items, "items must not be null");
+        assertNotNull(keyFunctor, "keyFunctor must not be null");
 
         final Map<K, T> map = new HashMap<K, T>();
 
@@ -115,7 +115,7 @@ public class Coercions {
             map.put(keyFunctor.execute(item), item);
         }
 
-        assertEqual(items.size(), map.size(), "same size");
+        assertEqual(items.size(), map.size(), "items and map should be the same size but are not");
 
         return map;
     }
@@ -124,7 +124,7 @@ public class Coercions {
      * Copy the given collection into a new set
      */
     public static <T> Set<T> asSet(final Collection<T> items) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
         return new HashSet<T>(items);
     }
 
@@ -139,7 +139,7 @@ public class Coercions {
      * Produce a collection with a different instantiated generic type from a given collection.
      */
     public static <T, R> List<R> cast(final Class<R> returnType, final Collection<T> items) {
-        assertNotNull(returnType, "returnType");
+        assertNotNull(returnType, "returnType must not be null");
 
         return FunctionalPrimitives.collect(items, new Functor<T, R>() {
             @SuppressWarnings("unchecked")

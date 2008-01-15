@@ -18,8 +18,8 @@ public class FirstOrderLogic {
      * the <code>items</code> in a given collection. <code>false</code> otherwise.
      */
     public static <T> boolean exists(Collection<T> items, Filter<? super T> predicate) {
-        assertNotNull(predicate, "predicate");
-        assertNotNull(items, "items");
+    	assertNotNull(items, "items must not be null");
+        assertNotNull(predicate, "predicate must not be null");
 
         for (T item : items) {
             if (predicate.execute(item)) {

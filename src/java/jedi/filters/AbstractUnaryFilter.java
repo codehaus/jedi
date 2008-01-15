@@ -7,7 +7,7 @@ public abstract class AbstractUnaryFilter<T, U> implements Filter<T> {
     private U testValue;
 
     public AbstractUnaryFilter(U testValue) {
-        assertNotNull(testValue, "testValue");
+        assertNotNull(testValue, "testValue must not be null");
         this.testValue = testValue;
     }
 

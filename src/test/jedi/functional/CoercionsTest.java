@@ -38,7 +38,6 @@ public class CoercionsTest extends ClosureTestCase {
         assertSame(BAR, a[1]);
     }
 
-    @SuppressWarnings("unchecked")
     public void testAsArray() {
         final List<String> list = Coercions.list(FOO, BAR);
         final String[] a = Coercions.asArray(list);
@@ -140,14 +139,13 @@ public class CoercionsTest extends ClosureTestCase {
         assertEquals(item2, list.get(1));
     }
 
-    @SuppressWarnings("unchecked")
     public void testListReturnsAnEmptyListWhenNoItemsAreGiven() {
         final List<Object> list = Coercions.list();
         assertTrue(list.isEmpty());
     }
 
     public void testListReturnsModifiableList() {
-        // this will blow up with unsupported opperation if its not
+        // this will blow up with unsupported operation if its not
         Coercions.list(FOO, BAR).add("baz");
     }
 

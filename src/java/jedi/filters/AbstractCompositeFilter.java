@@ -9,7 +9,7 @@ public abstract class AbstractCompositeFilter<T> implements Filter<T> {
     private final Filter<T>[] components;
 
     public AbstractCompositeFilter(final Filter<T>... components) {
-        assertNotNull(components, "components");
+        assertNotNull(components, "components must not be null");
         this.components = components;
     }
 

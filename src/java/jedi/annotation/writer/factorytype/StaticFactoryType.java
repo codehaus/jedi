@@ -36,7 +36,7 @@ public class StaticFactoryType extends ConcreteFactoryType {
         writer.println("\tprivate static " + interfaceFactoryName + " " + DELEGATE_NAME + " = new " + new InstanceFactoryType().getSimpleTypeName(typeDeclaration) + "();");
         writer.println();
         writer.println("\tpublic static void setDelegate(" + interfaceFactoryName + " newDelegate) {");
-        writer.println("\t\t" + Assert.class.getName() + ".assertNotNull(newDelegate, \"newDelegate\");");
+        writer.println("\t\t" + Assert.class.getName() + ".assertNotNull(newDelegate, \"newDelegate must not be null\");");
         writer.println("\t\t" + DELEGATE_NAME + " = newDelegate;");
         writer.println("\t}");
         writer.println();

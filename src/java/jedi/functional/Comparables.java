@@ -47,7 +47,7 @@ public class Comparables {
      * Find and return the maximum value from a collection of comparables, or a default value if the collection is empty.
      */
     public static <T extends Comparable< ? super T>> T max(final T defaultValue, final Collection<T> items) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
         return items.isEmpty() ? defaultValue : Comparables.max(items);
     }
 
@@ -62,7 +62,7 @@ public class Comparables {
      * Find and return the minimum value from a collection of comparables, or a default value if the collection is empty.
      */
     public static <T extends Comparable< ? super T>> T min(final T defaultValue, final Collection<T> items) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
         return items.isEmpty() ? defaultValue : Comparables.min(items);
     }
 
@@ -70,7 +70,7 @@ public class Comparables {
      * Copy the <code>items</code> into a new list, sort the new list using the natural ordering of the contained items, and return the new list.
      */
     public static <T extends Comparable< ? super T>> List<T> sort(final Collection<T> items) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
 
         final List<T> list = asList(items);
         Collections.sort(list);
@@ -81,8 +81,8 @@ public class Comparables {
      * Copy the <code>items</code> into a new list, sort the new list using the given <code>comparator</code> and return the new list.
      */
     public static <T> List<T> sort(final Collection<T> items, final Comparator< ? super T> comparator) {
-        assertNotNull(items, "items");
-        assertNotNull(comparator, "comparator");
+        assertNotNull(items, "items must not be null");
+        assertNotNull(comparator, "comparator must not be null");
 
         final List<T> list = asList(items);
         Collections.sort(list, comparator);
@@ -94,7 +94,7 @@ public class Comparables {
      * <code>evaluator</code> to each item and return the new list.
      */
     public static <T, C extends Comparable< ? super C>> List<T> sort(final Collection<T> items, final Functor< ? super T, C> evaluator) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
 
         final List<T> list = asList(items);
         return sortInPlace(list, evaluator);
@@ -105,7 +105,7 @@ public class Comparables {
      * easily.
      */
     public static <T extends Comparable< ? super T>> List<T> sortInPlace(final List<T> items) {
-        assertNotNull(items, "items");
+        assertNotNull(items, "items must not be null");
         Collections.sort(items);
         return items;
     }
@@ -114,8 +114,8 @@ public class Comparables {
      * Sort <code>items</code> in place using the given <code>comparator</code>. Note that this function returns the collection allowing functions to be composed easily.
      */
     public static <T> List<T> sortInPlace(final List<T> items, final Comparator< ? super T> comparator) {
-        assertNotNull(items, "items");
-        assertNotNull(comparator, "comparator");
+        assertNotNull(items, "items must not be null");
+        assertNotNull(comparator, "comparator must not be null");
         Collections.sort(items, comparator);
         return items;
     }
@@ -125,8 +125,8 @@ public class Comparables {
      * this function returns the collection allowing functions to be composed easily.
      */
     public static <T, C extends Comparable< ? super C>> List<T> sortInPlace(final List<T> items, final Functor< ? super T, C> evaluator) {
-        assertNotNull(items, "items");
-        assertNotNull(evaluator, "evaluator");
+        assertNotNull(items, "items must not be null");
+        assertNotNull(evaluator, "evaluator must not be null");
         return sortInPlace(items, new Comparator<T>() {
             public int compare(final T t1, final T t2) {
                 return evaluate(t1).compareTo(evaluate(t2));

@@ -53,7 +53,7 @@ public class FactoryWriter {
         }
     }
 
-    private void startFactory() throws IOException {
+    private void startFactory() {
         if (getPackageName().length() > 0) {
             writer.println("package " + getPackageName() + ";");
             writer.println();

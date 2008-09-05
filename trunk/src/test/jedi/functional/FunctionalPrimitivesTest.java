@@ -331,7 +331,7 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     	try {
     		tabulate(list(1,1,2), 2);
 		} catch (jedi.assertion.AssertionError expected) {
-			assertEquals("list length is a multiple of required length: context {[[1, 1, 2]], [2]}", expected.getMessage());
+			assertEquals("line.size must be a multiple of length: context {[[1, 1, 2]], [2]}", expected.getMessage());
 		}
     }
 

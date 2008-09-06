@@ -1,11 +1,16 @@
 package jedi.option;
 
-public final class None extends AbstractOption<Object> {
+import java.util.NoSuchElementException;
+
+public final class None extends AbstractOption<Void> {
 	
 	public static final None NONE = new None();
 	
 	private None() {
-		
+	}
+	
+	public Void get() {
+		throw new NoSuchElementException("None.get");
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,4 +1,4 @@
-<project name="jedi" basedir="." default="compile">
+<project name="jedi stormtrooper example" basedir="." default="compile">
     <property name="lib" location="../.."/>
     
     <property name="1.4_jar_file" location="${lib}/Jedi_1.4.jar"/>

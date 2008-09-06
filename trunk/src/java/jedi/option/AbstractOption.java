@@ -16,10 +16,6 @@ abstract class AbstractOption<T> implements Option<T> {
 		return isEmpty() ? Collections.<T> emptyList() : Arrays.asList(get());
 	}
 
-	public T get() {
-		throw new NoSuchElementException("None.get");
-	}
-
 	public T getOrElse(Generator<T> generator) {
 		return isEmpty() ? generator.execute() : get();
 	}

@@ -103,8 +103,11 @@
     </target>
     
     <target name="examples">
-        <copy todir="${dist}/examples">
+        <copy todir="${dist}/examples" filtering="true">
             <fileset dir="examples" includes="**/*"/>
+        	<filterset>
+        		<filter token="version.number" value="${version.number}"/>
+        	</filterset>
         </copy>
     </target>
 

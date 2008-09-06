@@ -130,4 +130,22 @@ public class JediMethod {
         return method.equals(that.method) && factoryMethodWriter.equals(that.factoryMethodWriter)
             && name.equals(that.name) && cutParameterNames.equals(that.cutParameterNames);
     }
+
+	public String getSimplifiedName() {
+		if (isNamePrefixedWith("get")) {
+			return removeNamePrefix("get");
+		}
+		if (isNamePrefixedWith("is")) {
+			return removeNamePrefix("is");
+		}
+		return name;
+	}
+
+	private String removeNamePrefix(String prefix) {
+		return Character.toString(Character.toLowerCase(name.charAt(prefix.length()))) + name.substring(prefix.length() + 1);
+	}
+
+	private boolean isNamePrefixedWith(String prefix) {
+		return name.startsWith(prefix) && name.length() > prefix.length() && Character.isUpperCase(name.charAt(prefix.length()));
+	}
 }

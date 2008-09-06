@@ -17,6 +17,7 @@ import jedi.functional.FunctionalPrimitives;
 import jedi.functional.Functor;
 import jedi.functional.Functor2;
 
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
@@ -26,8 +27,13 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     private JavaWriter writer;
     private FactoryType factoryType;
     private JediMethod method;
+    private AnnotationProcessorEnvironment environment;
 
     private ReceiverInvocationWriter receiverInvocationWriter = new ReceiverInvocationWriter();
+    
+    public AbstractFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
+		this.environment = environment;
+    }
 
     public final boolean canHandle(final JediMethod method) {
         return hasCorrectNumberOfParameters(getExecuteMethodParameters(method).size()) && hasCorrectReturnType(method);
@@ -101,10 +107,23 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     protected abstract Collection<Attribute> getFactoryMethodBasicParameters();
 
     public final String getFactoryMethodName() {
-        return method.getName() + getFactoryMethodNameSuffix();
+        String start = getStartOfMethodName();
+        return start + getFactoryMethodNameRequiredSuffix() + (isOption("-AjediSuppressSuffixes") ? "" : getFactoryMethodNameReturnTypeSuffix());
     }
 
-    protected String getFactoryMethodNameSuffix() {
+	private String getStartOfMethodName() {
+		return isOption("-AjediSuppressAccessorVerbs") ? method.getSimplifiedName() : method.getName();
+	}
+
+	private boolean isOption(String key) {
+		return environment.getOptions().containsKey(key);
+	}
+
+	protected String getFactoryMethodNameRequiredSuffix() {
+		return "";
+	}
+	
+    protected String getFactoryMethodNameReturnTypeSuffix() {
         return getReturnType().getSimpleName();
     }
 

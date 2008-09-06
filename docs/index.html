@@ -71,10 +71,15 @@
             <p>JDK 1.5 comes with Sun's Annotation Processing Tool, <a href="http://java.sun.com/j2se/1.5.0/docs/guide/apt/index.html"
                     title="Sun's APT tool">APT</a>. <a href="http://ant.apache.org/" title="Ant homepage">Ant</a> version 1.7, in beta when this page
                 was written, comes with an <code>apt</code> task.</p>
+            <p>In JDK 1.6, Sun made annotation processing part of the <code>javac</code> process.</p>
             <p>For those that want to develop with the JDK 1.5 syntax enhancements but who need to deploy to a JDK 1.4 compatible environment can get
                 <code>apt</code> to process annotations, producing additional source code, which can then be compiled with <code>javac</code> using the
                 <code>-target jsr14</code> compiler flag. For an example of this, see the <code>build.xml</code> file in the Empire example, which can be found
                 in the 'examples' directory of the distribution.</p>
+            <p>If you want to suppress the suffix added to method names when creating factory methods, use the
+                <code>-AjediSuppressSuffixes</code> option on the <code>apt</code>/<code>javac</code> command line.</p>
+            <p>If you want to suppress accessor method prefixes ('get' and 'is') when creating factory methods, use the
+                <code>-AjediSuppressAccessorVerbs</code> option on the <code>apt</code>/<code>javac</code> command line.</p>
             
             <div class="sectionHeading"> <a name="features">Features</a>
             </div>

@@ -1,18 +1,20 @@
 package jedi.option;
 
-public final class None<T> extends AbstractOption<T> {
+public final class None extends AbstractOption<Object> {
+	
+	public static final None NONE = new None();
+	
+	private None() {
+		
+	}
 
-	public void match(OptionMatcher<T> matcher) {
+	@SuppressWarnings("unchecked")
+	public void match(OptionMatcher matcher) {
 		matcher.caseNone(this);
 	}
 
 	public boolean isEmpty() {
 		return true;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof None;
 	}
 	
 	@Override

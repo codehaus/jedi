@@ -21,7 +21,7 @@ public class OptionExample {
 		System.out.println("Expect 'foobar': " + x.map(new AddBar()).get());
 
 		x.match(new OptionMatcher<String>() {
-			public void caseNone(None<String> none) {
+			public void caseNone(None none) {
 				System.out.println("oops, shouldn't be here");
 			}
 

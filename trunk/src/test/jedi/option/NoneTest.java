@@ -1,6 +1,8 @@
 package jedi.option;
 
 import static jedi.option.Options.None;
+import static jedi.option.Options.Some;
+import jedi.functional.Command;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
@@ -13,13 +15,23 @@ public class NoneTest extends MockObjectTestCase {
 		Option<Integer> opt = None();
 
 		opt.match(new OptionMatcher<Integer>() {
-			public void caseNone(None<Integer> none) {
+			public void caseNone(None none) {
 			}
 
 			public void caseSome(Integer value) {
 				fail();
 			}
 		});
+	}
+	@SuppressWarnings("unchecked")
+	public void testMatchWithCommands() {
+		Option<String> opt = None();
+
+		Mock someCommand = mock(Command.class);
+		Mock noneCommand = mock(Command.class);
+		noneCommand.expects(once()).method("execute").with(eq(None.NONE));
+		
+		opt.match((Command)someCommand.proxy(), (Command)noneCommand.proxy());
 	}
 	
 	public void testIsEmpty() {

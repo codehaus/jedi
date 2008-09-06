@@ -3,6 +3,7 @@ package jedi.option;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
+import jedi.functional.Command;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
@@ -24,6 +25,8 @@ public interface Option<T> {
 	 * @param matcher
 	 */
 	void match(OptionMatcher<T> matcher);
+	
+	void match(Command<T> someCommand, Command<None> noneCommand);
 
 	/**
 	 * @return <code>true</code> if this Option is a {@link None}

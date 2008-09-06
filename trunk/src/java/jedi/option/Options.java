@@ -9,7 +9,8 @@ public final class Options {
 		return new Some<T>(value);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T> Option<T> None() {
-		return new None<T>();
+		return (Option<T>) None.NONE;
 	}
 }

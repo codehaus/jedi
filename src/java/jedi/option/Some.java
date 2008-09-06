@@ -24,6 +24,10 @@ public final class Some<T> implements Option<T> {
 	public T getOrElse(Generator<T> generator) {
 		return get();
 	}
+	
+	public T getOrElse(final T defaultValue) {
+		return get();
+	}
 
 	public T get() {
 		return value;

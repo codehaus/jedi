@@ -2,6 +2,8 @@ package jedi.annotation.writer.method;
 
 import java.util.List;
 
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
+
 import jedi.annotation.jedi.JediMethod;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.writer.method.receiver.MembershipFilterReceiverInvocationWriter;
@@ -11,7 +13,8 @@ import jedi.functional.Filter;
 public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
     private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
 
-    public MembershipFilterFactoryMethodWriter() {
+    public MembershipFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
+    	super(environment);
         setReceiverInvocationWriter(new MembershipFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
     }
 
@@ -26,8 +29,8 @@ public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMet
     }
 
     @Override
-    protected String getFactoryMethodNameSuffix() {
-        return "Membership" + super.getFactoryMethodNameSuffix();
+    protected String getFactoryMethodNameRequiredSuffix() {
+        return "Membership";
     }
 
     @Override

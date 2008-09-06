@@ -43,9 +43,9 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
         this.environment = environment;
 
         annotationTypeToFactoryMethodWriterMap = new HashMap<AnnotationTypeDeclaration, FactoryMethodWriter>();
-        putAnnotationClassToWriterMapping(commandAnnotationClass, new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(), new ProxyCommandFactoryMethodWriter()));
-        putAnnotationClassToWriterMapping(filterAnnotationClass, new CompositeFactoryMethodWriter(new FilterFactoryMethodWriter(), new EqualsFilterFactoryMethodWriter(), new MembershipFilterFactoryMethodWriter(), new ProxyFilterFactoryMethodWriter()));
-        putAnnotationClassToWriterMapping(functorAnnotationClass, new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(), new ProxyFunctorFactoryMethodWriter()));
+        putAnnotationClassToWriterMapping(commandAnnotationClass, new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(environment), new ProxyCommandFactoryMethodWriter(environment)));
+        putAnnotationClassToWriterMapping(filterAnnotationClass, new CompositeFactoryMethodWriter(new FilterFactoryMethodWriter(environment), new EqualsFilterFactoryMethodWriter(environment), new MembershipFilterFactoryMethodWriter(environment), new ProxyFilterFactoryMethodWriter(environment)));
+        putAnnotationClassToWriterMapping(functorAnnotationClass, new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(environment), new ProxyFunctorFactoryMethodWriter(environment)));
     }
 
     private Set<JediMethod> getInterestingDeclarations() {

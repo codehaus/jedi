@@ -6,10 +6,16 @@ import static jedi.functional.FunctionalPrimitives.*;
 import java.util.Collection;
 import java.util.List;
 
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
+
 import jedi.annotation.jedi.JediMethod;
 import jedi.annotation.jedi.attribute.Attribute;
 
 public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMethodWriter {
+	public AbstractBasicFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
+		super(environment);
+	}
+	
     @SuppressWarnings("unchecked")
     @Override
     protected final List<Attribute> getExecuteMethodParameters(JediMethod method) {

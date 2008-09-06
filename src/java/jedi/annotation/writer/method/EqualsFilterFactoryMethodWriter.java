@@ -2,6 +2,8 @@ package jedi.annotation.writer.method;
 
 import java.util.List;
 
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
+
 import jedi.annotation.jedi.JediMethod;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.writer.method.receiver.EqualsFilterReceiverInvocationWriter;
@@ -11,7 +13,8 @@ import jedi.functional.Filter;
 public class EqualsFilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
     private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
 
-    public EqualsFilterFactoryMethodWriter() {
+    public EqualsFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
+    	super(environment);
         setReceiverInvocationWriter(new EqualsFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
     }
 
@@ -26,8 +29,8 @@ public class EqualsFilterFactoryMethodWriter extends AbstractBasicFactoryMethodW
     }
 
     @Override
-    protected String getFactoryMethodNameSuffix() {
-        return "Equals" + super.getFactoryMethodNameSuffix();
+    protected String getFactoryMethodNameRequiredSuffix() {
+        return "Equals";
     }
 
     @Override

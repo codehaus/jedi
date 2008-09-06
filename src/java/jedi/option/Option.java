@@ -26,6 +26,13 @@ public interface Option<T> {
 	 */
 	void match(OptionMatcher<T> matcher);
 	
+	/**
+	 * A match strategy based on Commands.
+	 * Since annotated methods become commands in Jedi, this approach is a very simple solution to
+	 * dealing with Some and None.
+	 * @param someCommand a command executing against type T
+	 * @param noneCommand a command executing against None
+	 */
 	void match(Command<T> someCommand, Command<None> noneCommand);
 
 	/**

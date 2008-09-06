@@ -19,6 +19,10 @@ public final class None<T> implements Option<T> {
 	public T getOrElse(Generator<T> generator) {
 		return generator.execute();
 	}
+	
+	public T getOrElse(T defaultValue) {
+		return defaultValue;
+	}
 
 	@SuppressWarnings("unchecked")
 	public void match(OptionMatcher matcher) {

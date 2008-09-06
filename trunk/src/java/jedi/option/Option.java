@@ -42,10 +42,18 @@ public interface Option<T> {
 	/**
 	 * If the option is nonempty return its value, otherwise return the result
 	 * of evaluating the generator expression.
-	 * 
+	 * <br/>
+	 * This is useful if there are advantages to computing the default value lazily
 	 * @param generator the default expression.
 	 */
 	T getOrElse(Generator<T> generator);
+	
+	/**
+	 * If the option is nonempty return its value, otherwise return the default.
+	 * 
+	 * @param generator the default expression.
+	 */
+	T getOrElse(T defaultValue);
 
 	/**
 	 * If the option is nonempty, return a function applied to its value,

@@ -15,7 +15,7 @@
     <property name="build.test.dir" value="${build.dir}/classes/test"/>
     <property name="report.dir" location="${build.dir}/report"/>
 
-	<property name="version.number" value="2.4"/>
+	<property name="version.number" value="2.5"/>
 
 	<property name="dist.name" value="jedi_${version.number}"/>
     <property name="dist" location="${build.dir}/${dist.name}"/>

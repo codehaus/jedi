@@ -1,7 +1,6 @@
 package jedi.option;
 
-import java.util.Collection;
-import java.util.NoSuchElementException;
+import java.util.List;
 
 import jedi.functional.Command;
 import jedi.functional.Functor;
@@ -33,23 +32,12 @@ public interface Option<T> {
 	 * @param someCommand a command executing against type T
 	 * @param noneCommand a command executing against None
 	 */
-	void match(Command<T> someCommand, Command<None> noneCommand);
+	void match(Command<T> someCommand, Command<None<T>> noneCommand);
 
 	/**
-	 * @return <code>true</code> if this Option is a {@link None}
+	 * @return an empty list or an immutable list with Some.get
 	 */
-	boolean isEmpty();
-
-	Collection<T> asList();
-
-	/**
-	 * Get the value of this option.
-	 * 
-	 * @requires that the option is nonEmpty.
-	 * @throws NoSuchElementException
-	 *             if the option is empty.
-	 */
-	T get() throws NoSuchElementException;
+	List<T> asList();
 
 	/**
 	 * If the option is nonempty return its value, otherwise return the result

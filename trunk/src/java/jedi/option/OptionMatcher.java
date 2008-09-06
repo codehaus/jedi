@@ -2,5 +2,5 @@ package jedi.option;
 
 public interface OptionMatcher<T> {
 	void caseSome(T value);
-	void caseNone(None none);
+	void caseNone(None<T> none);
 }

@@ -17,7 +17,7 @@ public class SomeTest extends MockObjectTestCase {
 		Option<Integer> opt = Some(new Integer(1));
 		
 		opt.match(new OptionMatcher<Integer>() {
-			public void caseNone(None none) {
+			public void caseNone(None<Integer> none) {
 				fail();
 			}
 
@@ -35,10 +35,6 @@ public class SomeTest extends MockObjectTestCase {
 		someCommand.expects(once()).method("execute").with(eq("x"));
 		
 		opt.match((Command)someCommand.proxy(), (Command)noneCommand.proxy());
-	}
-	
-	public void testIsEmpty() {
-		assertFalse(Some("a").isEmpty());
 	}
 	
 	public void testAsList() {

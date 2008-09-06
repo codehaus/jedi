@@ -11,9 +11,8 @@ public final class Options {
 		return new Some<T>(value);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static <T> Option<T> None() {
-		return (Option<T>) None.NONE;
+		return new None<T>();
 	}
 
 	public static <K, V> Option<V> get(Map<K, V> map, K key) {

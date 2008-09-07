@@ -1,16 +1,13 @@
 body {
-	font-family: Times New Roman, Verdana, serif;
+	font-family: 'Lucida Grande', Times New Roman, Verdana, serif;
 	text-align: justify;
-	font-size: 12pt;
- 	background-image: url("images/marble.gif");
- 	background-attachment: fixed;
+	font-size: 11pt;
 }
 
 div.main {
 	clear: left;
 	margin: 1em 2em 1em 2em;
 	padding: 1em 1em 1em 1em;
-	border: 1px solid #808080;
 	background: #FFFFFF;
 }
 
@@ -81,8 +78,6 @@ div.spaced {
 .caption {
 	font-size: large;
 }
-
-
 
 .title {
 	font-size: large;
@@ -175,8 +170,6 @@ div.contents ul li {
 	list-style: none;
 }
 
-
-
 div.pageTitle {
 	text-align: center;
 	margin-top: 0;
@@ -189,6 +182,10 @@ div.sectionHeading {
 	margin-top: 1em;
 	margin-bottom: 0.5em;
 	font-size: 1.5em;
+	border-top-color: rgb(51, 102, 204);
+	border-top-style: solid;
+	border-top-width: 1px;
+	background-color: rgb(213, 221, 243);
 }
 
 .subSectionHeading {

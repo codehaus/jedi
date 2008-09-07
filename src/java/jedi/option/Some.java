@@ -37,10 +37,6 @@ public final class Some<T> implements Option<T> {
 		matcher.caseSome(value);
 	}
 
-	public boolean isEmpty() {
-		return false;
-	}
-
 	public <R> Option<R> map(Functor<T, R> mappingFunction) {
 		return Some(mappingFunction.execute(get()));
 	}
@@ -63,5 +59,9 @@ public final class Some<T> implements Option<T> {
 	@Override
 	public String toString() {
 		return "Some: " + get();
+	}
+
+	public void forEach(Command<T> command) {
+		command.execute(get());
 	}
 }

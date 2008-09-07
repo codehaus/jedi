@@ -54,4 +54,20 @@ public class SomeTest extends MockObjectTestCase {
 		functor.expects(once()).method("execute").with(eq("string")).will(returnValue(true));
 		assertEquals(Some(true),Some("string").map((Functor<String, Boolean>) functor.proxy()));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void testForEach() {
+		Mock command = mock(Command.class);
+		command.expects(once()).method("execute").with(eq("x"));
+		Some("x").forEach((Command<String>) command.proxy());
+	}
+	
+	public void testEqualsWhenEqual() {
+		assertEquals(Some("a"), Some("a"));
+		assertEquals(Some("a").hashCode(), Some("a").hashCode());
+	}
+
+	public void testEqualsWhenNotEqual() {
+		assertFalse(Some("a").equals("b"));
+	}
 }

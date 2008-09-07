@@ -225,11 +225,19 @@
             The <code>someCommand</code> will be given the actual value contained in the Some instance so it does not
             need to match on an Option. This can be much more concise with a static import:</p>
             <ul class="codeBlock">
-                <li>get(map, "key").match(someCommand, noneCommand);</li>
+                <li><i>get</i>(map, "key").match(someCommand, noneCommand);</li>
+            </ul>
+            <p>Another use is performing some action if a value exists. Normally this requires a null check. In Jedi, with Commands and Option:</p>
+            <ul class="codeBlock">
+                <li>Option[String] foo = ...</li>
+                <li>foo.forEach(commandTakingString);</li>
             </ul>
             <p>To learn more about Optional values, read:</p>
             <ul>
+            	<li><a href="http://www.scala-lang.org/docu/files/api/scala/Option.html">The Scala Option Scaladoc</a></li>
+            	<li><a href=http://blog.danielwellman.com/2008/03/using-scalas-op.html>Using Scala's Option class to help avoid NullPointerExceptions</a></li>
             	<li><a href="http://blog.lostlake.org/index.php?/archives/50-The-Scala-Option-class-and-how-lift-uses-it.html">The Scala Option class and how lift uses it</a></li>
+            	<li><a href="http://blog.tmorris.net/scalaoption-cheat-sheet/">scala.Option Cheat Sheet</a></li>
             </ul>
         </div>
     </body>

@@ -49,9 +49,7 @@ public interface Option<T> {
 	T getOrElse(Generator<T> generator);
 	
 	/**
-	 * If the option is nonempty return its value, otherwise return the default.
-	 * 
-	 * @param generator the default expression.
+	 * If the option is nonempty return its value, otherwise return a default value.
 	 */
 	T getOrElse(T defaultValue);
 

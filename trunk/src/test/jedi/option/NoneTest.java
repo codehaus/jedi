@@ -50,4 +50,20 @@ public class NoneTest extends MockObjectTestCase {
 		functor.expects(never()).method("execute");
 		assertEquals(Options.<Boolean>None(), Options.<String>None().map((Functor<String, Boolean>) functor.proxy()));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void testForEach() {
+		Mock command = mock(Command.class);
+		command.expects(never()).method("execute");
+		Options.None().forEach((Command<Object>) command.proxy());
+	}
+	
+	public void testEqualsWhenEqual() {
+		assertEquals(None(), None());
+		assertEquals(None().hashCode(), None().hashCode());
+	}
+	
+	public void testEqualsWhenNotEqual() {
+		assertFalse(None().equals("s"));
+	}
 }

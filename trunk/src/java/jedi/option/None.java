@@ -52,4 +52,8 @@ public final class None<T> implements Option<T> {
 		return "None";
 	}
 
+	public void forEach(Command<T> command) {
+		// no-op
+	}
+
 }

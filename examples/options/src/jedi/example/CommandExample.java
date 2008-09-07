@@ -7,12 +7,12 @@ import jedi.option.Option;
 public class CommandExample {
 	
 	@JediCommand
-	public void doX() {
+	public void doX(String arg) {
 		
 	}
 
 	@JediCommand
-	public void doY() {
+	public void doY(String arg) {
 		
 	}
 	

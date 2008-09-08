@@ -1,14 +1,57 @@
 package jedi.functional;
 
-import static jedi.functional.FunctionalPrimitives.join;
-import static jedi.functional.FunctionalPrimitives.pop;
+import static java.util.Collections.emptyList;
 import static jedi.functional.Box.boxInts;
-import static jedi.functional.Coercions.*;
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.Coercions.asList;
+import static jedi.functional.Coercions.list;
+import static jedi.functional.FunctionalPrimitives.append;
+import static jedi.functional.FunctionalPrimitives.collect;
+import static jedi.functional.FunctionalPrimitives.drop;
+import static jedi.functional.FunctionalPrimitives.dropRight;
+import static jedi.functional.FunctionalPrimitives.flatten;
+import static jedi.functional.FunctionalPrimitives.fold;
+import static jedi.functional.FunctionalPrimitives.forEach;
+import static jedi.functional.FunctionalPrimitives.group;
+import static jedi.functional.FunctionalPrimitives.head;
+import static jedi.functional.FunctionalPrimitives.headOption;
+import static jedi.functional.FunctionalPrimitives.headOrDefaultIfEmpty;
+import static jedi.functional.FunctionalPrimitives.headOrNullIfEmpty;
+import static jedi.functional.FunctionalPrimitives.join;
+import static jedi.functional.FunctionalPrimitives.last;
+import static jedi.functional.FunctionalPrimitives.lastOption;
+import static jedi.functional.FunctionalPrimitives.lastOrDefaultIfEmpty;
+import static jedi.functional.FunctionalPrimitives.lastOrNullIfEmpty;
+import static jedi.functional.FunctionalPrimitives.listTabulate;
+import static jedi.functional.FunctionalPrimitives.longest;
+import static jedi.functional.FunctionalPrimitives.only;
+import static jedi.functional.FunctionalPrimitives.pop;
+import static jedi.functional.FunctionalPrimitives.popOption;
+import static jedi.functional.FunctionalPrimitives.produce;
+import static jedi.functional.FunctionalPrimitives.reject;
+import static jedi.functional.FunctionalPrimitives.reverse;
+import static jedi.functional.FunctionalPrimitives.select;
+import static jedi.functional.FunctionalPrimitives.sequence;
+import static jedi.functional.FunctionalPrimitives.shortest;
+import static jedi.functional.FunctionalPrimitives.slice;
+import static jedi.functional.FunctionalPrimitives.split;
+import static jedi.functional.FunctionalPrimitives.tabulate;
+import static jedi.functional.FunctionalPrimitives.tail;
+import static jedi.functional.FunctionalPrimitives.take;
+import static jedi.functional.FunctionalPrimitives.takeMiddle;
+import static jedi.functional.FunctionalPrimitives.takeRight;
+import static jedi.functional.FunctionalPrimitives.zip;
+import static jedi.option.Options.None;
+import static jedi.option.Options.Some;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.jmock.Mock;
 import org.jmock.util.Dummy;
-
-import java.util.*;
 @SuppressWarnings("unchecked")
 public class FunctionalPrimitivesTest extends ClosureTestCase {
 
@@ -121,6 +164,14 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     public void testHeadOrNullIfEmptyReturnsNullIfTheCollectionIsEmpty() {
         assertNull(headOrNullIfEmpty(list()));
     }
+    
+	public void testHeadOptionWithEmptyCollection() {
+		assertEquals(None(), headOption(emptyList()));
+	}
+
+	public void testHeadOptionWithNonEmptyCollection() {
+		assertEquals(Some("a"), headOption(list("a", "b", "c")));
+	}
 
     public void testHeadReturnsOneOfTheItemsInANonListCollection() {
         final Set in = Coercions.set(FOO, BAR, INTEGER_ONE, DOUBLE_TWO);
@@ -148,6 +199,14 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     public void testLastOrNullIfEmptyReturnsNullIfTheCollectionIsEmpty() {
         assertNull(lastOrNullIfEmpty(list()));
     }
+    
+	public void testLastOptionWithEmptyList() {
+		assertEquals(None(), lastOption(emptyList()));
+	}
+
+	public void testLastOptionWithNonEmptyList() {
+		assertEquals(Some("c"), lastOption(list("a", "b", "c")));
+	}
 
     public void testLastReturnsOneOfTheItemsInANonListCollection() {
         final Set in = Coercions.set(FOO, BAR, INTEGER_ONE, DOUBLE_TWO);
@@ -346,6 +405,14 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         assertEquals("baz", pop(list));
         assertEquals(list("foo", "bar"), list);
     }
+    
+	public void testPopOptionWithEmptyList() {
+		assertEquals(None(), popOption(emptyList()));
+	}
+
+	public void testPopOptionWithNonEmptyList() {
+		assertEquals(Some("b"), popOption(list("a", "b")));
+	}
 
 	public void testProduce() {
 		Functor2<Integer, String, String> factory = new Functor2<Integer, String, String>() {
@@ -358,4 +425,5 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		List<String> result = produce(left, right, factory);
 		assertEquals(list("1a","1b", "2a", "2b"), result);
 	}
+
 }

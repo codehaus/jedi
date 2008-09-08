@@ -1,7 +1,11 @@
 package jedi.functional;
 
 import static jedi.assertion.Assert.assertNotNull;
+import static jedi.functional.Coercions.asList;
+import static jedi.functional.Coercions.asSet;
+import static jedi.functional.FunctionalPrimitives.head;
 import static jedi.functional.FunctionalPrimitives.select;
+import static jedi.functional.FunctionalPrimitives.tail;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -77,18 +81,50 @@ public class FirstOrderLogic {
      * Calculate the intersection of all of the given collections.
      */
     public static <T> Set<T> intersection(Collection<T>... collections) {
+        return intersection(asList(collections));
+    }
+    
+    /**
+     * Calculate the intersection of all of the given collections.
+     */
+    public static <T> Set<T> intersection(Collection<Collection<T>> collections) {
         assertNotNull(collections, "collections");
 
-        if (collections.length == 0) {
+        if (collections.isEmpty()) {
             return new HashSet<T>();
         }
 
-        Set<T> intersection = Coercions.asSet(collections[0]);
-        for (int i = 1; i < collections.length; i++) {
-            intersection.retainAll(collections[i]);
+        Set<T> intersection = asSet(head(collections));
+        for (Collection<T> collection : tail(collections)) {
+            intersection.retainAll(collection);
         }
 
         return intersection;
+    }
+    
+    /**
+     * Calculate the union of all of the given collections.
+     */
+    public static <T> Set<T> union(Collection<T>... collections) {
+        return union(asList(collections));
+    }
+    
+    /**
+     * Calculate the union of all of the given collections.
+     */
+    public static <T> Set<T> union(Collection<Collection<T>> collections) {
+        assertNotNull(collections, "collections");
+
+        if (collections.isEmpty()) {
+            return new HashSet<T>();
+        }
+
+        Set<T> union = asSet(head(collections));
+        for (Collection<T> collection : tail(collections)) {
+        	union.addAll(collection);
+        }
+
+        return union;
     }
 
 

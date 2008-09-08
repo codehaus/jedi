@@ -2,9 +2,10 @@ package jedi.option;
 
 import static jedi.option.Options.None;
 import jedi.functional.Command;
+import jedi.functional.Command0;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
-import jedi.functional.Generator;
+import jedi.functional.Functor0;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
@@ -28,19 +29,19 @@ public class NoneTest extends MockObjectTestCase {
 		Option<String> opt = None();
 
 		Mock someCommand = mock(Command.class);
-		Mock noneCommand = mock(Command.class);
-		noneCommand.expects(once()).method("execute").with(eq(opt));
+		Mock noneCommand = mock(Command0.class);
+		noneCommand.expects(once()).method("execute");
 		
-		opt.match((Command)someCommand.proxy(), (Command)noneCommand.proxy());
+		opt.match((Command)someCommand.proxy(), (Command0)noneCommand.proxy());
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void testMatchWithFunctors() {
 		Option<String> option = None();
 		Mock someFunctor = mock(Functor.class);
-		Mock noneFunctor = mock(Functor.class);
-		noneFunctor.expects(once()).method("execute").with(same(option)).will(returnValue(new Integer(100)));
-		assertEquals(new Integer(100), option.match((Functor<String, Integer>) someFunctor.proxy(), (Functor<None<String>, Integer>) noneFunctor.proxy()));
+		Mock noneFunctor = mock(Functor0.class);
+		noneFunctor.expects(once()).method("execute").will(returnValue(new Integer(100)));
+		assertEquals(new Integer(100), option.match((Functor<String, Integer>) someFunctor.proxy(), (Functor0<Integer>) noneFunctor.proxy()));
 	}
 	
 	public void testAsList() {
@@ -49,9 +50,9 @@ public class NoneTest extends MockObjectTestCase {
 	
 	@SuppressWarnings("unchecked")
 	public void testGetOrElse() {
-		Mock generator = mock(Generator.class);
+		Mock generator = mock(Functor0.class);
 		generator.expects(once()).method("execute").will(returnValue("x"));
-		assertEquals("x", Options.<String>None().getOrElse((Generator<String>) generator.proxy()));
+		assertEquals("x", Options.<String>None().getOrElse((Functor0<String>) generator.proxy()));
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -4,6 +4,7 @@ import static java.util.Collections.emptyList;
 import static jedi.functional.Box.boxInts;
 import static jedi.functional.Coercions.asList;
 import static jedi.functional.Coercions.list;
+import static jedi.functional.Coercions.set;
 import static jedi.functional.FunctionalPrimitives.append;
 import static jedi.functional.FunctionalPrimitives.collect;
 import static jedi.functional.FunctionalPrimitives.drop;
@@ -138,14 +139,14 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
         setUpFunctorExpectations(list(1, 2, 3), list("a", "a", "b"));
 
         final Map<String, List<Integer>> groups = group(list(1, 2, 3), (Functor<Integer, String>) mockFunctor.proxy());
-        assertEquals("keys", Coercions.set("a", "b"), groups.keySet());
+        assertEquals("keys", set("a", "b"), groups.keySet());
 
         assertEquals("a values", list(1, 2), groups.get("a"));
         assertEquals("b values", list(3), groups.get("b"));
     }
 
     public void testGroupWithEmptyCollectionReturnsAnEmptyList() {
-        assertTrue(group(Coercions.set(), (Functor) Dummy.newDummy(Functor.class)).isEmpty());
+        assertTrue(group(set(), (Functor) Dummy.newDummy(Functor.class)).isEmpty());
     }
 
     public void testHeadOrDefaultIfEmptyWhenEmpty() {
@@ -425,5 +426,4 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		List<String> result = produce(left, right, factory);
 		assertEquals(list("1a","1b", "2a", "2b"), result);
 	}
-
 }

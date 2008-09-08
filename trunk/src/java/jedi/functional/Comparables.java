@@ -70,23 +70,14 @@ public class Comparables {
      * Copy the <code>items</code> into a new list, sort the new list using the natural ordering of the contained items, and return the new list.
      */
     public static <T extends Comparable< ? super T>> List<T> sort(final Collection<T> items) {
-        assertNotNull(items, "items must not be null");
-
-        final List<T> list = asList(items);
-        Collections.sort(list);
-        return list;
+        return sortInPlace(asList(items));
     }
 
     /**
      * Copy the <code>items</code> into a new list, sort the new list using the given <code>comparator</code> and return the new list.
      */
     public static <T> List<T> sort(final Collection<T> items, final Comparator< ? super T> comparator) {
-        assertNotNull(items, "items must not be null");
-        assertNotNull(comparator, "comparator must not be null");
-
-        final List<T> list = asList(items);
-        Collections.sort(list, comparator);
-        return list;
+        return sortInPlace(asList(items), comparator);
     }
 
     /**
@@ -94,10 +85,7 @@ public class Comparables {
      * <code>evaluator</code> to each item and return the new list.
      */
     public static <T, C extends Comparable< ? super C>> List<T> sort(final Collection<T> items, final Functor< ? super T, C> evaluator) {
-        assertNotNull(items, "items must not be null");
-
-        final List<T> list = asList(items);
-        return sortInPlace(list, evaluator);
+        return sortInPlace(asList(items), evaluator);
     }
 
     /**

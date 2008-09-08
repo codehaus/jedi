@@ -7,9 +7,10 @@ import static jedi.option.Options.Some;
 import java.util.List;
 
 import jedi.functional.Command;
+import jedi.functional.Command0;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
-import jedi.functional.Generator;
+import jedi.functional.Functor0;
 
 /**
  * Some represents a value of type <code>T</code> that exists.
@@ -27,7 +28,7 @@ public final class Some<T> implements Option<T> {
 		return singletonList(get());
 	}
 
-	public T getOrElse(Generator<T> generator) {
+	public T getOrElse(Functor0<T> generator) {
 		return get();
 	}
 	
@@ -48,11 +49,11 @@ public final class Some<T> implements Option<T> {
 		matcher.caseSome(value);
 	}
 	
-	public void match(Command<T> someCommand, Command<None<T>> noneCommand) {
+	public void match(Command<T> someCommand, Command0 noneCommand) {
 		someCommand.execute(get());
 	}
 	
-	public <R> R match(Functor<T, R> someFunctor, Functor<None<T>, R> noneFunctor) {
+	public <R> R match(Functor<T, R> someFunctor, Functor0<R> noneFunctor) {
 		return someFunctor.execute(get());
 	}
 

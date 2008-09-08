@@ -1,6 +1,12 @@
 package jedi.functional;
 
-import static jedi.functional.FirstOrderLogic.*;
+import static jedi.functional.Coercions.set;
+import static jedi.functional.FirstOrderLogic.all;
+import static jedi.functional.FirstOrderLogic.exists;
+import static jedi.functional.FirstOrderLogic.intersection;
+import static jedi.functional.FirstOrderLogic.invert;
+import static jedi.functional.FirstOrderLogic.union;
+import static jedi.functional.FirstOrderLogic.zeroOrOne;
 
 import java.util.List;
 
@@ -16,7 +22,7 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testExistsReturnsFalseWithEmptyCollection() {
-		assertFalse(exists(Coercions.set(), predicate));
+		assertFalse(exists(set(), predicate));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -36,7 +42,7 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testAllReturnsTrueWithEmptyCollection() {
-		assertTrue(all(Coercions.set(), predicate));
+		assertTrue(all(set(), predicate));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -48,7 +54,7 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testZeroOrOneReturnsTrueWithEmptyCollection() {
-		assertTrue(zeroOrOne(Coercions.set(), predicate));
+		assertTrue(zeroOrOne(set(), predicate));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -120,17 +126,27 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 
     @SuppressWarnings("unchecked")
     public void testIntersectionReturnsAllElementsIfOnlyOneArgumentIsGiven() {
-        assertEquals(Coercions.set(1, 2, 3), intersection(Coercions.set(1, 2, 3)));
+        assertEquals(set(1, 2, 3), intersection(set(1, 2, 3)));
     }
 
     @SuppressWarnings("unchecked")
     public void testIntersectionReturnsIntersectionIfSeveralArgumentsAreGiven() {
-        assertEquals(Coercions.set(1, 2), intersection(Coercions.set(1, 2, 3), Coercions.set(1, 2, 4)));
+        assertEquals(set(1, 2), intersection(set(1, 2, 3), set(1, 2, 4)));
     }
 
     @SuppressWarnings("unchecked")
     public void testIntersectionReturnsEmptySetIfIntersectionIsEmpty() {
-        assertEquals(Coercions.set(), intersection(Coercions.set(1, 2), Coercions.set(3, 4, 5)));
+        assertEquals(set(), intersection(set(1, 2), set(3, 4, 5)));
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void testUnionReturnsAllElementsIfOnlyOneArgumentIsGiven() {
+        assertEquals(set(1, 2, 3), union(set(1, 2, 3)));
+    }
+
+    @SuppressWarnings("unchecked")
+	public void testUnionReturnsUnionIfSeveralArgumentsAreGiven() {
+        assertEquals(set(1, 2, 3, 4), union(set(1, 2, 3), set(1, 2, 4)));
     }
     
     private void expectPredicateExecution(Object value, boolean returnValue) {

@@ -3,9 +3,10 @@ package jedi.option;
 import java.util.List;
 
 import jedi.functional.Command;
+import jedi.functional.Command0;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
-import jedi.functional.Generator;
+import jedi.functional.Functor0;
 
 /**
  * An optional value inspired by sensible languages like <a
@@ -40,11 +41,11 @@ public interface Option<T> {
 	 * Some and None.
 	 * 
 	 * @param someCommand
-	 *            a command executing against type T
+	 *            a command that will receive the callback in the event that Some is matched
 	 * @param noneCommand
-	 *            a command executing against None
+	 *            a command that will receive the callback in the event that None is matched
 	 */
-	void match(Command<T> someCommand, Command<None<T>> noneCommand);
+	void match(Command<T> someCommand, Command0 noneCommand);
 	
 	/**
 	 * A match strategy based on Functors.
@@ -53,7 +54,7 @@ public interface Option<T> {
 	 * @param noneFunctor the functor to execute if this Option is a None
 	 * @return the result of executing the functor
 	 */
-	<R> R match(Functor<T, R> someFunctor, Functor<None<T>, R> noneFunctor);
+	<R> R match(Functor<T, R> someFunctor, Functor0<R> noneFunctor);
 
 	/**
 	 * An empty list for <code>None</code> or an immutable list with {@link Some#get}.
@@ -67,7 +68,7 @@ public interface Option<T> {
 	 * @param generator
 	 *            the default expression.
 	 */
-	T getOrElse(Generator<T> generator);
+	T getOrElse(Functor0<T> generator);
 
 	/**
 	 * If the option is <code>Some</code> return its value, otherwise return a default

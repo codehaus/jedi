@@ -24,9 +24,13 @@ public interface Option<T> {
 	 * </pre>
 	 * 
 	 * In Java, such elegance is not possible so this method is actually a
-	 * Visitor implementation.
-	 * 
-	 * @param matcher
+	 * Visitor implementation:
+	 * <pre>
+	 * x.match(new OptionMatcher() {
+	 * &nbsp;&nbsp;public void case(String value) { // excellent we can use the value }
+     * &nbsp;&nbsp;public void case(None[String] none) { // no value, deal with it }
+     * });
+	 * </pre>
 	 */
 	void match(OptionMatcher<T> matcher);
 
@@ -43,15 +47,13 @@ public interface Option<T> {
 	void match(Command<T> someCommand, Command<None<T>> noneCommand);
 
 	/**
-	 * @return an empty list or an immutable list with Some.get
+	 * @return an empty list for <code>None</code> or an immutable list with {@link Some#get}
 	 */
 	List<T> asList();
 
 	/**
-	 * If the option is nonempty return its value, otherwise return the result
-	 * of evaluating the generator expression. <br/>
-	 * This is useful if there are advantages to computing the default value
-	 * lazily
+	 * If the option is <code>Some</code> return its value, otherwise return the result
+	 * of evaluating the generator expression.
 	 * 
 	 * @param generator
 	 *            the default expression.
@@ -59,13 +61,13 @@ public interface Option<T> {
 	T getOrElse(Generator<T> generator);
 
 	/**
-	 * If the option is nonempty return its value, otherwise return a default
+	 * If the option is <code>Some</code> return its value, otherwise return a default
 	 * value.
 	 */
 	T getOrElse(T defaultValue);
 
 	/**
-	 * If the option is nonempty, return a function applied to its value,
+	 * If the option is <code>Some</code>, return a function applied to its value,
 	 * wrapped in a Some i.e. <code>Some(f(this.get))</code>. Otherwise return
 	 * <code>None</code>.
 	 * 

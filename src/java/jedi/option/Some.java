@@ -1,6 +1,7 @@
 package jedi.option;
 
 import static java.util.Collections.singletonList;
+import static jedi.assertion.Assert.assertNotNull;
 import static jedi.option.Options.Some;
 
 import java.util.List;
@@ -10,11 +11,15 @@ import jedi.functional.Filter;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
+/**
+ * Some represents a value of type <code>T</code> that exists.
+ */
 public final class Some<T> implements Option<T> {
 
 	private final T value;
 
 	public Some(T value) {
+		assertNotNull(value, "Some value cannot be null, use None instead");
 		this.value = value;
 	}
 
@@ -30,16 +35,22 @@ public final class Some<T> implements Option<T> {
 		return get();
 	}
 
+	/**
+	 * @return the value, guaranteed to not be null.
+	 */
 	public T get() {
 		return value;
 	}
 
 	public void match(OptionMatcher<T> matcher) {
+		assertNotNull(matcher, "OptionMatcher must not be null");
 		matcher.caseSome(value);
 	}
 
 	public <R> Option<R> map(Functor<T, R> mappingFunction) {
-		return Some(mappingFunction.execute(get()));
+		R result = mappingFunction.execute(get());
+		assertNotNull(result, "The result of the supplied mapping function is null.");
+		return Some(result);
 	}
 
 	public void match(Command<T> someCommand, Command<None<T>> noneCommand) {

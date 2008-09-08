@@ -8,6 +8,9 @@ import jedi.functional.Filter;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
+/**
+ * None represents a non existent value.
+ */
 public final class None<T> implements Option<T> {
 
 	public None() {

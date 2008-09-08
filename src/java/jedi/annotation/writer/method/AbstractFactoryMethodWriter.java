@@ -1,6 +1,9 @@
 package jedi.annotation.writer.method;
 
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.FunctionalPrimitives.append;
+import static jedi.functional.FunctionalPrimitives.collect;
+import static jedi.functional.FunctionalPrimitives.fold;
+import static jedi.functional.FunctionalPrimitives.join;
 
 import java.util.Collection;
 import java.util.List;
@@ -152,7 +155,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     }
 
     private boolean hasCorrectNumberOfParameters(final int numberOfParameters) {
-        return numberOfParameters >= 1 && numberOfParameters <= 2;
+        return numberOfParameters >= 0 && numberOfParameters <= 2;
     }
 
     protected abstract boolean hasCorrectReturnType(JediMethod method);
@@ -165,6 +168,10 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     protected boolean isReturnRequired() {
         return false;
     }
+    
+	private void print(char c) {
+		getWriter().print(c);
+	}
 
     private void print(final String s) {
         getWriter().print(s);
@@ -192,9 +199,11 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 
     public final void writeClosureDeclaration() {
         writer.print(getReturnType().getName());
-        writer.print('<');
-        writeClosureTypes();
-        writer.print('>');
+        if (!getExecuteMethodParameters().isEmpty()) {
+	        writer.print('<');
+	        writeClosureTypes();
+	        writer.print('>');
+        }
     }
 
     private void writeClosureField(final Attribute attribute) {
@@ -254,9 +263,9 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 
     private void writeGenericTypeParameters() {
         if (method.isGeneric()) {
-            print("<");
+            print('<');
             print(FunctionalPrimitives.join(method.getGenericTypeParameters(), ", "));
-            print(">");
+            print('>');
         }
     }
 

@@ -6,9 +6,10 @@ import static jedi.option.Options.Some;
 import java.util.Arrays;
 
 import jedi.functional.Command;
+import jedi.functional.Command0;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
-import jedi.functional.Generator;
+import jedi.functional.Functor0;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
@@ -33,10 +34,10 @@ public class SomeTest extends MockObjectTestCase {
 		Option<String> opt = Some("x");
 
 		Mock someCommand = mock(Command.class);
-		Mock noneCommand = mock(Command.class);
+		Mock noneCommand = mock(Command0.class);
 		someCommand.expects(once()).method("execute").with(eq("x"));
 		
-		opt.match((Command)someCommand.proxy(), (Command)noneCommand.proxy());
+		opt.match((Command)someCommand.proxy(), (Command0)noneCommand.proxy());
 	}
 	
 	public void testAsList() {
@@ -45,9 +46,9 @@ public class SomeTest extends MockObjectTestCase {
 	
 	@SuppressWarnings("unchecked")
 	public void testGetOrElse() {
-		Mock generator = mock(Generator.class);
+		Mock generator = mock(Functor0.class);
 		generator.expects(never()).method("execute");
-		assertTrue(Some(true).getOrElse((Generator<Boolean>) generator.proxy()));
+		assertTrue(Some(true).getOrElse((Functor0<Boolean>) generator.proxy()));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -93,8 +94,8 @@ public class SomeTest extends MockObjectTestCase {
 	public void testMatchWithFunctors() {
 		Option<String> option = Some("hi");
 		Mock someFunctor = mock(Functor.class);
-		Mock noneFunctor = mock(Functor.class);
+		Mock noneFunctor = mock(Functor0.class);
 		someFunctor.expects(once()).method("execute").with(eq("hi")).will(returnValue(new Integer(1)));
-		assertEquals(new Integer(1), option.match((Functor<String, Integer>) someFunctor.proxy(), (Functor<None<String>, Integer>) noneFunctor.proxy()));
+		assertEquals(new Integer(1), option.match((Functor<String, Integer>) someFunctor.proxy(), (Functor0<Integer>) noneFunctor.proxy()));
 	}
 }

@@ -4,9 +4,10 @@ import java.util.Collections;
 import java.util.List;
 
 import jedi.functional.Command;
+import jedi.functional.Command0;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
-import jedi.functional.Generator;
+import jedi.functional.Functor0;
 
 /**
  * None represents a non existent value.
@@ -20,7 +21,7 @@ public final class None<T> implements Option<T> {
 		return Collections.<T> emptyList();
 	}
 
-	public T getOrElse(Generator<T> generator) {
+	public T getOrElse(Functor0<T> generator) {
 		return generator.execute();
 	}
 	
@@ -33,12 +34,12 @@ public final class None<T> implements Option<T> {
 		matcher.caseNone(this);
 	}
 
-	public void match(Command<T> someCommand, Command<None<T>> noneCommand) {
-		noneCommand.execute(new None<T>());
+	public void match(Command<T> someCommand, Command0 noneCommand) {
+		noneCommand.execute();
 	}
 	
-	public <R> R match(Functor<T, R> someFunctor, Functor<None<T>, R> noneFunctor) {
-		return noneFunctor.execute(this);
+	public <R> R match(Functor<T, R> someFunctor, Functor0<R> noneFunctor) {
+		return noneFunctor.execute();
 	}
 	
 	public <R> Option<R> map(Functor<T, R> mappingFunction) {

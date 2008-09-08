@@ -1,6 +1,7 @@
 package jedi.annotation.writer;
 
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.FunctionalPrimitives.collect;
+import static jedi.functional.FunctionalPrimitives.join;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -90,11 +91,12 @@ public class JavaWriter extends PrintWriter {
     }
     
     private void printFormalParameters(Collection<Attribute> parameters, boolean requiresLeadingComma, Command<Attribute> command) {
+    	boolean commaRequired = requiresLeadingComma;
         for (Attribute parameter : parameters) {
-            if (requiresLeadingComma) {
+            if (commaRequired) {
                 print(", ");
             }
-            requiresLeadingComma = true;
+            commaRequired = true;
             command.execute(parameter);
         }
     }

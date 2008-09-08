@@ -33,14 +33,18 @@ public final class None<T> implements Option<T> {
 		matcher.caseNone(this);
 	}
 
-	public <R> Option<R> map(Functor<T, R> mappingFunction) {
-		return Options.<R> None();
-	}
-
 	public void match(Command<T> someCommand, Command<None<T>> noneCommand) {
 		noneCommand.execute(new None<T>());
 	}
 	
+	public <R> R match(Functor<T, R> someFunctor, Functor<None<T>, R> noneFunctor) {
+		return noneFunctor.execute(this);
+	}
+	
+	public <R> Option<R> map(Functor<T, R> mappingFunction) {
+		return Options.<R> None();
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof None;

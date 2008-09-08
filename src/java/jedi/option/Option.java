@@ -45,6 +45,15 @@ public interface Option<T> {
 	 *            a command executing against None
 	 */
 	void match(Command<T> someCommand, Command<None<T>> noneCommand);
+	
+	/**
+	 * A match strategy based on Functors.
+	 * 
+	 * @param someFunctor the functor to execute if this Option is a Same
+	 * @param noneFunctor the functor to execute if this Option is a None
+	 * @return the result of executing the functor
+	 */
+	<R> R match(Functor<T, R> someFunctor, Functor<None<T>, R> noneFunctor);
 
 	/**
 	 * @return an empty list for <code>None</code> or an immutable list with {@link Some#get}
@@ -94,4 +103,5 @@ public interface Option<T> {
 	 *            the filter used for testing.
 	 */
 	Option<T> filter(Filter<T> f);
+	
 }

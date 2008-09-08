@@ -46,15 +46,19 @@ public final class Some<T> implements Option<T> {
 		assertNotNull(matcher, "OptionMatcher must not be null");
 		matcher.caseSome(value);
 	}
+	
+	public void match(Command<T> someCommand, Command<None<T>> noneCommand) {
+		someCommand.execute(get());
+	}
+	
+	public <R> R match(Functor<T, R> someFunctor, Functor<None<T>, R> noneFunctor) {
+		return someFunctor.execute(get());
+	}
 
 	public <R> Option<R> map(Functor<T, R> mappingFunction) {
 		R result = mappingFunction.execute(get());
 		assertNotNull(result, "The result of the supplied mapping function is null.");
 		return Some(result);
-	}
-
-	public void match(Command<T> someCommand, Command<None<T>> noneCommand) {
-		someCommand.execute(get());
 	}
 
 	@Override

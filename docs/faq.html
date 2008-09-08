@@ -14,8 +14,6 @@
                 <ul>
                     <li><a href="index.html" title="Back to Jedi">Back to Jedi</a>
                     </li>
-                    <li><a href="#performance" title="Performance">What About Performance?</a>
-                    </li>
                     <li><a href="#forEach" title="What is the Point of FunctionalPrimitives.forEach()?">What is the Point of FunctionalPrimitives.forEach()?</a>
                     </li>
                     <li><a href="#OO" title="Don't Jedi Annotations Encourage non-OO Code?">Don't Jedi Annotations Encourage non-OO Code?</a>
@@ -28,21 +26,6 @@
                     </li>
                 </ul>
             </div>
-            
-            <div class="sectionHeading"><a name="performance">What About Performance?</a>
-            </div>
-            
-            <p>This question is asked about almost every language, library, concept or technology when it is introduced. Sometimes the question expresses a genuine concern. Frequently
-                however, it appears almost as a throat clearing utterance for those who want to give the illusion of some deep thought. In such cases, those asking the question are often
-                unwilling to embrace the consequences of fully answering the question.</p>
-            <p>In the case of Jedi, there may be a <i>very</i> minor performance impact due to closure instantiation. However, it is likely to be lost in the noise of general object
-                instantiation that any Java system will cause and that you as a developer will probably not even be aware is happening most of the time. In addition, if for example, a
-                non-memory database or network IO is in use, then this performance impact will be several orders of magnitude below that caused by these things. This is much more than made
-                up for by the clarity, simplicity and probably 'more correct' code that will result from Jedi's use.</p>
-            <p>If you are still worried about performance, I ask you to consider whether Java itself is adequate for your needs. Maybe C/C++ would be better. Failing that, how about OCaml.
-                Or how about machine code? If that is still inadequate, electronics might do the trick. Maybe optics might perform just fast enough for your needs...</p>
-            <p>Many would consider the last few options listed above as going too far or maybe a little ridiculous. I consider these options perfectly viable given the condition that the
-                performance yeilded by them is required. I consider the rejection of them foolish and indicative of the original questions baselessness.</p>
             
             <div class="sectionHeading"><a name="forEach"/>What is the Point of <a
                     href="javadoc/jedi/functional/FunctionalPrimitives.html#forEach(java.util.Collection,%20jedi.functional.Command)"
@@ -71,7 +54,7 @@
             <p>Yes. If you can use it instead of Java, do so.</p>
 
             <div class="sectionHeading"><a name="javaClosures"/>Are You Aware of the Introduction of Closures in Java 1.7 / JDK7 / J7EE / Whatever It Is?</div>
-            <p>es. In many cases this may obviate the need for Jedi. The presence of the generated closure factories may still be useful however.</p>
+            <p>Yes. In many cases this may obviate the need for Jedi. The presence of the generated closure factories may still be useful however.</p>
         </div>
     </body>
 </html>

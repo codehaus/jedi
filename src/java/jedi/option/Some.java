@@ -6,6 +6,7 @@ import static jedi.option.Options.Some;
 import java.util.List;
 
 import jedi.functional.Command;
+import jedi.functional.Filter;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
@@ -63,5 +64,9 @@ public final class Some<T> implements Option<T> {
 
 	public void forEach(Command<T> command) {
 		command.execute(get());
+	}
+
+	public Option<T> filter(Filter<T> f) {
+		return f.execute(get()) ? this : Options.<T>None();
 	}
 }

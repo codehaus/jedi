@@ -1,10 +1,12 @@
 package jedi.option;
 
+import static jedi.option.Options.None;
 import static jedi.option.Options.Some;
 
 import java.util.Arrays;
 
 import jedi.functional.Command;
+import jedi.functional.Filter;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
@@ -69,5 +71,21 @@ public class SomeTest extends MockObjectTestCase {
 
 	public void testEqualsWhenNotEqual() {
 		assertFalse(Some("a").equals("b"));
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testFilterWhenFilterPasses() {
+		Option<String> option = Some("hi");
+		Mock f = mock(Filter.class);
+		f.expects(once()).method("execute").with(eq("hi")).will(returnValue(true));
+		assertSame(option, option.filter((Filter<String>) f.proxy()));
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testFilterWhenFilterFails() {
+		Option<String> option = Some("hi");
+		Mock f = mock(Filter.class);
+		f.expects(once()).method("execute").with(eq("hi")).will(returnValue(false));
+		assertEquals(None(), option.filter((Filter<String>) f.proxy()));
 	}
 }

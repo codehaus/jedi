@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import jedi.functional.Command;
+import jedi.functional.Filter;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
@@ -54,6 +55,10 @@ public final class None<T> implements Option<T> {
 
 	public void forEach(Command<T> command) {
 		// no-op
+	}
+
+	public Option<T> filter(Filter<T> f) {
+		return this;
 	}
 
 }

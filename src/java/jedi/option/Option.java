@@ -3,6 +3,7 @@ package jedi.option;
 import java.util.List;
 
 import jedi.functional.Command;
+import jedi.functional.Filter;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
@@ -74,11 +75,21 @@ public interface Option<T> {
 	<R> Option<R> map(Functor<T, R> mappingFunction);
 
 	/**
-	 * Apply the given Command to the option's value if it is
-	 * not None. Do nothing if it is None.
+	 * Apply the given Command to the option's value if it is not None. Do
+	 * nothing if it is None.
 	 * 
 	 * @param command
 	 *            the Command to apply.
 	 */
 	void forEach(Command<T> command);
+
+	/**
+	 * If this option is {@link Some} and the given functor <code>f</code> yields
+	 * <code>false</code> on its value, return <code>None</code>. Otherwise
+	 * return this option.
+	 * 
+	 * @param f
+	 *            the filter used for testing.
+	 */
+	Option<T> filter(Filter<T> f);
 }

@@ -2,6 +2,7 @@ package jedi.option;
 
 import static jedi.option.Options.None;
 import jedi.functional.Command;
+import jedi.functional.Filter;
 import jedi.functional.Functor;
 import jedi.functional.Generator;
 
@@ -65,5 +66,11 @@ public class NoneTest extends MockObjectTestCase {
 	
 	public void testEqualsWhenNotEqual() {
 		assertFalse(None().equals("s"));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void testFilter() {
+		Mock f = mock(Filter.class);
+		assertEquals(None(), None().filter((Filter<Object>) f.proxy()));
 	}
 }

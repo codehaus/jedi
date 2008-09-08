@@ -36,6 +36,7 @@ public final class Some<T> implements Option<T> {
 	}
 
 	/**
+	 * Get the value this Some contains.
 	 * @return the value, guaranteed to not be null.
 	 */
 	public T get() {

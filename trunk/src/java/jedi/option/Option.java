@@ -28,7 +28,7 @@ public interface Option<T> {
 	 * <pre>
 	 * x.match(new OptionMatcher() {
 	 * &nbsp;&nbsp;public void case(String value) { // excellent we can use the value }
-     * &nbsp;&nbsp;public void case(None[String] none) { // no value, deal with it }
+     * &nbsp;&nbsp;public void case(None&lt;String&gt; none) { // no value, deal with it }
      * });
 	 * </pre>
 	 */
@@ -56,7 +56,7 @@ public interface Option<T> {
 	<R> R match(Functor<T, R> someFunctor, Functor<None<T>, R> noneFunctor);
 
 	/**
-	 * @return an empty list for <code>None</code> or an immutable list with {@link Some#get}
+	 * An empty list for <code>None</code> or an immutable list with {@link Some#get}.
 	 */
 	List<T> asList();
 
@@ -77,7 +77,7 @@ public interface Option<T> {
 
 	/**
 	 * If the option is <code>Some</code>, return a function applied to its value,
-	 * wrapped in a Some i.e. <code>Some(f(this.get))</code>. Otherwise return
+	 * wrapped in a Some: <code>Some(f(this.get))</code>, otherwise return
 	 * <code>None</code>.
 	 * 
 	 * @param f

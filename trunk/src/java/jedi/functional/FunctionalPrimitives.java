@@ -1,10 +1,30 @@
 package jedi.functional;
 
-import static jedi.assertion.Assert.*;
-import static jedi.functional.Coercions.*;
-import static jedi.functional.FirstOrderLogic.*;
+import static jedi.assertion.Assert.assertEqual;
+import static jedi.assertion.Assert.assertFalse;
+import static jedi.assertion.Assert.assertGreaterThanOrEqualTo;
+import static jedi.assertion.Assert.assertLessThanOrEqualTo;
+import static jedi.assertion.Assert.assertNotNull;
+import static jedi.assertion.Assert.assertNotNullOrEmpty;
+import static jedi.assertion.Assert.assertTrue;
+import static jedi.functional.Coercions.asList;
+import static jedi.functional.Coercions.list;
+import static jedi.functional.FirstOrderLogic.invert;
+import static jedi.option.Options.None;
+import static jedi.option.Options.Some;
+import static jedi.option.Options.option;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jedi.option.None;
+import jedi.option.Option;
+import jedi.option.Some;
 
 /**
  * I provide operations of the kind found in Functional Programming languages. This allows you to remove a great deal of clutter from production code. Ideally, you will never need
@@ -224,6 +244,15 @@ public class FunctionalPrimitives {
     public static <T> T headOrNullIfEmpty(final Collection<T> items) {
         return headOrDefaultIfEmpty(items, null);
     }
+    
+    /**
+     * Get the first item (in iteration order) from a collection as an {@link Option}.
+     * @param items
+     * @return the first item (in iteration order) from a collection as {@link Some} or {@link None} if the collection is empty.
+     */
+    public static <T> Option<T> headOption(final Collection<T> items) {
+    	return option(headOrNullIfEmpty(items));
+    }
 
     /**
      * Get the last item (in iteration order) from a collection. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
@@ -262,6 +291,15 @@ public class FunctionalPrimitives {
 
     public static <T> T lastOrNullIfEmpty(Collection<? extends T> items) {
         return lastOrDefaultIfEmpty(items, null);
+    }
+
+    /**
+     * Get the last item (in iteration order) from a collection as an {@link Option}.
+     *
+     * @return the last item as a {@link Some} or {@link None} if the collection is empty.
+     */
+    public static <T> Option<T> lastOption(Collection<? extends T> items) {
+    	return option(lastOrNullIfEmpty(items));
     }
 
     /**
@@ -562,10 +600,21 @@ public class FunctionalPrimitives {
      * @see #headOrNullIfEmpty(Collection)
      * @see #headOrDefaultIfEmpty(Collection,Object)
      */
-
     public static <T> T pop(List<T> items) {
         assertNotNullOrEmpty(items, "items must not be null or empty");
         return items.remove(items.size() - 1);
+    }
+    
+    /**
+     * Removes the last item (in iteration order) from a collection as an {@link Option}.
+     *
+     * @return the last item in the collection as {@link Some} or {@link None} if the list is empty.
+     */
+    public static <T> Option<T> popOption(List<T> items) {
+    	if (items.isEmpty()) {
+    		return None();
+    	}
+    	return Some(pop(items));
     }
 
     protected FunctionalPrimitives() {

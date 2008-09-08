@@ -23,7 +23,6 @@ public abstract class FactoryType {
 
     public abstract String getTypeDeclaration(TypeDeclaration typeDeclaration);
 
-    @SuppressWarnings("unused")
     public void writeClassHeader(final PrintWriter writer, final TypeDeclaration typeDeclaration) {
     }
 

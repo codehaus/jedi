@@ -34,6 +34,15 @@ public class NoneTest extends MockObjectTestCase {
 		opt.match((Command)someCommand.proxy(), (Command)noneCommand.proxy());
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void testMatchWithFunctors() {
+		Option<String> option = None();
+		Mock someFunctor = mock(Functor.class);
+		Mock noneFunctor = mock(Functor.class);
+		noneFunctor.expects(once()).method("execute").with(same(option)).will(returnValue(new Integer(100)));
+		assertEquals(new Integer(100), option.match((Functor<String, Integer>) someFunctor.proxy(), (Functor<None<String>, Integer>) noneFunctor.proxy()));
+	}
+	
 	public void testAsList() {
 		assertTrue(None().asList().isEmpty());
 	}

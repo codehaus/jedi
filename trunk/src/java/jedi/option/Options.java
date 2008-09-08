@@ -24,6 +24,13 @@ public final class Options {
 	}
 
 	/**
+	 * @return Some(value) or None if value is null
+	 */
+	public static <T> Option<T> option(T value) {
+		return value == null ? Options.<T>None() : Some(value);
+	}
+	
+	/**
 	 * Get an Option from a Map.
 	 * @param map the map to retrieve a value from
 	 * @param key the key to use

@@ -88,4 +88,13 @@ public class SomeTest extends MockObjectTestCase {
 		f.expects(once()).method("execute").with(eq("hi")).will(returnValue(false));
 		assertEquals(None(), option.filter((Filter<String>) f.proxy()));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void testMatchWithFunctors() {
+		Option<String> option = Some("hi");
+		Mock someFunctor = mock(Functor.class);
+		Mock noneFunctor = mock(Functor.class);
+		someFunctor.expects(once()).method("execute").with(eq("hi")).will(returnValue(new Integer(1)));
+		assertEquals(new Integer(1), option.match((Functor<String, Integer>) someFunctor.proxy(), (Functor<None<String>, Integer>) noneFunctor.proxy()));
+	}
 }

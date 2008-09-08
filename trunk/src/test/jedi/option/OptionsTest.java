@@ -3,6 +3,7 @@ package jedi.option;
 import static jedi.option.Options.None;
 import static jedi.option.Options.Some;
 import static jedi.option.Options.get;
+import static jedi.option.Options.option;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,14 @@ public class OptionsTest extends TestCase {
 		map.put("a", 1);
 		
 		assertEquals(None(), get(map, "b"));
+	}
+	
+	public void testOptionWithNull() {
+		assertEquals(None(), option(null));
+	}
+
+	public void testOptionWithSomething() {
+		assertEquals(Some("Something"), option("Something"));
 	}
 	
 }

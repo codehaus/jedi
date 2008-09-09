@@ -40,33 +40,30 @@
                     <span class="keyword">public static</span> &lt;T&gt; Collection&lt;T&gt; sort(Collection&lt;T&gt;
                     <span class="variable">collection</span>, Comparator&lt;T&gt;
                     <span class="variable">comparator</span>) {</li>
-                <li>&nbsp;if (
-                    <span class="variable">collection</span>.size() &lt; 2) {</li>
+                <li>&nbsp;if (<span class="variable">collection</span>.size() &lt; 2) {</li>
                 <li>&nbsp;&nbsp;return
                     <span class="variable">collection</span>;</li>
                 <li>&nbsp;}</li>
                 <li>&nbsp;T
-                    <span class="variable">head</span> = head(
-                    <span class="variable">collection</span>);</li>
+                    <span class="variable">head</span> = <a href="javadoc/jedi/functional/FunctionalPrimitives.html#head(java.util.Collection)">head</a>(<span class="variable">collection</span>);</li>
                 <li>&nbsp;List&lt;T&gt;
-                    <span class="variable">tail</span> = tail(
-                    <span class="variable">collection</span>);</li>
+                    <span class="variable">tail</span> = <a href="javadoc/jedi/functional/FunctionalPrimitives.html#tail(java.util.Collection)">tail</a>(<span class="variable">collection</span>);</li>
                 <li>&nbsp;List&lt;T&gt;
-                    <span class="variable">lower</span> = select(
-                    <span class="variable">collection</span>, lessThan(
-                    <span class="variable">head</span>,
-                    <span class="variable">comparator</span>));</li>
+                    <span class="variable">lower</span> =
+                    	<a href="javadoc/jedi/functional/FunctionalPrimitives.html#select(java.util.Collection,%20jedi.functional.Filter)">select</a>(<span class="variable">tail</span>,
+                    		<a href="javadoc/jedi/functional/Comparables.html#lessThan(T,%20java.util.Comparator)">lessThan</a>(<span class="variable">head</span>,
+                    			<span class="variable">comparator</span>));</li>
                 <li>&nbsp;List&lt;T&gt;
-                    <span class="variable">upper</span> = select(
-                    <span class="variable">collection</span>, not(lessThan(
-                    <span class="variable">head</span>,
-                    <span class="variable">comparator</span>)));</li>
-                <li>&nbsp;<span class="keyword">return</span> append(sort(
-                    <span class="variable">lower</span>,
-                    <span class="variable">comparator</span>), list(
-                    <span class="variable">head</span>), sort(
-                    <span class="variable">upper</span>,
-                    <span class="variable">comparator</span>));</li>
+                    <span class="variable">upper</span> =
+                    	<a href="javadoc/jedi/functional/FunctionalPrimitives.html#select(java.util.Collection,%20jedi.functional.Filter)">select</a>(<span class="variable">tail</span>,
+                    		<a href="javadoc/jedi/functional/FirstOrderLogic.html#not(jedi.functional.Filter)">not</a>(<a href="javadoc/jedi/functional/Comparables.html#lessThan(T,%20java.util.Comparator)">lessThan</a>(<span class="variable">head</span>,
+                    			<span class="variable">comparator</span>)));</li>
+                <li>&nbsp;<span class="keyword">return</span>
+                	<a href="javadoc/jedi/functional/FunctionalPrimitives.html#append(java.util.Collection...)">append</a>(sort(<span class="variable">lower</span>,
+                    	<span class="variable">comparator</span>),
+                    	<a href="javadoc/jedi/functional/Coercions.html#list(T...)">list</a>(<span class="variable">head</span>),
+                    	sort(<span class="variable">upper</span>,
+                    	<span class="variable">comparator</span>));</li>
                 <li>}</li>
             </ul>
             <p>Both the Haskell and Jedi examples communicate what is going on and is understandable even if the reader did not know how the Quick sort works.</p>
@@ -162,9 +159,8 @@
                 </li>
                 <li>&nbsp;&nbsp;<span class="keyword">public void</span> extractStormtroopers() {</li>
                 <li>&nbsp;&nbsp;&nbsp;&nbsp;Collection&lt;Stormtrooper&gt;
-                    <span class="variable">endangeredStormtroopers</span> = select(stormtroopers, isCloseToFilter(planetToBlowUpNext));</li>
-                <li>&nbsp;&nbsp;&nbsp;&nbsp;forEach(
-                    <span class="variable">endangeredStormtroopers</span>, returnToDeathStarCommand());</li>
+                    <span class="variable">endangeredStormtroopers</span> = <a href="javadoc/jedi/functional/FunctionalPrimitives.html#select(java.util.Collection,%20jedi.functional.Filter)">select</a>(stormtroopers, closeToFilter(planetToBlowUpNext));</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javadoc/jedi/functional/FunctionalPrimitives.html#forEach(java.util.Collection,%20jedi.functional.Command)">forEach</a>(<span class="variable">endangeredStormtroopers</span>, returnToDeathStarCommand());</li>
                 <li>&nbsp;&nbsp;}</li>
                 <li>}</li>
             </ul>
@@ -203,34 +199,34 @@
                 <li>}</li>
                 <li>// use foo</li>
             </ul>
-            <p>These situations occur during lazy initialisation, retrieving values from maps, retrieving data from a database, its everywhere and its nasty.</p>
-            <p>The reason its nasty is that a null reference sits around waiting for some unfortunate code to dereference it. The even more
-            unfortunate programmer has to then figure where it came from which is not always trivial.</p>
-            <p>This is where <i>Option</i> comes in. Lets rewrite the above code block:</p>
+            <p>These situations occur during lazy initialisation, retrieving values from maps, retrieving data from a database. It's everywhere and it's nasty.</p>
+            <p>The reason it's nasty is that a null reference sits around waiting for some unfortunate code to dereference it. The even more
+            	unfortunate programmer has to then figure where it came from which is not always trivial.</p>
+            <p>This is where <i>Option</i> comes in. Let's rewrite the above code block:</p>
             <ul class="codeBlock">
-                <li>Option[String] foo = Options.get(map, "key");</li>
-                <li>foo.match(new OptionMatcher() {</li>
-                <li>&nbsp;&nbsp;public void case(String value) { // excellent we can use the value }</li>
-                <li>&nbsp;&nbsp;public void case(None[String] none) { throw <span class="keyword">new</span> WhatsItException("Where's the foo"); }</li>
+                <li><a href="javadoc/jedi/option/Option.html">Option</a>&lt;String&gt; foo = <a href="javadoc/jedi/option/Options.html">Options</a>.<a href="javadoc/jedi/option/Options.html#get(java.util.Map,%20K)">get</a>(map, "key");</li>
+                <li>foo.<a href="javadoc/jedi/option/Option.html#match(jedi.option.OptionMatcher)">match</a>(new <a href="javadoc/jedi/option/OptionMatcher.html">OptionMatcher</a>() {</li>
+                <li>&nbsp;&nbsp;public void caseSome(String value) { // excellent we can use the value }</li>
+                <li>&nbsp;&nbsp;public void caseNone(<a href="javadoc/jedi/option/None.html">None</a>&lt;String&gt; none) { throw <span class="keyword">new</span> WhatsItException("Where's the foo?"); }</li>
                 <li>});</li>
             </ul>
-            <p>The point is that there are no nulls in this code and the possibility that the value may not exist has to be dealt with.</p>
+            <p>The point is that there are no <code>null</code>s in this code and the possibility that the value may not exist has to be dealt with.</p>
             <p>This is JEDI though, so there is also another way to use Options:</p>
             <ul class="codeBlock">
-                <li>Option[String] foo = Options.get(map, "key");</li>
-                <li>foo.match(someCommand, noneCommand);</li>
+                <li><a href="javadoc/jedi/option/Option.html">Option</a>&lt;String&gt; foo = <a href="javadoc/jedi/option/Options.html">Options</a>.<a href="javadoc/jedi/option/Options.html#get(java.util.Map,%20K)">get</a>(map, "key");</li>
+                <li>foo.<a href="javadoc/jedi/option/Option.html#match(jedi.functional.Command,%20jedi.functional.Command0)">match</a>(someCommand, noneCommand);</li>
             </ul>
             <p>Where <code>someCommand</code> and <code>noneCommand</code> are Commands to be executed depending on whether <code>foo</code>
             is a Some or None. (The commands could be generated by annotations against existing methods of course.)
             The <code>someCommand</code> will be given the actual value contained in the Some instance so it does not
             need to match on an Option. This can be much more concise with a static import:</p>
             <ul class="codeBlock">
-                <li><i>get</i>(map, "key").match(someCommand, noneCommand);</li>
+                <li><i><a href="javadoc/jedi/option/Options.html#get(java.util.Map,%20K)">get</a></i>(map, "key").<a href="javadoc/jedi/option/Option.html#match(jedi.functional.Command,%20jedi.functional.Command0)">match</a>(someCommand, noneCommand);</li>
             </ul>
             <p>Another use is performing some action if a value exists. Normally this requires a null check. In Jedi, with Commands and Option:</p>
             <ul class="codeBlock">
-                <li>Option[String] foo = ...</li>
-                <li>foo.forEach(commandTakingString);</li>
+                <li><a href="javadoc/jedi/option/Option.html">Option</a>&lt;String&gt; foo = ...</li>
+                <li>foo.<a href="javadoc/jedi/option/Option.html#forEach(jedi.functional.Command)">forEach</a>(commandTakingString);</li>
             </ul>
             <p>To learn more about Optional values, read:</p>
             <ul>

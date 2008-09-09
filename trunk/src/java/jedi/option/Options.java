@@ -11,7 +11,7 @@ public final class Options {
 	 * Factory method for Some.
 	 * @return Some(value)
 	 */
-	public static <T> Option<T> Some(T value) {
+	public static <T> Option<T> some(T value) {
 		return new Some<T>(value);
 	}
 	
@@ -19,7 +19,7 @@ public final class Options {
 	 * Factory method for None.
 	 * @return None
 	 */
-	public static <T> Option<T> None() {
+	public static <T> Option<T> none() {
 		return new None<T>();
 	}
 
@@ -27,7 +27,7 @@ public final class Options {
 	 * @return Some(value) or None if value is null
 	 */
 	public static <T> Option<T> option(T value) {
-		return value == null ? Options.<T>None() : Some(value);
+		return value == null ? Options.<T>none() : some(value);
 	}
 	
 	/**
@@ -37,6 +37,6 @@ public final class Options {
 	 * @return None if the map did not contain a value for <code>key</code>, Some(value) if the map did contain the value.
 	 */
 	public static <K, V> Option<V> get(Map<K, V> map, K key) {
-		return map.containsKey(key) ? Some(map.get(key)) : Options.<V>None();
+		return map.containsKey(key) ? some(map.get(key)) : Options.<V>none();
 	}
 }

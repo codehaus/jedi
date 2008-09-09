@@ -10,8 +10,8 @@ import static jedi.assertion.Assert.assertTrue;
 import static jedi.functional.Coercions.asList;
 import static jedi.functional.Coercions.list;
 import static jedi.functional.FirstOrderLogic.invert;
-import static jedi.option.Options.None;
-import static jedi.option.Options.Some;
+import static jedi.option.Options.none;
+import static jedi.option.Options.some;
 import static jedi.option.Options.option;
 
 import java.util.ArrayList;
@@ -612,9 +612,9 @@ public class FunctionalPrimitives {
      */
     public static <T> Option<T> popOption(List<T> items) {
     	if (items.isEmpty()) {
-    		return None();
+    		return none();
     	}
-    	return Some(pop(items));
+    	return some(pop(items));
     }
 
     protected FunctionalPrimitives() {

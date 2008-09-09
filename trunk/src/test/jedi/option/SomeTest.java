@@ -1,7 +1,7 @@
 package jedi.option;
 
-import static jedi.option.Options.None;
-import static jedi.option.Options.Some;
+import static jedi.option.Options.none;
+import static jedi.option.Options.some;
 
 import java.util.Arrays;
 
@@ -17,7 +17,7 @@ import org.jmock.cglib.MockObjectTestCase;
 public class SomeTest extends MockObjectTestCase {
 
 	public void testMatchWithOptionMatcher() {
-		Option<Integer> opt = Some(new Integer(1));
+		Option<Integer> opt = some(new Integer(1));
 		
 		opt.match(new OptionMatcher<Integer>() {
 			public void caseNone(None<Integer> none) {
@@ -31,7 +31,7 @@ public class SomeTest extends MockObjectTestCase {
 	
 	@SuppressWarnings("unchecked")
 	public void testMatchWithCommands() {
-		Option<String> opt = Some("x");
+		Option<String> opt = some("x");
 
 		Mock someCommand = mock(Command.class);
 		Mock noneCommand = mock(Command0.class);
@@ -41,42 +41,42 @@ public class SomeTest extends MockObjectTestCase {
 	}
 	
 	public void testAsList() {
-		assertEquals(Arrays.asList("hi"), Some("hi").asList());
+		assertEquals(Arrays.asList("hi"), some("hi").asList());
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void testGetOrElse() {
 		Mock generator = mock(Functor0.class);
 		generator.expects(never()).method("execute");
-		assertTrue(Some(true).getOrElse((Functor0<Boolean>) generator.proxy()));
+		assertTrue(some(true).getOrElse((Functor0<Boolean>) generator.proxy()));
 	}
 
 	@SuppressWarnings("unchecked")
 	public void testMap() {
 		Mock functor = mock(Functor.class);
 		functor.expects(once()).method("execute").with(eq("string")).will(returnValue(true));
-		assertEquals(Some(true),Some("string").map((Functor<String, Boolean>) functor.proxy()));
+		assertEquals(some(true),some("string").map((Functor<String, Boolean>) functor.proxy()));
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void testForEach() {
 		Mock command = mock(Command.class);
 		command.expects(once()).method("execute").with(eq("x"));
-		Some("x").forEach((Command<String>) command.proxy());
+		some("x").forEach((Command<String>) command.proxy());
 	}
 	
 	public void testEqualsWhenEqual() {
-		assertEquals(Some("a"), Some("a"));
-		assertEquals(Some("a").hashCode(), Some("a").hashCode());
+		assertEquals(some("a"), some("a"));
+		assertEquals(some("a").hashCode(), some("a").hashCode());
 	}
 
 	public void testEqualsWhenNotEqual() {
-		assertFalse(Some("a").equals("b"));
+		assertFalse(some("a").equals("b"));
 	}
 
 	@SuppressWarnings("unchecked")
 	public void testFilterWhenFilterPasses() {
-		Option<String> option = Some("hi");
+		Option<String> option = some("hi");
 		Mock f = mock(Filter.class);
 		f.expects(once()).method("execute").with(eq("hi")).will(returnValue(true));
 		assertSame(option, option.filter((Filter<String>) f.proxy()));
@@ -84,15 +84,15 @@ public class SomeTest extends MockObjectTestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testFilterWhenFilterFails() {
-		Option<String> option = Some("hi");
+		Option<String> option = some("hi");
 		Mock f = mock(Filter.class);
 		f.expects(once()).method("execute").with(eq("hi")).will(returnValue(false));
-		assertEquals(None(), option.filter((Filter<String>) f.proxy()));
+		assertEquals(none(), option.filter((Filter<String>) f.proxy()));
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void testMatchWithFunctors() {
-		Option<String> option = Some("hi");
+		Option<String> option = some("hi");
 		Mock someFunctor = mock(Functor.class);
 		Mock noneFunctor = mock(Functor0.class);
 		someFunctor.expects(once()).method("execute").with(eq("hi")).will(returnValue(new Integer(1)));

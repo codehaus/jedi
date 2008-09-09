@@ -1,7 +1,7 @@
 package jedi.option;
 
-import static jedi.option.Options.None;
-import static jedi.option.Options.Some;
+import static jedi.option.Options.none;
+import static jedi.option.Options.some;
 import static jedi.option.Options.get;
 import static jedi.option.Options.option;
 
@@ -16,22 +16,22 @@ public class OptionsTest extends TestCase {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("a", 1);
 		
-		assertEquals(Some(1), get(map, "a"));
+		assertEquals(some(1), get(map, "a"));
 	}
 
 	public void testMapGetNone() {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("a", 1);
 		
-		assertEquals(None(), get(map, "b"));
+		assertEquals(none(), get(map, "b"));
 	}
 	
 	public void testOptionWithNull() {
-		assertEquals(None(), option(null));
+		assertEquals(none(), option(null));
 	}
 
 	public void testOptionWithSomething() {
-		assertEquals(Some("Something"), option("Something"));
+		assertEquals(some("Something"), option("Something"));
 	}
 	
 }

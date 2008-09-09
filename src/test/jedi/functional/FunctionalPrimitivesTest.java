@@ -41,8 +41,8 @@ import static jedi.functional.FunctionalPrimitives.take;
 import static jedi.functional.FunctionalPrimitives.takeMiddle;
 import static jedi.functional.FunctionalPrimitives.takeRight;
 import static jedi.functional.FunctionalPrimitives.zip;
-import static jedi.option.Options.None;
-import static jedi.option.Options.Some;
+import static jedi.option.Options.none;
+import static jedi.option.Options.some;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -167,11 +167,11 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     }
     
 	public void testHeadOptionWithEmptyCollection() {
-		assertEquals(None(), headOption(emptyList()));
+		assertEquals(none(), headOption(emptyList()));
 	}
 
 	public void testHeadOptionWithNonEmptyCollection() {
-		assertEquals(Some("a"), headOption(list("a", "b", "c")));
+		assertEquals(some("a"), headOption(list("a", "b", "c")));
 	}
 
     public void testHeadReturnsOneOfTheItemsInANonListCollection() {
@@ -202,11 +202,11 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     }
     
 	public void testLastOptionWithEmptyList() {
-		assertEquals(None(), lastOption(emptyList()));
+		assertEquals(none(), lastOption(emptyList()));
 	}
 
 	public void testLastOptionWithNonEmptyList() {
-		assertEquals(Some("c"), lastOption(list("a", "b", "c")));
+		assertEquals(some("c"), lastOption(list("a", "b", "c")));
 	}
 
     public void testLastReturnsOneOfTheItemsInANonListCollection() {
@@ -408,11 +408,11 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     }
     
 	public void testPopOptionWithEmptyList() {
-		assertEquals(None(), popOption(emptyList()));
+		assertEquals(none(), popOption(emptyList()));
 	}
 
 	public void testPopOptionWithNonEmptyList() {
-		assertEquals(Some("b"), popOption(list("a", "b")));
+		assertEquals(some("b"), popOption(list("a", "b")));
 	}
 
 	public void testProduce() {

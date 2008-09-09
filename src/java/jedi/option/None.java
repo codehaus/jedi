@@ -43,7 +43,7 @@ public final class None<T> implements Option<T> {
 	}
 	
 	public <R> Option<R> map(Functor<T, R> mappingFunction) {
-		return Options.<R> None();
+		return Options.<R> none();
 	}
 
 	@Override

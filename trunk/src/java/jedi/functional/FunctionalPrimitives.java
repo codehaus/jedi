@@ -204,7 +204,7 @@ public class FunctionalPrimitives {
      *
      * @return the first item in the collection
      * @throws jedi.assertion.AssertionError
-     *             if the collection contains less or more than one item
+     *             if the collection is empty
      * @see #only(Collection)
      * @see #headOrNullIfEmpty(Collection)
      * @see #headOrDefaultIfEmpty(Collection,Object)
@@ -260,7 +260,7 @@ public class FunctionalPrimitives {
      *
      * @return the last item in the collection
      * @throws jedi.assertion.AssertionError
-     *             if the collection contains less or more than one item
+     *             if the collection is empty
      * @see #only(Collection)
      * @see #lastOrNullIfEmpty(Collection)
      * @see #lastOrDefaultIfEmpty(Collection,Object)

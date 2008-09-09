@@ -11,3 +11,6 @@ Version Change
         FunctionalPrimitives.join now supports a default delimiter (empty string) and more closely matches Ruby's Array.join behaviour
 		
 2.3		Applied Dante's patch for FunctionalPrimitives.last() functions
+
+2.4		Added Option
+		Added jediSuppressAccessorVerbs and jediSuppressSuffixes APT / javac options

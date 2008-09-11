@@ -51,12 +51,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jedi.filters.AllPassFilter;
+
 import org.jmock.Mock;
 import org.jmock.util.Dummy;
 @SuppressWarnings("unchecked")
 public class FunctionalPrimitivesTest extends ClosureTestCase {
 
-    public void testAppend() {
+	public void testAppend() {
         assertEquals(list(1.0, 2, 2, "a"), append(list(1.0, 2), list(2, "a")));
     }
 
@@ -425,5 +427,28 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		Collection<String> right = list("a","b");
 		List<String> result = produce(left, right, factory);
 		assertEquals(list("1a","1b", "2a", "2b"), result);
+	}
+	
+	public void testPartition() {
+		Filter<Integer> filter = new Filter<Integer>() {
+			public Boolean execute(Integer value) {
+				return value.intValue() < 3;
+			}
+		};
+		List<Integer> list = asList(boxInts(1,2,3,4,5));
+		List<List<Integer>> expected = list(asList(boxInts(1,2)), asList(boxInts(3,4,5)));
+		assertEquals(expected, FunctionalPrimitives.partition(list, filter));
+	}
+	
+	public void testPartitionWithAllPassFilter() {
+		List<Integer> list = asList(boxInts(1,2,3,4,5));
+		List<List<Integer>> expected = list(list, Collections.<Integer>emptyList());
+		assertEquals(expected, FunctionalPrimitives.partition(list, new AllPassFilter<Integer>()));
+	}
+
+	public void testPartitionWithNoPassFilter() {
+		List<Integer> list = asList(boxInts(1,2,3,4,5));
+		List<List<Integer>> expected = list(Collections.<Integer>emptyList(), list);
+		assertEquals(expected, FunctionalPrimitives.partition(list, FirstOrderLogic.not(new AllPassFilter<Integer>())));
 	}
 }

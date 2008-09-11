@@ -9,10 +9,11 @@ import static jedi.assertion.Assert.assertNotNullOrEmpty;
 import static jedi.assertion.Assert.assertTrue;
 import static jedi.functional.Coercions.asList;
 import static jedi.functional.Coercions.list;
+import static jedi.functional.Comparables.sortInPlace;
 import static jedi.functional.FirstOrderLogic.invert;
 import static jedi.option.Options.none;
-import static jedi.option.Options.some;
 import static jedi.option.Options.option;
+import static jedi.option.Options.some;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,10 @@ import jedi.option.Some;
  * functors or whatever) preserve the iteration order of the given collection in the result.
  */
 public class FunctionalPrimitives {
+	
+	private FunctionalPrimitives() {
+    }
+	
     @SuppressWarnings("unchecked")
     private static final Comparator<Collection> COLLECTION_SIZE = new Comparator<Collection>() {
         public int compare(Collection o1, Collection o2) {
@@ -452,7 +457,7 @@ public class FunctionalPrimitives {
         assertNotNull(filter, "filter must not be null");
         assertNotNull(items, "items must not be null");
 
-        final List<T> selected = new ArrayList<T>();
+        final List<T> selected = new ArrayList<T>(items.size());
 
         for (final T item : items) {
             if (filter.execute(item)) {
@@ -485,7 +490,7 @@ public class FunctionalPrimitives {
     public static <U, T extends Collection< ? extends U>> T shortest(final Collection<T> collections) {
         assertNotNull(collections, "lists must not be null");
         assertGreaterThanOrEqualTo(1, collections.size(), "lists must have at least one item");
-        return head(Comparables.sortInPlace(asList(collections), COLLECTION_SIZE));
+        return head(sortInPlace(asList(collections), COLLECTION_SIZE));
     }
 
     /**
@@ -495,7 +500,7 @@ public class FunctionalPrimitives {
     public static List slice(final int n, final List<List> lists) {
         assertNotNull(lists, "lists must not be null");
         assertGreaterThanOrEqualTo(0, n, "n must be greater than or equal to 0");
-        final List items = new ArrayList();
+        final List items = new ArrayList(lists.size());
         for (final List list : lists) {
             items.add(list.get(n));
         }
@@ -617,6 +622,14 @@ public class FunctionalPrimitives {
     	return some(pop(items));
     }
 
-    protected FunctionalPrimitives() {
-    }
+	/**
+	 * Partition a list into two sublists using the given filter.
+	 * @param list
+	 * @return a list whose first element as a list of items in list that pass the filter, 
+	 * 			the second item is a list of elements that did not pass the filter.
+	 */
+    @SuppressWarnings("unchecked")
+	public static <T> List<List<T>> partition(List<T> list, Filter<T> filter) {
+		return list(select(list, filter), select(list, invert(filter)));
+	}
 }

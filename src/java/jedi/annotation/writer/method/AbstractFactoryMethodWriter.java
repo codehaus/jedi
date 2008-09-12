@@ -68,13 +68,14 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     public final void execute(final Annotateable method) {
         this.method = method;
 
+        writeJavadoc();
         startMethod();
         factoryType.writeMethodBody(this, writer);
 
         this.method = null;
     }
 
-    protected final String getBoxedQualifiedTypeName(final TypeMirror type) {
+	protected final String getBoxedQualifiedTypeName(final TypeMirror type) {
         return new BoxerFunctor().execute(type);
     }
 
@@ -183,6 +184,12 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     protected final void setReceiverInvocationWriter(final ReceiverInvocationWriter receiverInvocationWriter) {
         this.receiverInvocationWriter = receiverInvocationWriter;
     }
+
+    private void writeJavadoc() {
+    	println("\t/**");
+    	println("\t * @see " + method.getDeclaringType().getQualifiedName() + "#" + method.getName(false));
+    	println("\t */");
+	}
 
     private void startMethod() {
         print("\t");

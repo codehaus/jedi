@@ -1,14 +1,16 @@
 package jedi.annotation.sith;
 
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.Coercions.asSet;
+import static jedi.functional.FunctionalPrimitives.collect;
+import static jedi.functional.FunctionalPrimitives.select;
 
 import java.util.List;
 import java.util.Set;
 
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.JediMethod;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.filters.NotNullFilter;
-import jedi.functional.Coercions;
 import jedi.functional.Functor;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -30,10 +32,10 @@ class SithAnnotation extends AnnotationMirrorInterpreter {
         this.environment = environment;
     }
     
-    public Set<JediMethod> getMethodDeclarations(final FactoryMethodWriter factoryMethodWriter) {
-        return Coercions.asSet(
-                collect(select(getRequiredMethods(), new NotNullFilter<MethodDeclaration>()), new Functor<MethodDeclaration, JediMethod>() {
-                    public JediMethod execute(MethodDeclaration value) {
+    public Set<Annotateable> getMethodDeclarations(final FactoryMethodWriter factoryMethodWriter) {
+        return asSet(
+                collect(select(getRequiredMethods(), new NotNullFilter<MethodDeclaration>()), new Functor<MethodDeclaration, Annotateable>() {
+                    public Annotateable execute(MethodDeclaration value) {
                         return new JediMethod(value, factoryMethodWriter);
                     }
                 }));

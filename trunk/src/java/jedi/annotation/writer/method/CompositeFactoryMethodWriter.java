@@ -5,7 +5,7 @@ import static jedi.functional.FunctionalPrimitives.*;
 
 import java.util.Set;
 
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.functional.Coercions;
@@ -18,11 +18,11 @@ public class CompositeFactoryMethodWriter implements FactoryMethodWriter {
         this.children = Coercions.set(children);
     }
     
-    public boolean canHandle(JediMethod method) {
+    public boolean canHandle(Annotateable method) {
         return exists(children, createHandlerFilter(method));
     }
     
-    public void execute(JediMethod method) {
+    public void execute(Annotateable method) {
         for (FactoryMethodWriter child : select(children, createHandlerFilter(method))) {
             child.execute(method);
         }
@@ -34,7 +34,7 @@ public class CompositeFactoryMethodWriter implements FactoryMethodWriter {
         }
     }
 
-    private Filter<FactoryMethodWriter> createHandlerFilter(final JediMethod method) {
+    private Filter<FactoryMethodWriter> createHandlerFilter(final Annotateable method) {
         return new Filter<FactoryMethodWriter>() {
             public Boolean execute(FactoryMethodWriter value) {
                 return value.canHandle(method);

@@ -2,7 +2,7 @@ package jedi.annotation.writer.method;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.functional.Command;
 
 public class CommandFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
@@ -16,7 +16,7 @@ public class CommandFactoryMethodWriter extends AbstractBasicFactoryMethodWriter
     }
 
     @Override
-    protected boolean hasCorrectReturnType(JediMethod method) {
+    protected boolean hasCorrectReturnType(Annotateable method) {
         return true;
     }
 }

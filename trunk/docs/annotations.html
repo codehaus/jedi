@@ -51,8 +51,9 @@
                 Suppose the class containing the annotations is called <code>Stormtrooper</code>. The following three classes will be created:</p>
             <ul>
                 <li><code>IStormtrooperClosureFactory</code> - this interface has declarations for all of the appropriate factory methods. Each factory
-                    method will take parameters appropriate to the annotated method that generated it and will return an instance of an appropriate closure (see
-                    below). This is ideal for dependency injection and unit testing with mocks.</li>
+                    method will take parameters appropriate to the annotated method (or no parameters if the annotation is placed on a field)
+                    that generated it and will return an instance of an appropriate closure (see below). This is ideal for dependency injection
+                    and unit testing with mocks.</li>
                 <li><code>StormtrooperClosureFactory</code> - this class implements <code>IStormtrooperClosureFactory</code>. Each factory method
                     will create and return an instance of the appropriate closure (see below). This can be used as a default implementation of
                     <code>IStormTrooperClosureFactory</code> in your production code. Exceptions thrown by the annotated method will be transformed into
@@ -64,16 +65,18 @@
                     delegate can be restored with the <code>useDefaultDelegate()</code> method.</li>
             </ul>
             <p>These factories will be created in the same package as the type to which they apply. For <code>@Jedi</code> annotations this will be the type in which
-                the annotation is placed. In the case of <code>@Sith</code> annotations, this will be the type which is specified in the anotation. Which
+                the annotation is placed. In the case of <code>@Sith</code> annotations, this will be the type which is specified in the anotation (compile time
+                annotations are not allowed to generate code into packages whose first element is 'java', so if you use an <code>@Sith</code> annotation referencing
+                a class in a <code>java.*</code> package, <code>java</code> will be replaced with <code>sith</code> for the package of the generated code). Which
                 directory they appear in depends on the settings you choose during <a href="index.html#compiling" title="Compiling">compilation</a>.</p>
             
             <div class="sectionHeading"><a name="jediAnnotations">@Jedi Annotations</a>
             </div>
-            <p>This is what the <code>@Jedi</code> annotation declarations look like (<code>@JediFilter</code> and <code>@JediFunctor</code> look the same
-                with the obvious change in name):</p>
+            <p>This is what the <code>@Jedi</code> annotation declarations look like. <code>@JediFilter</code> and <code>@JediFunctor</code> look the same
+                with the obvious change in name (but <code>@JediCommand</code> cannot annotate a field).</p>
             <ul class="codeBlock">
                 <li>
-                    <span class="annotation">@Target</span>(ElementType.METHOD)</li>
+                    <span class="annotation">@Target</span>({ElementType.METHOD, ElementType.FIELD})</li>
                 <li>
                     <span class="annotation">@Retention</span>(RetentionPolicy.SOURCE)</li>
                 <li>
@@ -279,7 +282,8 @@
                 <li>}</li>
             </ul>
             
-            <p>'Cuts' are a way of moving parameters between a closure's factory method parameter list and its <code>execute</code> method parameter list. The
+            <p>'Cuts' are a way of moving parameters between a closure's factory method parameter list and its <code>execute</code> method parameter list. They
+            	can only be used when the enclosing annotation annotates a method (<i>i.e.</i> a cut makes no sense for a field annotation). The
                 parameters move in different directions depending on whether the factory method is a <code>Proxy</code> type or not. Using the examples in the
                 table above is the easiest way of describing their action. Look at the rows entitled 'More Parameters' and 'Cuts'. Both rows shows an annotated
                 method with the same two parameters. When the factory classes are generated, two factory methods are created for this method in each case.</p>

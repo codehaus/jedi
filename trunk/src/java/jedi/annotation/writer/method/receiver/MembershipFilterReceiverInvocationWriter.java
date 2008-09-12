@@ -1,6 +1,6 @@
 package jedi.annotation.writer.method.receiver;
 
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 
 public class MembershipFilterReceiverInvocationWriter extends ReceiverInvocationWriter {
@@ -11,10 +11,10 @@ public class MembershipFilterReceiverInvocationWriter extends ReceiverInvocation
     }
     
     @Override
-    protected void writeProtected(JediMethod method, JavaWriter printWriter) {
+    protected void writeInvocation(Annotateable method, JavaWriter printWriter) {
         printWriter.print(testValueParameterName);
         printWriter.print(".contains(");
-        super.writeProtected(method, printWriter);
+        super.writeInvocation(method, printWriter);
         printWriter.print(")");
     }
 }

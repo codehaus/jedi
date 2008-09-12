@@ -1,7 +1,9 @@
 package jedi.annotation.jedi;
 
-import static jedi.functional.FirstOrderLogic.*;
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.FirstOrderLogic.invert;
+import static jedi.functional.FunctionalPrimitives.collect;
+import static jedi.functional.FunctionalPrimitives.join;
+import static jedi.functional.FunctionalPrimitives.select;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,22 +11,16 @@ import java.util.List;
 import java.util.Set;
 
 import jedi.annotation.jedi.attribute.Attribute;
-import jedi.annotation.util.BooleanTypeMirrorFilter;
-import jedi.annotation.util.VoidTypeMirrorFilter;
+import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
 
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
-import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.TypeMirror;
-import com.sun.mirror.util.SourcePosition;
 
-public class JediMethod {
-    private final MethodDeclaration method;
-    private final FactoryMethodWriter factoryMethodWriter;
-    private String name;
+public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
     private Set<String> cutParameterNames;
 
     public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter) {
@@ -36,39 +32,17 @@ public class JediMethod {
     }
 
     public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter, String cutName, Set<String> cutParameterNames) {
-        this.method = declaration;
-        this.factoryMethodWriter = factoryMethodWriter;
-        this.name = (cutName == null || cutName.length() == 0 ? declaration.getSimpleName() : cutName);
+    	super(declaration, factoryMethodWriter, cutName);
         this.cutParameterNames = (cutParameterNames == null ? new HashSet<String>() : cutParameterNames);
     }
 
-    public TypeDeclaration getDeclaringType() {
-        return method.getDeclaringType();
-    }
-    
-    public void write() {
-        factoryMethodWriter.execute(this);
+    public TypeMirror getType() {
+        return declaration.getReturnType();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getOriginalName() {
-        return method.getSimpleName();
-    }
-
-    public SourcePosition getPosition() {
-        return method.getPosition();
-    }
-
-    public TypeMirror getReturnType() {
-        return method.getReturnType();
-    }
-
-    public Collection<Attribute> getParameters() {
+    private Collection<Attribute> getParameters() {
         return collect(
-            method.getParameters(), new Functor<ParameterDeclaration, Attribute>() {
+            declaration.getParameters(), new Functor<ParameterDeclaration, Attribute>() {
                 public Attribute execute(ParameterDeclaration value) {
                     return new Attribute(value);
                 }
@@ -95,51 +69,18 @@ public class JediMethod {
         };
     }
     
-    public boolean isVoidReturnType() {
-        return new VoidTypeMirrorFilter().execute(method.getReturnType());
+    private boolean isGeneric() {
+        return !getGenericTypeParameters().isEmpty();
     }
     
-    public boolean isBooleanReturnType() {
-        return new BooleanTypeMirrorFilter().execute(method.getReturnType());
-    }
-    
-    public boolean isGeneric() {
-        return !method.getFormalTypeParameters().isEmpty();
-    }
-    
-    public Collection< ? > getGenericTypeParameters() {
-        return method.getFormalTypeParameters();
-    }
-
-    @Override
-    public int hashCode() {
-        return method.hashCode();
+    private Collection< ? > getGenericTypeParameters() {
+        return declaration.getFormalTypeParameters();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || !getClass().equals(obj.getClass())) {
-            return false;
-        }
-
-        JediMethod that = (JediMethod) obj;
-        return method.equals(that.method) && factoryMethodWriter.equals(that.factoryMethodWriter)
-            && name.equals(that.name) && cutParameterNames.equals(that.cutParameterNames);
+    	return super.equals(obj) && ((JediMethod) obj).cutParameterNames.equals(cutParameterNames);
     }
-
-	public String getSimplifiedName() {
-		if (isNamePrefixedWith("get")) {
-			return removeNamePrefix("get");
-		}
-		if (isNamePrefixedWith("is")) {
-			return removeNamePrefix("is");
-		}
-		return name;
-	}
 
 	private String removeNamePrefix(String prefix) {
 		return Character.toString(Character.toLowerCase(name.charAt(prefix.length()))) + name.substring(prefix.length() + 1);
@@ -148,4 +89,31 @@ public class JediMethod {
 	private boolean isNamePrefixedWith(String prefix) {
 		return name.startsWith(prefix) && name.length() > prefix.length() && Character.isUpperCase(name.charAt(prefix.length()));
 	}
+	
+	public void writeInvocation(JavaWriter writer, String receiverName) {
+		writer.print(receiverName + "." + getOriginalName());
+		writer.printSimpleNamesAsActualParameterList(getParameters());
+	}
+	
+	public String getName(boolean simplified) {
+		return simplified ? getSimplifiedName() : name;
+	}
+	
+	private String getSimplifiedName() {
+		if (isNamePrefixedWith("get")) {
+			return removeNamePrefix("get");
+		}
+		if (isNamePrefixedWith("is")) {
+			return removeNamePrefix("is");
+		}
+		return name;
+	}
+	
+    public void writeGenericTypeParameters(JavaWriter writer) {
+        if (isGeneric()) {
+            writer.print('<');
+            writer.print(join(getGenericTypeParameters(), ", "));
+            writer.print('>');
+        }
+    }
 }

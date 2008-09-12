@@ -67,6 +67,15 @@
             </classpath>
             <src path="${java.src.dir}"/>
             <src path="${build.1.5.preprocess.dir}"/>
+        	<!--
+        		Uncomment one or both of these two compilerargs if you want to reduce
+        		the clutter in the generated method names.
+        		We have to do it this way because of a bug in the apt task in Ant 1.7
+        	-->
+        	<!--
+        	<compilerarg value="-AjediSuppressAccessorVerbs"/>
+        	<compilerarg value="-AjediSuppressSuffixes"/>
+        	-->
         </apt>
     </target>
 

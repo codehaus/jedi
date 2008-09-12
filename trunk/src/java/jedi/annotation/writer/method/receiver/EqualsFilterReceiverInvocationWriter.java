@@ -1,6 +1,6 @@
 package jedi.annotation.writer.method.receiver;
 
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 
 public class EqualsFilterReceiverInvocationWriter extends ReceiverInvocationWriter {
@@ -11,10 +11,10 @@ public class EqualsFilterReceiverInvocationWriter extends ReceiverInvocationWrit
     }
 
     @Override
-    protected void writeProtected(JediMethod method, JavaWriter printWriter) {
+    protected void writeInvocation(Annotateable method, JavaWriter printWriter) {
         printWriter.print(testValueParameterName);
         printWriter.print(".equals(");
-        super.writeProtected(method, printWriter);
+        super.writeInvocation(method, printWriter);
         printWriter.print(")");
     }
 }

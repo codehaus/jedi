@@ -80,6 +80,8 @@
                 <code>-AjediSuppressSuffixes</code> option on the <code>apt</code>/<code>javac</code> command line.</p>
             <p>If you want to suppress accessor method prefixes ('get' and 'is') when creating factory methods, use the
                 <code>-AjediSuppressAccessorVerbs</code> option on the <code>apt</code>/<code>javac</code> command line.</p>
+            <p>There appears to be a bug in Ant 1.7 in the <code>option</code> element of the <code>apt</code> task. In order to pass the above two
+            	parameters to <code>apt</code> use the <code>compilerarg</code> element instead. See the 'empire' example build.xml for an example.</p>
             
             <div class="sectionHeading"> <a name="features">Features</a>
             </div>

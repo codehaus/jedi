@@ -4,6 +4,7 @@ import static java.util.Collections.singletonList;
 import static jedi.assertion.Assert.assertNotNull;
 import static jedi.option.Options.some;
 
+import java.util.Iterator;
 import java.util.List;
 
 import jedi.functional.Command;
@@ -85,5 +86,9 @@ public final class Some<T> implements Option<T> {
 
 	public Option<T> filter(Filter<T> f) {
 		return f.execute(get()) ? this : Options.<T>none();
+	}
+
+	public Iterator<T> iterator() {
+		return asList().iterator();
 	}
 }

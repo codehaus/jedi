@@ -1,6 +1,9 @@
 package jedi.option;
 
 import static jedi.option.Options.none;
+
+import java.util.Iterator;
+
 import jedi.functional.Command;
 import jedi.functional.Command0;
 import jedi.functional.Filter;
@@ -82,5 +85,11 @@ public class NoneTest extends MockObjectTestCase {
 	public void testFilter() {
 		Mock f = mock(Filter.class);
 		assertEquals(none(), none().filter((Filter<Object>) f.proxy()));
+	}
+	
+	public void testIterator() {
+		Option<String> option = none();
+		Iterator<String> iterator = option.iterator();
+		assertFalse(iterator.hasNext());
 	}
 }

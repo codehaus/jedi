@@ -4,6 +4,7 @@ import static jedi.option.Options.none;
 import static jedi.option.Options.some;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import jedi.functional.Command;
 import jedi.functional.Command0;
@@ -97,5 +98,13 @@ public class SomeTest extends MockObjectTestCase {
 		Mock noneFunctor = mock(Functor0.class);
 		someFunctor.expects(once()).method("execute").with(eq("hi")).will(returnValue(new Integer(1)));
 		assertEquals(new Integer(1), option.match((Functor<String, Integer>) someFunctor.proxy(), (Functor0<Integer>) noneFunctor.proxy()));
+	}
+	
+	public void testIterator() {
+		Option<String> option = some("hi");
+		Iterator<String> iterator = option.iterator();
+		assertTrue(iterator.hasNext());
+		assertEquals("hi", iterator.next());
+		assertFalse(iterator.hasNext());
 	}
 }

@@ -1,7 +1,9 @@
 package jedi.option;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import jedi.functional.Command;
 import jedi.functional.Command0;
@@ -13,6 +15,20 @@ import jedi.functional.Functor0;
  * None represents a non existent value.
  */
 public final class None<T> implements Option<T> {
+
+	private final class EmptyIterator implements Iterator<T> {
+		public boolean hasNext() {
+			return false;
+		}
+
+		public T next() {
+			throw new NoSuchElementException();
+		}
+
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+	}
 
 	public None() {
 	}
@@ -67,6 +83,10 @@ public final class None<T> implements Option<T> {
 
 	public Option<T> filter(Filter<T> f) {
 		return this;
+	}
+
+	public Iterator<T> iterator() {
+		return new EmptyIterator();
 	}
 
 }

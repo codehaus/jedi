@@ -12,7 +12,7 @@ import jedi.functional.Functor0;
  * An optional value inspired by sensible languages like <a
  * href="http://www.scala-lang.org/docu/files/api/scala/Option.html">Scala</a>.
  */
-public interface Option<T> {
+public interface Option<T> extends Iterable<T>{
 
 	/**
 	 * Emulates Scala's pattern match on optional types.

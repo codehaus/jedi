@@ -1,14 +1,15 @@
 package jedi.annotation.writer.method;
 
+import static jedi.functional.Coercions.list;
+
 import java.util.List;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.writer.method.receiver.MembershipFilterReceiverInvocationWriter;
-import jedi.functional.Coercions;
 import jedi.functional.Filter;
+
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
 public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
     private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
@@ -25,7 +26,7 @@ public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMet
 
     @Override
     protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-        return Coercions.list(new Attribute("java.util.Collection<? extends " + getBoxedQualifiedTypeName(getDelegateMethodReturnType()) + ">", TEST_VALUE_PARAMETER_NAME));
+        return list(new Attribute("java.util.Collection<? extends " + getBoxedQualifiedTypeName(getDelegateMethodReturnType()) + ">", TEST_VALUE_PARAMETER_NAME));
     }
 
     @Override
@@ -39,8 +40,8 @@ public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMet
     }
 
     @Override
-    protected boolean hasCorrectReturnType(final JediMethod method) {
-        return !(method.isVoidReturnType() || method.isBooleanReturnType());
+    protected boolean hasCorrectReturnType(final Annotateable method) {
+        return !(method.isVoid() || method.isBoolean());
     }
 
     @Override

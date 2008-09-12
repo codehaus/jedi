@@ -2,7 +2,7 @@ package jedi.annotation.writer.method;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.functional.Functor;
 
 public class ProxyFunctorFactoryMethodWriter extends AbstractProxyFactoryMethodWriter {
@@ -21,8 +21,8 @@ public class ProxyFunctorFactoryMethodWriter extends AbstractProxyFactoryMethodW
     }
 
     @Override
-    protected boolean hasCorrectReturnType(JediMethod method) {
-        return !method.isVoidReturnType();
+    protected boolean hasCorrectReturnType(Annotateable method) {
+        return !method.isVoid();
     }
 
     @Override

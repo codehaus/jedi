@@ -1,7 +1,8 @@
 package jedi.annotation.sith;
 
-import static jedi.functional.Coercions.*;
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.Coercions.asSet;
+import static jedi.functional.FunctionalPrimitives.collect;
+import static jedi.functional.FunctionalPrimitives.flatten;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -13,7 +14,7 @@ import jedi.annotation.SithFilter;
 import jedi.annotation.SithFunctor;
 import jedi.annotation.SithMethods;
 import jedi.annotation.jedi.AbstractClosureAnnotationProcessor;
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.functional.Functor;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -27,25 +28,25 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
         super(environment, SithCommand.class, SithFilter.class, SithFunctor.class);
     }
 
-    private Set<JediMethod> getComposites() {
+    private Set<Annotateable> getComposites() {
         final Set<AnnotationMirror> mirrors = getMirrors(getTypeDeclaration(SithMethods.class));
-        final Set<JediMethod> methods = getMethods(mirrors, "commands", SithCommand.class);
+        final Set<Annotateable> methods = getMethods(mirrors, "commands", SithCommand.class);
         methods.addAll(getMethods(mirrors, "functors", SithFunctor.class));
         methods.addAll(getMethods(mirrors, "filters", SithFilter.class));
         return methods;
     }
 
     @Override
-    protected Set<JediMethod> getInterestingDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
-        final Set<JediMethod> methods = getNonComposites(annotationTypeDeclaration);
+    protected Set<Annotateable> getInterestingDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
+        final Set<Annotateable> methods = getNonComposites(annotationTypeDeclaration);
         methods.addAll(getComposites());
         return methods;
     }
 
-    private Set<JediMethod> getMethods(final Set<AnnotationMirror> mirrors, final String property, final Class< ? > propertyClass) {
-        return mirrors == null ? Collections.<JediMethod> emptySet() : asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<JediMethod>>() {
+    private Set<Annotateable> getMethods(final Set<AnnotationMirror> mirrors, final String property, final Class< ? > propertyClass) {
+        return mirrors == null ? Collections.<Annotateable> emptySet() : asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() {
             @SuppressWarnings("unchecked")
-            public Collection<JediMethod> execute(final AnnotationMirror value) {
+            public Collection<Annotateable> execute(final AnnotationMirror value) {
                 return getNonComposites(getTypeDeclaration(propertyClass), getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(value).getValue(property)));
             }
         }));
@@ -67,14 +68,14 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
         });
     }
 
-    private Set<JediMethod> getNonComposites(final AnnotationTypeDeclaration annotationTypeDeclaration) {
+    private Set<Annotateable> getNonComposites(final AnnotationTypeDeclaration annotationTypeDeclaration) {
         final Set<AnnotationMirror> mirrors = getMirrors(annotationTypeDeclaration);
         return getNonComposites(annotationTypeDeclaration, mirrors);
     }
 
-    private Set<JediMethod> getNonComposites(final AnnotationTypeDeclaration annotationTypeDeclaration, final Collection<AnnotationMirror> mirrors) {
-        return asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<JediMethod>>() {
-            public Collection<JediMethod> execute(final AnnotationMirror value) {
+    private Set<Annotateable> getNonComposites(final AnnotationTypeDeclaration annotationTypeDeclaration, final Collection<AnnotationMirror> mirrors) {
+        return asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() {
+            public Collection<Annotateable> execute(final AnnotationMirror value) {
                 return new SithAnnotation(annotationTypeDeclaration, value, environment).getMethodDeclarations(annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration));
             }
         }));

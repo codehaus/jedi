@@ -14,3 +14,5 @@ Version Change
 
 2.4		Added Option
 		Added jediSuppressAccessorVerbs and jediSuppressSuffixes APT / javac options
+		
+2.5		@JediFunctor and @JediFilter annotations can now be used to annotate non-private fields.

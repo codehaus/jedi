@@ -1,13 +1,14 @@
 package jedi.annotation.writer.method;
 
+import static jedi.functional.Coercions.list;
+
 import java.util.Collection;
 import java.util.List;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
-import jedi.functional.Coercions;
+
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
 public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMethodWriter {
 	public AbstractProxyFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
@@ -15,13 +16,13 @@ public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMe
 	}
 	
     @Override
-    protected final List<Attribute> getExecuteMethodParameters(JediMethod method) {
+    protected final List<Attribute> getExecuteMethodParameters(Annotateable method) {
         return method.getUncutParameters();
     }
     
     @Override
     protected final List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-        return Coercions.list(new Attribute(getDelegateMethodDeclaringType(), RECEIVER_PARAMETER_NAME));
+        return list(new Attribute(getDelegateMethodDeclaringType(), RECEIVER_PARAMETER_NAME));
     }
 
     @Override

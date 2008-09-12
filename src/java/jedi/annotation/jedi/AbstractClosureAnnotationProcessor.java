@@ -1,6 +1,7 @@
 package jedi.annotation.jedi;
 
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.FunctionalPrimitives.group;
+import static jedi.functional.FunctionalPrimitives.select;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -48,19 +49,19 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
         putAnnotationClassToWriterMapping(functorAnnotationClass, new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(environment), new ProxyFunctorFactoryMethodWriter(environment)));
     }
 
-    private Set<JediMethod> getInterestingDeclarations() {
-        final Set<JediMethod> interestingMethodDeclarations = new HashSet<JediMethod>();
+    private Set<Annotateable> getInterestingDeclarations() {
+        final Set<Annotateable> interestingMethodDeclarations = new HashSet<Annotateable>();
         for (final AnnotationTypeDeclaration annotationTypeDeclaration : annotationTypeToFactoryMethodWriterMap.keySet()) {
             interestingMethodDeclarations.addAll(getInterestingDeclarations(annotationTypeDeclaration));
         }
         return interestingMethodDeclarations;
     }
 
-    abstract protected Collection< ? extends JediMethod> getInterestingDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
+    abstract protected Set<Annotateable> getInterestingDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
 
-    private Map<TypeDeclaration, List<JediMethod>> getMethodsByType() {
-        return group(getInterestingDeclarations(), new Functor<JediMethod, TypeDeclaration>() {
-            public TypeDeclaration execute(final JediMethod method) {
+    private Map<TypeDeclaration, List<Annotateable>> getMethodsByType() {
+        return group(getInterestingDeclarations(), new Functor<Annotateable, TypeDeclaration>() {
+            public TypeDeclaration execute(final Annotateable method) {
                 return method.getDeclaringType();
             }
         });
@@ -83,7 +84,7 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
     }
 
     protected void process(final FactoryType... types) {
-        final Map<TypeDeclaration, List<JediMethod>> methodsByType = getMethodsByType();
+        final Map<TypeDeclaration, List<Annotateable>> methodsByType = getMethodsByType();
         for (final FactoryType type : types) {
             writeFactories(methodsByType, type);
         }
@@ -93,8 +94,8 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
         annotationTypeToFactoryMethodWriterMap.put(getTypeDeclaration(commandAnnotationClass), writer);
     }
 
-    private void writeFactories(final Map<TypeDeclaration, List<JediMethod>> methodsByType, final FactoryType type) {
-        for (final Entry<TypeDeclaration, List<JediMethod>> entry : methodsByType.entrySet()) {
+    private void writeFactories(final Map<TypeDeclaration, List<Annotateable>> methodsByType, final FactoryType type) {
+        for (final Entry<TypeDeclaration, List<Annotateable>> entry : methodsByType.entrySet()) {
             new FactoryWriter(environment, entry.getKey(), type, annotationTypeToFactoryMethodWriterMap).write(entry.getValue());
         }
     }

@@ -1,14 +1,15 @@
 package jedi.annotation.writer.method;
 
+import static jedi.functional.Coercions.list;
+
 import java.util.List;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.writer.method.receiver.EqualsFilterReceiverInvocationWriter;
-import jedi.functional.Coercions;
 import jedi.functional.Filter;
+
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
 public class EqualsFilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
     private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
@@ -25,7 +26,7 @@ public class EqualsFilterFactoryMethodWriter extends AbstractBasicFactoryMethodW
 
     @Override
     protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-        return Coercions.list(new Attribute(getDelegateMethodReturnType(), TEST_VALUE_PARAMETER_NAME));
+        return list(new Attribute(getDelegateMethodReturnType(), TEST_VALUE_PARAMETER_NAME));
     }
 
     @Override
@@ -39,8 +40,8 @@ public class EqualsFilterFactoryMethodWriter extends AbstractBasicFactoryMethodW
     }
 
     @Override
-    protected boolean hasCorrectReturnType(final JediMethod method) {
-        return !(method.isVoidReturnType() || method.isBooleanReturnType());
+    protected boolean hasCorrectReturnType(final Annotateable method) {
+        return !(method.isVoid() || method.isBoolean());
     }
 
     @Override

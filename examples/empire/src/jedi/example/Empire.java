@@ -10,9 +10,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import jedi.annotation.JediFunctor;
+
 // This class shows a few uses of the Jedi code. See the Stormtrooper class for the annotations which
 // generated the StormtrooperStaticClosureFactory referenced in the code below.
 public class Empire {
+	@JediFunctor
     private Set<Stormtrooper> stormtroopers = new HashSet<Stormtrooper>();
     
       // This is the 'conventional' way of writing the method of the same name below. No doubt the

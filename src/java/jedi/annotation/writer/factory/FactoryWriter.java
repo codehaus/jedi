@@ -6,7 +6,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.method.FactoryMethodWriter;
@@ -62,7 +62,7 @@ public class FactoryWriter {
         factoryType.writeClassHeader(writer, typeDeclaration);
     }
 
-    public void write(final List<JediMethod> methods) {
+    public void write(final List<Annotateable> methods) {
         try {
             startFactory();
             writeMethods(methods);
@@ -74,9 +74,9 @@ public class FactoryWriter {
         }
     }
 
-    private void writeMethods(final List<JediMethod> methods) {
-        for (final JediMethod method : methods) {
-            method.write();
+    private void writeMethods(final List<Annotateable> methods) {
+        for (final Annotateable method : methods) {
+            method.writeFactoryMethod();
         }
     }
 }

@@ -8,7 +8,7 @@ import static jedi.functional.FunctionalPrimitives.join;
 import java.util.Collection;
 import java.util.List;
 
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.util.BoxerFunctor;
 import jedi.annotation.writer.JavaWriter;
@@ -16,7 +16,6 @@ import jedi.annotation.writer.factory.FactoryWriterException;
 import jedi.annotation.writer.factorytype.ClosureFragmentWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.method.receiver.ReceiverInvocationWriter;
-import jedi.functional.FunctionalPrimitives;
 import jedi.functional.Functor;
 import jedi.functional.Functor2;
 
@@ -29,7 +28,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 
     private JavaWriter writer;
     private FactoryType factoryType;
-    private JediMethod method;
+    private Annotateable method;
     private AnnotationProcessorEnvironment environment;
 
     private ReceiverInvocationWriter receiverInvocationWriter = new ReceiverInvocationWriter();
@@ -38,7 +37,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		this.environment = environment;
     }
 
-    public final boolean canHandle(final JediMethod method) {
+    public final boolean canHandle(final Annotateable method) {
         return hasCorrectNumberOfParameters(getExecuteMethodParameters(method).size()) && hasCorrectReturnType(method);
     }
 
@@ -66,7 +65,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         };
     }
 
-    public final void execute(final JediMethod method) {
+    public final void execute(final Annotateable method) {
         this.method = method;
 
         startMethod();
@@ -92,14 +91,14 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     }
 
     protected final TypeMirror getDelegateMethodReturnType() {
-        return method.getReturnType();
+        return method.getType();
     }
 
     protected final List<Attribute> getExecuteMethodParameters() {
         return getExecuteMethodParameters(getMethod());
     }
 
-    protected abstract List<Attribute> getExecuteMethodParameters(JediMethod method);
+    protected abstract List<Attribute> getExecuteMethodParameters(Annotateable method);
 
     protected String getExecuteMethodReturnType() {
         return new BoxerFunctor().execute(getDelegateMethodReturnType());
@@ -115,7 +114,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     }
 
 	private String getStartOfMethodName() {
-		return isOption("-AjediSuppressAccessorVerbs") ? method.getSimplifiedName() : method.getName();
+		return method.getName(isOption("-AjediSuppressAccessorVerbs"));
 	}
 
 	private boolean isOption(String key) {
@@ -135,7 +134,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         return append(getFactoryMethodAdditionalFormalParameters(), getFactoryMethodBasicParameters());
     }
 
-    protected JediMethod getMethod() {
+    protected Annotateable getMethod() {
         return method;
     }
 
@@ -158,7 +157,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         return numberOfParameters >= 0 && numberOfParameters <= 2;
     }
 
-    protected abstract boolean hasCorrectReturnType(JediMethod method);
+    protected abstract boolean hasCorrectReturnType(Annotateable method);
 
     public final void initialise(final JavaWriter writer, final FactoryType factoryType) {
         this.writer = writer;
@@ -189,7 +188,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         print("\t");
         factoryType.writeMethodModifiers(writer);
         print(" ");
-        writeGenericTypeParameters();
+        method.writeGenericTypeParameters(writer);
         print(" ");
         writeClosureDeclaration();
         print(" " + getFactoryMethodName() + "(");
@@ -261,12 +260,8 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
         getWriter().printFormalParameters(getFactoryMethodParameters(), false);
     }
 
-    private void writeGenericTypeParameters() {
-        if (method.isGeneric()) {
-            print('<');
-            print(FunctionalPrimitives.join(method.getGenericTypeParameters(), ", "));
-            print('>');
-        }
+    public void writeGenericTypeParameters() {
+    	method.writeGenericTypeParameters(writer);
     }
 
     private void writeHashCodeMethod() {

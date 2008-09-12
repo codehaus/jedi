@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
-import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
 
 public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMethodWriter {
@@ -18,7 +18,7 @@ public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMe
 	
     @SuppressWarnings("unchecked")
     @Override
-    protected final List<Attribute> getExecuteMethodParameters(JediMethod method) {
+    protected final List<Attribute> getExecuteMethodParameters(Annotateable method) {
         return append(list(new Attribute(method.getDeclaringType(), RECEIVER_PARAMETER_NAME)), method.getCutParameters());
     }
         

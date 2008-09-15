@@ -110,9 +110,12 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     protected abstract Collection<Attribute> getFactoryMethodBasicParameters();
 
     public final String getFactoryMethodName() {
-        String start = getStartOfMethodName();
-        return start + getFactoryMethodNameRequiredSuffix() + (isOption("-AjediSuppressSuffixes") ? "" : getFactoryMethodNameReturnTypeSuffix());
+        return getStartOfMethodName() + getFactoryMethodNameRequiredSuffix() + optional("-AjediSuppressSuffixes", "", getFactoryMethodNameReturnTypeSuffix());
     }
+
+	protected String optional(String option, String presentValue, String absentValue) {
+		return isOption(option) ? presentValue : absentValue;
+	}
 
 	private String getStartOfMethodName() {
 		return method.getName(isOption("-AjediSuppressAccessorVerbs"));
@@ -127,7 +130,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	}
 	
     protected String getFactoryMethodNameReturnTypeSuffix() {
-        return getReturnType().getSimpleName();
+        return optional("-AjediSuppressClosureTypeSuffix", "", getReturnType().getSimpleName());
     }
 
     @SuppressWarnings("unchecked")

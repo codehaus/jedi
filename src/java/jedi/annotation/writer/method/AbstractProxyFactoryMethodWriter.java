@@ -32,6 +32,6 @@ public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMe
 
     @Override
     protected final String getFactoryMethodNameReturnTypeSuffix() {
-        return "Proxy" + super.getFactoryMethodNameReturnTypeSuffix();
+        return optional("-AjediSuppressProxySuffix", "", "Proxy") + super.getFactoryMethodNameReturnTypeSuffix();
     }
 }

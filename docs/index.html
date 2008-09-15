@@ -76,12 +76,35 @@
                 <code>apt</code> to process annotations, producing additional source code, which can then be compiled with <code>javac</code> using the
                 <code>-target jsr14</code> compiler flag. For an example of this, see the <code>build.xml</code> file in the Empire example, which can be found
                 in the 'examples' directory of the distribution.</p>
-            <p>If you want to suppress the suffix added to method names when creating factory methods, use the
-                <code>-AjediSuppressSuffixes</code> option on the <code>apt</code>/<code>javac</code> command line.</p>
-            <p>If you want to suppress accessor method prefixes ('get' and 'is') when creating factory methods, use the
-                <code>-AjediSuppressAccessorVerbs</code> option on the <code>apt</code>/<code>javac</code> command line.</p>
-            <p>There appears to be a bug in Ant 1.7 in the <code>option</code> element of the <code>apt</code> task. In order to pass the above two
-            	parameters to <code>apt</code> use the <code>compilerarg</code> element instead. See the 'empire' example build.xml for an example.</p>
+            <div class="subSectionHeading"><a name="options">Annotation Processor Options</a></div>
+            <p>Annotation processor options are specified with the <code>-A</code> switch on the <code>apt</code> command line. None of these options require values;
+            	the presence of the option is sufficient.</p>
+            <table>
+	            <tr><th>Option</th><th>Effect</th></tr>
+	            <tr>
+	            	<td><code>jediSuppressSuffixes</code></td>
+	            	<td><p>Suppress all suffixes added to method names when creating factory methods. Suffixes that may otherwise be added are
+	            		the word 'Proxy' and the unqualified name of the closure class (<i>e.g.</i> <code>Command</code>).
+	            		The generated code will contain overloaded methods with the same name as the annotated method. This may not be
+	            		compileable if the signatures of the overloaded forms are the same.</p>
+	            		<p>This option supersedes <code>jediSuppressProxySuffix</code> and <code>jediSuppressClosureTypeSuffix</code>.</td>
+	            </tr>
+	            <tr>
+	            	<td><code>jediSuppressProxySuffix</code></td>
+	                <td>If you want to suppress just the <code>Proxy</code> suffix for generated methods, use this option.
+	                	This may also cause uncompileable code to be generated.</td>
+	            </tr>
+	            <tr>
+	            	<td><code>jediSuppressClosureTypeSuffix</code></td>
+	                <td>Suppresses just the closure type from being appended to the name of the generated method. This can cause uncompileable
+	                	code to be generated if the method is annotated with more than one <code>@Jedi</code> annotation. This can be fixed
+	                	with the <code>name</code> parameter of the annotations.</td>
+	            </tr>
+	            <tr>
+	            	<td><code>jediSuppressAccessorVerbs</code></td>
+	                <td>Suppresses accessor method prefixes (<code>get</code> and <code>is</code>) when creating factory methods.</td>
+	            </tr>
+            </table>
             
             <div class="sectionHeading"> <a name="features">Features</a>
             </div>

@@ -29,6 +29,8 @@ public final class None<T> implements Option<T> {
 			throw new UnsupportedOperationException();
 		}
 	}
+	
+	private final EmptyIterator iterator = new EmptyIterator();
 
 	public None() {
 	}
@@ -86,7 +88,7 @@ public final class None<T> implements Option<T> {
 	}
 
 	public Iterator<T> iterator() {
-		return new EmptyIterator();
+		return iterator;
 	}
 
 }

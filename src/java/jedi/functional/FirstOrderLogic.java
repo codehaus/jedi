@@ -3,6 +3,7 @@ package jedi.functional;
 import static jedi.assertion.Assert.assertNotNull;
 import static jedi.functional.Coercions.asList;
 import static jedi.functional.Coercions.asSet;
+import static jedi.functional.FunctionalPrimitives.hasItems;
 import static jedi.functional.FunctionalPrimitives.head;
 import static jedi.functional.FunctionalPrimitives.select;
 import static jedi.functional.FunctionalPrimitives.tail;
@@ -19,9 +20,9 @@ import jedi.filters.Inverter;
 public class FirstOrderLogic {
     /**
      * Returns <code>true</code> if a given <code>predicate</code> returns <code>true</code> for at least one of
-     * the <code>items</code> in a given collection. <code>false</code> otherwise.
+     * the <code>items</code> in a given iterable. <code>false</code> otherwise.
      */
-    public static <T> boolean exists(Collection<T> items, Filter<? super T> predicate) {
+    public static <T> boolean exists(Iterable<T> items, Filter<? super T> predicate) {
     	assertNotNull(items, "items must not be null");
         assertNotNull(predicate, "predicate must not be null");
 
@@ -35,17 +36,17 @@ public class FirstOrderLogic {
 
     /**
      * Returns <code>true</code> if a given <code>predicate</code> returns <code>true</code> for all of the
-     * <code>items</code> in a given collection. <code>false</code> otherwise.
+     * <code>items</code> in a given iterable. <code>false</code> otherwise.
      */
-    public static <T> boolean all(Collection<T> items, Filter<? super T> predicate) {
+    public static <T> boolean all(Iterable<T> items, Filter<? super T> predicate) {
         return !exists(items, invert(predicate));
     }
 
     /**
      * Returns <code>true</code> if a given <code>predicate</code> returns <code>true</code> for zero or one of
-     * the <code>items</code> in a given collection. <code>false</code> otherwise.
+     * the <code>items</code> in a given iterable. <code>false</code> otherwise.
      */
-    public static <T> boolean zeroOrOne(Collection<T> items, Filter<? super T> predicate) {
+    public static <T> boolean zeroOrOne(Iterable<T> items, Filter<? super T> predicate) {
         return select(items, predicate).size() <= 1;
     }
 
@@ -87,10 +88,10 @@ public class FirstOrderLogic {
     /**
      * Calculate the intersection of all of the given collections.
      */
-    public static <T> Set<T> intersection(Collection<Collection<T>> collections) {
+    public static <T> Set<T> intersection(Iterable<Collection<T>> collections) {
         assertNotNull(collections, "collections");
 
-        if (collections.isEmpty()) {
+        if (!hasItems(collections)) {
             return new HashSet<T>();
         }
 
@@ -112,10 +113,10 @@ public class FirstOrderLogic {
     /**
      * Calculate the union of all of the given collections.
      */
-    public static <T> Set<T> union(Collection<Collection<T>> collections) {
+    public static <T> Set<T> union(Iterable<Collection<T>> collections) {
         assertNotNull(collections, "collections");
 
-        if (collections.isEmpty()) {
+        if (!hasItems(collections)) {
             return new HashSet<T>();
         }
 

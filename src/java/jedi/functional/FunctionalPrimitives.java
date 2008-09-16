@@ -1,7 +1,6 @@
 package jedi.functional;
 
 import static jedi.assertion.Assert.assertEqual;
-import static jedi.assertion.Assert.assertFalse;
 import static jedi.assertion.Assert.assertGreaterThanOrEqualTo;
 import static jedi.assertion.Assert.assertLessThanOrEqualTo;
 import static jedi.assertion.Assert.assertNotNull;
@@ -9,9 +8,9 @@ import static jedi.assertion.Assert.assertNotNullOrEmpty;
 import static jedi.assertion.Assert.assertTrue;
 import static jedi.functional.Coercions.asList;
 import static jedi.functional.Coercions.list;
+import static jedi.functional.Comparables.sort;
 import static jedi.functional.Comparables.sortInPlace;
 import static jedi.functional.FirstOrderLogic.invert;
-import static jedi.option.Options.none;
 import static jedi.option.Options.option;
 import static jedi.option.Options.some;
 
@@ -20,11 +19,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import jedi.option.None;
 import jedi.option.Option;
+import jedi.option.Options;
 import jedi.option.Some;
 
 /**
@@ -52,6 +53,14 @@ public class FunctionalPrimitives {
         group.add(value);
     }
 
+    private static <T> Collection<T> toCollection(Iterable<T> iterable) {
+    	return iterable instanceof Collection ? (Collection<T>) iterable : asList(iterable);
+    }
+
+    private static <T> List<T> toList(Iterable<T> iterable) {
+    	return iterable instanceof List ? (List<T>) iterable : asList(iterable);
+    }
+    
     /**
      * Append all of the elements in all of the given <code>collections</code> into one list. All of the elements of the first item in <code>collections</code> are appended
      * first, then the items in the second collection, etc.
@@ -82,17 +91,15 @@ public class FunctionalPrimitives {
      *
      * @see #collect(Object[],Functor)
      */
-    public static <T, R> List<R> collect(final Collection<T> items, final Functor< ? super T, R> functor) {
+    public static <T, R> List<R> collect(final Iterable<T> items, final Functor< ? super T, R> functor) {
         assertNotNull(items, "items must not be null");
         assertNotNull(functor, "functor must not be null");
 
-        final List<R> mapped = new ArrayList<R>(items.size());
+        final List<R> mapped = new ArrayList<R>();
 
         for (final T item : items) {
             mapped.add(functor.execute(item));
         }
-
-        assertEqual(items.size(), mapped.size(), "items and map should be the same size but are not");
 
         return mapped;
     }
@@ -110,19 +117,27 @@ public class FunctionalPrimitives {
     /**
      * Get all but the first n elements of <code>items<code>. See <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#drop">SRFI-1</a>
      */
-    public static <T> List<T> drop(final int n, final Collection<T> items) {
+    public static <T> List<T> drop(final int n, final Iterable<T> items) {
         assertNotNull(items, "items must not be null");
-        assertLessThanOrEqualTo(items.size(), n, "n should be less than or equal to items.size but is not");
-        return asList(asList(items).subList(n, items.size()));
+        ArrayList<T> list = new ArrayList<T>();
+        int i = 0;
+        for (T t : items) {
+			if (i >= n) {
+				list.add(t);
+			}
+			i++;
+		}
+        return list;
     }
 
     /**
      * Get all but the last n elements of <code>items</code>. See <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#drop-right">SRFI-1</a>
      */
-    public static <T> List<T> dropRight(final int n, final Collection<T> items) {
+    public static <T> List<T> dropRight(final int n, final Iterable<T> items) {
         assertNotNull(items, "list must not be null");
-        assertLessThanOrEqualTo(items.size(), n, "n should be less than or equal to items.size but is not");
-        return take(items.size() - n, items);
+        Collection<T> collection = toCollection(items);
+        assertLessThanOrEqualTo(collection.size(), n, "n should be less than or equal to items.size but is not");
+        return take(collection.size() - n, collection);
     }
 
     /**
@@ -134,17 +149,26 @@ public class FunctionalPrimitives {
      * @param functor
      *            Given an element of the 'top' collection, this can obtain the collection of 'leaf' objects to accumulate
      */
-    public static <T, R> List<R> flatten(final Collection<T> items, final Functor< ? super T, ? extends Collection< ? extends R>> functor) {
+    public static <T, R> List<R> flatten(final Iterable<T> items, final Functor< ? super T, ? extends Iterable< ? extends R>> functor) {
     	assertNotNull(items, "items must not be null");
         assertNotNull(functor, "functor must not be null");
 
         final List<R> list = new ArrayList<R>();
 
         for (final T t : items) {
-            list.addAll(functor.execute(t));
+            addAll(list, functor.execute(t));
         }
 
         return list;
+    }
+    
+    /**
+     * Add all the elements of an iterable to a collection.
+     */
+    public static <T> void addAll(Collection<T> list, Iterable<? extends T> iterable) {
+    	for (T object : iterable) {
+			list.add(object);
+		}
     }
 
     /**
@@ -161,7 +185,7 @@ public class FunctionalPrimitives {
      *
      * <p/>For a more comprehensive description, see <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#FoldUnfoldMap">SRFI-1</a>
      */
-    public static <T, R, I extends R> R fold(final I initialValue, final Collection<T> collection, final Functor2<R, ? super T, R> functor2) {
+    public static <T, R, I extends R> R fold(final I initialValue, final Iterable<T> collection, final Functor2<R, ? super T, R> functor2) {
         assertNotNull(collection, "collection must not be null");
         assertNotNull(functor2, "functor2 must not be null");
 
@@ -175,7 +199,7 @@ public class FunctionalPrimitives {
     /**
      * Iterate over a collection of <code>items</code> applying the given <code>command</code> to each
      */
-    public static <T> Collection<T> forEach(final Collection<T> items, final Command< ? super T> command) {
+    public static <T> Iterable<T> forEach(final Iterable<T> items, final Command< ? super T> command) {
         assertNotNull(command, "command must not be null");
         assertNotNull(items, "items must not be null");
 
@@ -190,7 +214,7 @@ public class FunctionalPrimitives {
      * Group the elements of a collection such that all elements that are mapped to the same value by a given <code>keyFunctor</code> are in the same group. The groups are
      * returned as a map in which each value is a collection of values in one group and whose key is the value returned by the <code>keyFunctor</code> for all items in the group.
      */
-    public static <K, V> Map<K, List<V>> group(final Collection<V> toGroup, final Functor< ? super V, K> keyFunctor) {
+    public static <K, V> Map<K, List<V>> group(final Iterable<V> toGroup, final Functor< ? super V, K> keyFunctor) {
         assertNotNull(keyFunctor, "keyFunctor must not be null");
         assertNotNull(toGroup, "toGroup must not be null");
 
@@ -214,9 +238,9 @@ public class FunctionalPrimitives {
      * @see #headOrNullIfEmpty(Collection)
      * @see #headOrDefaultIfEmpty(Collection,Object)
      */
-    public static <T> T head(final Collection<T> items) {
+    public static <T> T head(final Iterable<T> items) {
         assertNotNull(items, "items must not be null");
-        assertFalse(items.isEmpty(), "items must not be empty");
+        assertTrue(hasItems(items), "items must not be empty");
         return headOrNullIfEmpty(items);
     }
 
@@ -228,10 +252,10 @@ public class FunctionalPrimitives {
      * @see #head(Collection)
      * @see #headOrNullIfEmpty(Collection)
      */
-    public static <T> T headOrDefaultIfEmpty(final Collection< ? extends T> items, final T defaultValue) {
+    public static <T> T headOrDefaultIfEmpty(final Iterable< ? extends T> items, final T defaultValue) {
         assertNotNull(items, "items must not be null");
 
-        if (items.isEmpty()) {
+        if (isEmpty(items)) {
             return defaultValue;
         }
 
@@ -246,7 +270,7 @@ public class FunctionalPrimitives {
      * @see #head(Collection)
      * @see #headOrDefaultIfEmpty(Collection,Object)
      */
-    public static <T> T headOrNullIfEmpty(final Collection<T> items) {
+    public static <T> T headOrNullIfEmpty(final Iterable<T> items) {
         return headOrDefaultIfEmpty(items, null);
     }
     
@@ -255,7 +279,7 @@ public class FunctionalPrimitives {
      * @param items
      * @return the first item (in iteration order) from a collection as {@link Some} or {@link None} if the collection is empty.
      */
-    public static <T> Option<T> headOption(final Collection<T> items) {
+    public static <T> Option<T> headOption(final Iterable<T> items) {
     	return option(headOrNullIfEmpty(items));
     }
 
@@ -270,9 +294,9 @@ public class FunctionalPrimitives {
      * @see #lastOrNullIfEmpty(Collection)
      * @see #lastOrDefaultIfEmpty(Collection,Object)
      */
-    public static <T> T last(Collection<? extends T> items) {
+    public static <T> T last(Iterable<? extends T> items) {
         assertNotNull(items, "items must not be null");
-        assertFalse(items.isEmpty(), "items must not be empty");
+        assertTrue(hasItems(items), "items must not be empty");
         return lastOrNullIfEmpty(items);
     }
 
@@ -284,17 +308,16 @@ public class FunctionalPrimitives {
      * @see #last(Collection)
      * @see #lastOrNullIfEmpty(Collection)
      */
-    public static <T> T lastOrDefaultIfEmpty(Collection<? extends T> items, T defaultValue) {
+    public static <T> T lastOrDefaultIfEmpty(Iterable<? extends T> items, T defaultValue) {
         assertNotNull(items, "items must not be null");
-
-        if (items.isEmpty()) {
+        if (isEmpty(items)) {
             return defaultValue;
         }
-
-        return (items instanceof List ? (List< ? extends T>) items : asList(items)).get(items.size() - 1);
+        List<? extends T> l = toList(items);
+        return l.get(l.size() - 1);
     }
 
-    public static <T> T lastOrNullIfEmpty(Collection<? extends T> items) {
+    public static <T> T lastOrNullIfEmpty(Iterable<? extends T> items) {
         return lastOrDefaultIfEmpty(items, null);
     }
 
@@ -312,7 +335,7 @@ public class FunctionalPrimitives {
      *
      * @see #head(Collection)
      */
-    public static <T> T first(Collection<? extends T> collection) {
+    public static <T> T first(Iterable<? extends T> collection) {
         return head(collection);
     }
 
@@ -321,7 +344,7 @@ public class FunctionalPrimitives {
      *
      * @see #fold(Object, java.util.Collection, Functor2)
      */
-    public static <T, R, I extends R> R inject(final I initialValue, final Collection<T> collection, final Functor2<R, ? super T, R> functor2) {
+    public static <T, R, I extends R> R inject(final I initialValue, final Iterable<T> collection, final Functor2<R, ? super T, R> functor2) {
         return fold(initialValue, collection, functor2);
     }
 
@@ -330,13 +353,24 @@ public class FunctionalPrimitives {
      *
      * @see #join(Object[], String)
      */
-    public static String join(final Collection< ? > items) {
+    public static String join(final Iterable< ? > items) {
         return join(items, "");
     }
 
-    public static String join(final Collection< ? > items, final String delimiter) {
+    public static String join(final Iterable< ? > items, final String delimiter) {
         assertNotNull(items, "items must not be null");
-        return join(items.toArray(), delimiter);
+        assertNotNull(delimiter, "delimiter must not be null");
+
+        Iterator<?> iterator = items.iterator();
+        final StringBuffer sb = new StringBuffer();
+        
+        while(iterator.hasNext()) {
+        	sb.append(iterator.next());
+        	if (iterator.hasNext()) {
+        		sb.append(delimiter);
+        	}
+        }
+        return sb.toString();
     }
 
     /**
@@ -344,16 +378,7 @@ public class FunctionalPrimitives {
      */
     public static String join(final Object[] items, final String delimiter) {
         assertNotNull(items, "items must not be null");
-        assertNotNull(delimiter, "delimiter must not be null");
-
-        final StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < items.length; i++) {
-            sb.append(items[i]);
-            if (i + 1 < items.length) {
-                sb.append(delimiter);
-            }
-        }
-        return sb.toString();
+        return join(asList(items), delimiter);
     }
 
     /**
@@ -380,10 +405,10 @@ public class FunctionalPrimitives {
      * @param lists
      * @return the shortest list
      */
-    public static <U, T extends Collection< ? extends U>> T longest(final Collection<T> lists) {
+    public static <U, T extends Collection< ? extends U>> T longest(final Iterable<T> lists) {
         assertNotNull(lists, "lists must not be null");
-        assertGreaterThanOrEqualTo(1, lists.size(), "lists must have at least one item");
-        return head(reverse(Comparables.sortInPlace(asList(lists), COLLECTION_SIZE)));
+        assertTrue(hasItems(lists), "lists must have at least one item");
+        return head(reverse(sortInPlace(asList(lists), COLLECTION_SIZE)));
     }
 
     /**
@@ -417,8 +442,8 @@ public class FunctionalPrimitives {
     /**
      * Create the Cartesian product of two collections, using a {@link Functor2 functor} as a factory of objects to represent the pair-wise products.
      */
-    public static <T, U, R> List<R> produce(final Collection<T> left, final Collection<U> right, final Functor2< ? super T, ? super U, R> factory) {
-        final List<R> product = new ArrayList<R>(left.size() * right.size());
+    public static <T, U, R> List<R> produce(final Iterable<T> left, final Iterable<U> right, final Functor2< ? super T, ? super U, R> factory) {
+        final List<R> product = new ArrayList<R>();
 
         for (final T t : left) {
             for (final U u : right) {
@@ -434,16 +459,16 @@ public class FunctionalPrimitives {
      *
      * @see #select(java.util.Collection, Filter)
      */
-    public static <T> List<T> reject(final Collection<T> items, final Filter< ? super T> filter) {
+    public static <T> List<T> reject(final Iterable<T> items, final Filter< ? super T> filter) {
         assertNotNull(filter, "filter must not be null");
         assertNotNull(items, "items must not be null");
 
         return select(items, invert(filter));
     }
 
-    public static <T> List<T> reverse(final Collection<T> items) {
+    public static <T> List<T> reverse(final Iterable<T> items) {
         assertNotNull(items, "items must not be null");
-        final List<T> result = asList(items);
+        List<T> result = asList(items);
         Collections.reverse(result);
         return result;
     }
@@ -453,11 +478,11 @@ public class FunctionalPrimitives {
      *
      * @see #reject(java.util.Collection, Filter)
      */
-    public static <T> List<T> select(final Collection<T> items, final Filter< ? super T> filter) {
+    public static <T> List<T> select(final Iterable<T> items, final Filter< ? super T> filter) {
         assertNotNull(filter, "filter must not be null");
         assertNotNull(items, "items must not be null");
 
-        final List<T> selected = new ArrayList<T>(items.size());
+        final List<T> selected = new ArrayList<T>();
 
         for (final T item : items) {
             if (filter.execute(item)) {
@@ -487,26 +512,39 @@ public class FunctionalPrimitives {
      * @param collections
      * @return the shortest list
      */
-    public static <U, T extends Collection< ? extends U>> T shortest(final Collection<T> collections) {
+    public static <U, T extends Collection< ? extends U>> T shortest(final Iterable<T> collections) {
         assertNotNull(collections, "lists must not be null");
-        assertGreaterThanOrEqualTo(1, collections.size(), "lists must have at least one item");
-        return head(sortInPlace(asList(collections), COLLECTION_SIZE));
+        assertTrue(hasItems(collections), "lists must have at least one item");
+        return head(sort(toList(collections), COLLECTION_SIZE));
     }
+
+	public static <T> boolean hasItems(final Iterable<T> iterable) {
+		return iterable.iterator().hasNext();
+	}
+
+	public static <T> boolean isEmpty(final Iterable<T> iterable) {
+		return !hasItems(iterable);
+	}
 
     /**
      * Create a list from the nth elements of the lists.
      */
     @SuppressWarnings("unchecked")
-    public static List slice(final int n, final List<List> lists) {
-        assertNotNull(lists, "lists must not be null");
+    public static List slice(final int n, final Iterable<List> items) {
+        assertNotNull(items, "lists must not be null");
         assertGreaterThanOrEqualTo(0, n, "n must be greater than or equal to 0");
-        final List items = new ArrayList(lists.size());
+        Collection<List> lists = toCollection(items);
+        final List result = new ArrayList(lists.size());
         for (final List list : lists) {
-            items.add(list.get(n));
+            result.add(list.get(n));
         }
-        return items;
+        return result;
     }
 
+    /**
+     * Create a list of string by splitting on a regex.
+     * @see java.lang.String#split
+     */
     public static List<String> split(final String item, final String regex) {
         assertNotNull(item, "item must not be null");
         assertNotNull(regex, "regex must not be null");
@@ -524,44 +562,50 @@ public class FunctionalPrimitives {
      * @see #headOrNullIfEmpty(Collection)
      * @see #headOrDefaultIfEmpty(Collection,Object)
      */
-    public static <T> List<T> tail(final Collection<T> items) {
+    public static <T> List<T> tail(final Iterable<T> items) {
         assertNotNull(items, "items must not be null");
-        assertFalse(items.isEmpty(), "items must not be empty");
+        assertTrue(hasItems(items), "items must not be empty");
 
         return drop(1, items);
     }
 
     /**
-     * Get the first n elements of list. See <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#take">SRFI-1</a>
+     * Get the first n elements of items. 
+     * @see <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#take">SRFI-1</a>
      */
-    public static <T> List<T> take(final int n, final Collection<T> items) {
+    public static <T> List<T> take(final int n, final Iterable<T> items) {
         assertNotNull(items, "list must not be null");
-        assertLessThanOrEqualTo(items.size(), n, "n must be less than or equal to items.size");
-        return asList(asList(items).subList(0, n));
+        List<T> asList = toList(items);
+        assertLessThanOrEqualTo(asList.size(), n, "n must be less than or equal to items.size");
+		return asList(asList.subList(0, n));
     }
 
     /**
-     * Get the last n elements of list. See <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#take-right">SRFI-1</a>
+     * Get the last n elements of an Iterable.
+     * @see <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#take-right">SRFI-1</a>
      */
-    public static <T> List<T> takeRight(final int n, final Collection<T> list) {
-        assertNotNull(list, "list must not be null");
-        assertLessThanOrEqualTo(list.size(), n, "n must be less than or equal to list.size");
+    public static <T> List<T> takeRight(final int n, final Iterable<T> items) {
+        assertNotNull(items, "list must not be null");
+        List<T> asList = toList(items);
+        assertLessThanOrEqualTo(asList.size(), n, "n must be less than or equal to list.size");
 
-        return drop(list.size() - n, list);
+        return drop(asList.size() - n, asList);
     }
 
     /**
-     * Get n middle elements of a list.
+     * Get n middle elements of an Iterable.
      */
-    public static <T> List<T> takeMiddle(final int start, final int n, final Collection<T> list) {
-    	assertNotNull(list, "list must not be null");
-    	assertLessThanOrEqualTo(list.size(), start + n, "start + n must be less than or equal to list.size");
+    public static <T> List<T> takeMiddle(final int start, final int n, final Iterable<T> items) {
+    	assertNotNull(items, "list must not be null");
+    	List<T> asList = toList(items);
+    	assertLessThanOrEqualTo(asList.size(), start + n, "start + n must be less than or equal to list.size");
 
-    	return take(n, drop(start, list));
+    	return take(n, drop(start, asList));
     }
 
     /**
-     * Zip interleaves a list of lists. If zip is passed n lists, it returns a list as long as the shortest of these lists, each element of which is an n-element list comprised of
+     * Zip interleaves a collection of lists.
+     * If zip is passed n lists, it returns a list as long as the shortest of these lists, each element of which is an n-element list comprised of
      * the corresponding elements from the parameter lists.
      *
      * <p/>See <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#zip">SRFI-1</a>
@@ -570,7 +614,7 @@ public class FunctionalPrimitives {
      * @return zipped lists
      */
     @SuppressWarnings("unchecked")
-    public static List zip(final List<List> lists) {
+    public static List zip(final Iterable<List> lists) {
         final int n = shortest(lists).size();
         final List result = new ArrayList();
         for (int i = 0; i < n; i++) {
@@ -580,14 +624,12 @@ public class FunctionalPrimitives {
     }
 
     /**
-     * @param <T>
-     * @param line
-     * @param length
      * @return a list of lists by splitting the given list into lists of length <code>length</code>.
      */
-    public static <T> List<List<T>> tabulate(final List<T> line, int length) {
-    	assertTrue(line.size() % length == 0, "line.size must be a multiple of length", line, length);
-    	List<List<T>> result = new ArrayList<List<T>>();
+    public static <T> List<List<T>> tabulate(final Iterable<T> list, int length) {
+    	List<T> line = toList(list);
+    	assertTrue(line.size() % length == 0, "size must be a multiple of length", line, length);
+    	List<List<T>> result = new ArrayList<List<T>>(line.size());
     	for (int i = 0; i < line.size(); i+=length) {
     		result.add(takeMiddle(i,length, line));
     	}
@@ -595,7 +637,8 @@ public class FunctionalPrimitives {
     }
 
     /**
-     * Removes the last item (in iteration order) from a collection. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
+     * Removes the last item (in iteration order) from a collection. 
+     * The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
      * thrown.  Emulates Array.pop in Ruby.
      *
      * @return the last item in the collection
@@ -605,9 +648,10 @@ public class FunctionalPrimitives {
      * @see #headOrNullIfEmpty(Collection)
      * @see #headOrDefaultIfEmpty(Collection,Object)
      */
-    public static <T> T pop(List<T> items) {
-        assertNotNullOrEmpty(items, "items must not be null or empty");
-        return items.remove(items.size() - 1);
+    public static <T> T pop(Iterable<T> items) {
+    	List<T> list = toList(items);
+        assertNotNullOrEmpty(list, "items must not be null or empty");
+        return list.remove(list.size() - 1);
     }
     
     /**
@@ -615,21 +659,18 @@ public class FunctionalPrimitives {
      *
      * @return the last item in the collection as {@link Some} or {@link None} if the list is empty.
      */
-    public static <T> Option<T> popOption(List<T> items) {
-    	if (items.isEmpty()) {
-    		return none();
-    	}
-    	return some(pop(items));
+    public static <T> Option<T> popOption(Iterable<T> items) {
+    	return isEmpty(items) ? Options.<T>none() : some(pop(items));
     }
 
 	/**
-	 * Partition a list into two sublists using the given filter.
-	 * @param list
+	 * Partition a collection of items into two sublists using the given filter.
+	 * @param items
 	 * @return a list whose first element as a list of items in list that pass the filter, 
 	 * 			the second item is a list of elements that did not pass the filter.
 	 */
     @SuppressWarnings("unchecked")
-	public static <T> List<List<T>> partition(List<T> list, Filter<T> filter) {
-		return list(select(list, filter), select(list, invert(filter)));
+	public static <T> List<List<T>> partition(Iterable<T> items, Filter<T> filter) {
+		return list(select(items, filter), select(items, invert(filter)));
 	}
 }

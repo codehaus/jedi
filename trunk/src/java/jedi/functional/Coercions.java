@@ -71,9 +71,16 @@ public class Coercions {
     /**
      * Copy the given collection into a new list
      */
-    public static <T> List<T> asList(final Collection<T> items) {
+    public static <T> List<T> asList(final Iterable<T> items) {
         assertNotNull(items, "items must not be null");
-        return new ArrayList<T>(items);
+        if (items instanceof Collection) {
+        	return new ArrayList<T>( (Collection<T>) items);
+        }
+        ArrayList<T> list = new ArrayList<T>();
+        for (T t : items) {
+			list.add(t);
+		}
+        return list;
     }
 
     /**
@@ -138,7 +145,7 @@ public class Coercions {
     /**
      * Produce a collection with a different instantiated generic type from a given collection.
      */
-    public static <T, R> List<R> cast(final Class<R> returnType, final Collection<T> items) {
+    public static <T, R> List<R> cast(final Class<R> returnType, final Iterable<T> items) {
         assertNotNull(returnType, "returnType must not be null");
 
         return FunctionalPrimitives.collect(items, new Functor<T, R>() {

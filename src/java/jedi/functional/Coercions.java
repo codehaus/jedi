@@ -3,6 +3,8 @@ package jedi.functional;
 import static jedi.assertion.Assert.assertEqual;
 import static jedi.assertion.Assert.assertNotNull;
 import static jedi.assertion.Assert.assertTrue;
+import static jedi.functional.FunctionalPrimitives.head;
+import static jedi.functional.FunctionalPrimitives.select;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class Coercions {
     @SuppressWarnings("unchecked")
     public static <T> T[] asArray(final Collection<T> items) {
         assertNotNull(items, "items must not be null");
-        return items.toArray((T[]) Array.newInstance(FunctionalPrimitives.head(FunctionalPrimitives.select(items, new NotNullFilter<T>())).getClass(), items.size()));
+        return items.toArray((T[]) Array.newInstance(head(select(items, new NotNullFilter<T>())).getClass(), items.size()));
     }
 
     /**
@@ -73,9 +75,6 @@ public class Coercions {
      */
     public static <T> List<T> asList(final Iterable<T> items) {
         assertNotNull(items, "items must not be null");
-        if (items instanceof Collection) {
-        	return new ArrayList<T>( (Collection<T>) items);
-        }
         ArrayList<T> list = new ArrayList<T>();
         for (T t : items) {
 			list.add(t);

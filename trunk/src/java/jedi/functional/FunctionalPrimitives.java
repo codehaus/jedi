@@ -67,11 +67,11 @@ public class FunctionalPrimitives {
      *
      * @see #append(Collection[])
      */
-    public static <T> List<T> append(final Collection< ? extends Collection< ? extends T>> collections) {
-        return flatten(collections, new Functor<Collection< ? extends T>, Collection<T>>() {
+    public static <T> List<T> append(final Iterable< ? extends Iterable< ? extends T>> collections) {
+        return flatten(collections, new Functor<Iterable< ? extends T>, Iterable<T>>() {
             @SuppressWarnings("unchecked")
-            public Collection<T> execute(final Collection< ? extends T> value) {
-                return (Collection<T>) value;
+            public Iterable<T> execute(final Iterable< ? extends T> value) {
+                return (Iterable<T>) value;
             }
         });
     }
@@ -134,7 +134,7 @@ public class FunctionalPrimitives {
      * Get all but the last n elements of <code>items</code>. See <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#drop-right">SRFI-1</a>
      */
     public static <T> List<T> dropRight(final int n, final Iterable<T> items) {
-        assertNotNull(items, "list must not be null");
+        assertNotNull(items, "items must not be null");
         Collection<T> collection = toCollection(items);
         assertLessThanOrEqualTo(collection.size(), n, "n should be less than or equal to items.size but is not");
         return take(collection.size() - n, collection);
@@ -165,10 +165,13 @@ public class FunctionalPrimitives {
     /**
      * Add all the elements of an iterable to a collection.
      */
-    public static <T> void addAll(Collection<T> list, Iterable<? extends T> iterable) {
+    public static <T> Collection<T> addAll(Collection<T> list, Iterable<? extends T> iterable) {
+    	assertNotNull(list, "list must not be null");
+    	assertNotNull(iterable, "iterable must not be null");
     	for (T object : iterable) {
 			list.add(object);
 		}
+    	return list;
     }
 
     /**
@@ -211,8 +214,11 @@ public class FunctionalPrimitives {
     }
 
     /**
-     * Group the elements of a collection such that all elements that are mapped to the same value by a given <code>keyFunctor</code> are in the same group. The groups are
-     * returned as a map in which each value is a collection of values in one group and whose key is the value returned by the <code>keyFunctor</code> for all items in the group.
+     * A synonym for {@link #partition(Iterable, Functor)}
+     * Group the elements of a collection such that all elements that are mapped to the same value by a given
+     * <code>keyFunctor</code> are in the same group. The groups are returned as a map in which each value is
+     * a collection of values in one group and whose key is the value returned by the <code>keyFunctor</code>
+     * for all items in the group.
      */
     public static <K, V> Map<K, List<V>> group(final Iterable<V> toGroup, final Functor< ? super V, K> keyFunctor) {
         assertNotNull(keyFunctor, "keyFunctor must not be null");
@@ -226,9 +232,21 @@ public class FunctionalPrimitives {
 
         return groups;
     }
+    
+    /**
+     * A synonym for {@link #group(Iterable, Functor)}
+     * Partition the elements of a collection such that all elements that are mapped to the same value by a given
+     * <code>keyFunctor</code> are in the same partition. The groups are returned as a map in which each value is
+     * a collection of values in one partition and whose key is the value returned by the <code>keyFunctor</code>
+     * for all items in the group.
+     */
+    public static <K, V> Map<K, List<V>> partition(final Iterable<V> toPartition, final Functor< ? super V, K> keyFunctor) {
+    	return group(toPartition, keyFunctor);
+    }
 
     /**
-     * Get the first item (in iteration order) from a collection. The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
+     * Get the first item (in iteration order) from a collection.
+     * The collection must contain at least one item or an {@link jedi.assertion.AssertionError AssertionError} will be
      * thrown.
      *
      * @return the first item in the collection
@@ -400,19 +418,19 @@ public class FunctionalPrimitives {
     }
 
     /**
-     * Find the longest list in a list of lists
+     * Find the biggest collection in a collection of collections
      *
-     * @param lists
+     * @param collections
      * @return the shortest list
      */
-    public static <U, T extends Collection< ? extends U>> T longest(final Iterable<T> lists) {
-        assertNotNull(lists, "lists must not be null");
-        assertTrue(hasItems(lists), "lists must have at least one item");
-        return head(reverse(sortInPlace(asList(lists), COLLECTION_SIZE)));
+    public static <U, T extends Collection< ? extends U>> T longest(final Iterable<T> collections) {
+        assertNotNull(collections, "collections must not be null");
+        assertTrue(hasItems(collections), "collections must have at least one item");
+        return head(reverse(sortInPlace(asList(collections), COLLECTION_SIZE)));
     }
 
     /**
-     * Returns an n-element list, whose elements are all the value fill. For a more comprehensive description, see <a
+     * Returns an n-element list, whose elements are all the value <code>fill</code>. For a more comprehensive description, see <a
      * href="http://srfi.schemers.org/srfi-1/srfi-1.html#make-list">SRFI-1</a>
      */
     public static <T> List<T> makeList(final int n, final T fill) {
@@ -515,7 +533,7 @@ public class FunctionalPrimitives {
     public static <U, T extends Collection< ? extends U>> T shortest(final Iterable<T> collections) {
         assertNotNull(collections, "lists must not be null");
         assertTrue(hasItems(collections), "lists must have at least one item");
-        return head(sort(toList(collections), COLLECTION_SIZE));
+        return head(sort(asList(collections), COLLECTION_SIZE));
     }
 
 	public static <T> boolean hasItems(final Iterable<T> iterable) {
@@ -527,15 +545,14 @@ public class FunctionalPrimitives {
 	}
 
     /**
-     * Create a list from the nth elements of the lists.
+     * Create a list from the nth elements of the given lists.
      */
     @SuppressWarnings("unchecked")
     public static List slice(final int n, final Iterable<List> items) {
         assertNotNull(items, "lists must not be null");
         assertGreaterThanOrEqualTo(0, n, "n must be greater than or equal to 0");
-        Collection<List> lists = toCollection(items);
-        final List result = new ArrayList(lists.size());
-        for (final List list : lists) {
+        final List result = new ArrayList();
+        for (final List list : items) {
             result.add(list.get(n));
         }
         return result;
@@ -575,9 +592,15 @@ public class FunctionalPrimitives {
      */
     public static <T> List<T> take(final int n, final Iterable<T> items) {
         assertNotNull(items, "list must not be null");
-        List<T> asList = toList(items);
-        assertLessThanOrEqualTo(asList.size(), n, "n must be less than or equal to items.size");
-		return asList(asList.subList(0, n));
+        List<T> result = new ArrayList<T>();
+        for (T item : items) {
+        	if (result.size() == n) {
+        		return result;
+        	}
+        	result.add(item);
+        }
+        assertEqual(n, result.size(), "There are not enough items to take");
+        return result;
     }
 
     /**
@@ -597,10 +620,23 @@ public class FunctionalPrimitives {
      */
     public static <T> List<T> takeMiddle(final int start, final int n, final Iterable<T> items) {
     	assertNotNull(items, "list must not be null");
-    	List<T> asList = toList(items);
-    	assertLessThanOrEqualTo(asList.size(), start + n, "start + n must be less than or equal to list.size");
-
-    	return take(n, drop(start, asList));
+    	assertGreaterThanOrEqualTo(0, start, "start must not be negative");
+    	assertGreaterThanOrEqualTo(0, n, "n must not be negative");
+    	
+    	List<T> result = new ArrayList<T>();
+    	int index = 0;
+    	for (T item : items) {
+    		if (result.size() == n) {
+    			return result;
+    		}
+    		if (index >= start) {
+    			result.add(item);
+    		}
+    		index++;
+    	}
+    	
+    	assertEqual(n, result.size(), "The given items has insufficient elements");
+    	return result;
     }
 
     /**

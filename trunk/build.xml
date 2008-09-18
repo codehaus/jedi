@@ -9,7 +9,6 @@
     <property name="meta-inf.dir" location="src/META-INF"/>
 	
     <property name="build.dir" value="build"/>
-    <property name="build.classes.1.4.dir" value="${build.dir}/classes/1.4"/>
     <property name="build.classes.1.5.dir" value="${build.dir}/classes/1.5"/>
 
     <property name="build.test.dir" value="${build.dir}/classes/test"/>
@@ -20,7 +19,6 @@
 	<property name="dist.name" value="jedi_${version.number}"/>
     <property name="dist" location="${build.dir}/${dist.name}"/>
 	<property name="distfile.base.name" value="${dist}/${project.name}_${version.number}_"/>
-    <property name="1.4_jar_file" location="${distfile.base.name}jdk1.4.jar"/>
     <property name="1.5_jar_file" location="${distfile.base.name}jdk1.5.jar"/>
 	<property name="src.zip.file" location="${distfile.base.name}src.zip"/>
 	
@@ -43,25 +41,11 @@
         <delete dir="${dist}"/>
     </target>
 
-    <target name="build_1.4_jar">
-        <jar file="${1.4_jar_file}">
-            <fileset dir="${build.classes.1.4.dir}" includes="**/*"/>
-			<metainf dir="${meta-inf.dir}" includes="**/*"/>
-        </jar>
-    </target>
-
     <target name="build_1.5_jar">
         <jar file="${1.5_jar_file}">
             <fileset dir="${build.classes.1.5.dir}" includes="**/*"/>
 			<metainf dir="${meta-inf.dir}" includes="**/*"/>
         </jar>
-    </target>
-
-    <target name="compile_1.4">
-        <mkdir dir="${build.classes.1.4.dir}"/>
-        <javac destdir="${build.classes.1.4.dir}" debug="on" target="jsr14">
-            <src path="${java.src.dir}"/>
-        </javac>
     </target>
 
     <target name="compile_1.5">
@@ -79,13 +63,13 @@
         </javac>
     </target>
 
-    <target name="compile" depends="clean, init, compile_1.4, compile_1.5"/>
+    <target name="compile" depends="clean, init, compile_1.5"/>
 	
 	<target name="zipsource" depends="init">
 		<zip basedir="${java.src.dir}" destfile="${src.zip.file}"/>
 	</target>
 
-    <target name="build" depends="compile, unit_test, build_1.4_jar, build_1.5_jar, docs, examples, zipsource"/>
+    <target name="build" depends="compile, unit_test, build_1.5_jar, docs, examples, zipsource"/>
 	
 	<target name="distribution" depends="clean, build">
 		<zip destfile="${build.dir}/${dist.name}_${DSTAMP}${TSTAMP}.zip">
@@ -135,18 +119,4 @@
             <report format="frames" todir="${report.dir}"/>
         </junitreport>
     </target>
-
-    <target name="aptExample" depends="build">
-        <mkdir dir="${build.dir}/example"/>
-        <apt srcdir="src/example"
-             classpath="${1.5_jar_file}"
-             debug="on"
-             compile="false"
-             preprocessdir="${build.dir}/example">
-            <factorypath>
-                <pathelement location="${1.5_jar_file}"/>
-            </factorypath>
-        </apt>
-    </target>
-
 </project>

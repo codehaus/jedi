@@ -65,7 +65,7 @@ public class FunctionalPrimitives {
      * Append all of the elements in all of the given <code>collections</code> into one list. All of the elements of the first item in <code>collections</code> are appended
      * first, then the items in the second collection, etc.
      *
-     * @see #append(Collection[])
+     * @see #append(Collection...)
      */
     public static <T> List<T> append(final Iterable< ? extends Iterable< ? extends T>> collections) {
         return flatten(collections, new Functor<Iterable< ? extends T>, Iterable<T>>() {
@@ -80,7 +80,7 @@ public class FunctionalPrimitives {
      * Append all of the elements in all of the given <code>collections</code> into one list. All of the elements of the first item in <code>collections</code> are appended
      * first, then the items in the second collection, etc. Equivalent to <code>append(list(collections))</code>
      *
-     * @see #append(Collection)
+     * @see #append(Iterable)
      */
     public static <T> List<T> append(final Collection< ? extends T>... collections) {
         return append(list(collections));
@@ -108,7 +108,7 @@ public class FunctionalPrimitives {
      * Apply <code>functor</code> to each element of <code>items</code> and return the list of results. The iteration order of <code>items</code> is preserved in the returned
      * list. <p/> Equivalent to <code>collect(functor, asList(items))</code>
      *
-     * @see #collect(Collection,Functor)
+     * @see #collect(Iterable, Functor)
      */
     public static <T, R> List<R> collect(final T[] items, final Functor< ? super T, R> functor) {
         return collect(asList(items), functor);
@@ -253,8 +253,8 @@ public class FunctionalPrimitives {
      * @throws jedi.assertion.AssertionError
      *             if the collection is empty
      * @see #only(Collection)
-     * @see #headOrNullIfEmpty(Collection)
-     * @see #headOrDefaultIfEmpty(Collection,Object)
+     * @see #headOrNullIfEmpty(Iterable)
+     * @see #headOrDefaultIfEmpty(Iterable, Object)
      */
     public static <T> T head(final Iterable<T> items) {
         assertNotNull(items, "items must not be null");
@@ -267,8 +267,8 @@ public class FunctionalPrimitives {
      *
      * @return the first item in the collection or <code>defaultValue</code> if the collection is empty
      * @see #only(Collection)
-     * @see #head(Collection)
-     * @see #headOrNullIfEmpty(Collection)
+     * @see #head(Iterable)
+     * @see #headOrNullIfEmpty(Iterable)
      */
     public static <T> T headOrDefaultIfEmpty(final Iterable< ? extends T> items, final T defaultValue) {
         assertNotNull(items, "items must not be null");
@@ -285,8 +285,8 @@ public class FunctionalPrimitives {
      *
      * @return the first item in the collection or null if the collection is empty
      * @see #only(Collection)
-     * @see #head(Collection)
-     * @see #headOrDefaultIfEmpty(Collection,Object)
+     * @see #head(Iterable)
+     * @see #headOrDefaultIfEmpty(Iterable, Object)
      */
     public static <T> T headOrNullIfEmpty(final Iterable<T> items) {
         return headOrDefaultIfEmpty(items, null);
@@ -309,8 +309,8 @@ public class FunctionalPrimitives {
      * @throws jedi.assertion.AssertionError
      *             if the collection is empty
      * @see #only(Collection)
-     * @see #lastOrNullIfEmpty(Collection)
-     * @see #lastOrDefaultIfEmpty(Collection,Object)
+     * @see #lastOrNullIfEmpty(Iterable)
+     * @see #lastOrDefaultIfEmpty(Iterable, Object)
      */
     public static <T> T last(Iterable<? extends T> items) {
         assertNotNull(items, "items must not be null");
@@ -323,8 +323,8 @@ public class FunctionalPrimitives {
      *
      * @return the last item in the collection or <code>defaultValue</code> if the collection is empty
      * @see #only(Collection)
-     * @see #last(Collection)
-     * @see #lastOrNullIfEmpty(Collection)
+     * @see #last(Iterable)
+     * @see #lastOrNullIfEmpty(Iterable)
      */
     public static <T> T lastOrDefaultIfEmpty(Iterable<? extends T> items, T defaultValue) {
         assertNotNull(items, "items must not be null");
@@ -351,7 +351,7 @@ public class FunctionalPrimitives {
     /**
      * An alias for head
      *
-     * @see #head(Collection)
+     * @see #head(Iterable)
      */
     public static <T> T first(Iterable<? extends T> collection) {
         return head(collection);
@@ -360,7 +360,7 @@ public class FunctionalPrimitives {
     /**
      * An alias for fold.
      *
-     * @see #fold(Object, java.util.Collection, Functor2)
+     * @see #fold(Object, Iterable, Functor2)
      */
     public static <T, R, I extends R> R inject(final I initialValue, final Iterable<T> collection, final Functor2<R, ? super T, R> functor2) {
         return fold(initialValue, collection, functor2);
@@ -448,8 +448,8 @@ public class FunctionalPrimitives {
      * @return the item in the collection
      * @throws jedi.assertion.AssertionError
      *             if the collection contains less or more than one item
-     * @see #head(Collection)
-     * @see #headOrNullIfEmpty(Collection)
+     * @see #head(Iterable)
+     * @see #headOrNullIfEmpty(Iterable)
      */
     public static <T> T only(final Collection<T> items) {
         assertNotNull(items, "items must not be null");
@@ -475,7 +475,7 @@ public class FunctionalPrimitives {
     /**
      * Filter a collection of <code>items</code>, returning only those that do not match a given <code>filter</code>, this is the inverse of select.
      *
-     * @see #select(java.util.Collection, Filter)
+     * @see #select(Iterable, Filter)
      */
     public static <T> List<T> reject(final Iterable<T> items, final Filter< ? super T> filter) {
         assertNotNull(filter, "filter must not be null");
@@ -494,7 +494,7 @@ public class FunctionalPrimitives {
     /**
      * Filter a collection of <code>items</code>, returning only those that match a given <code>filter</code>, this is the inverse of reject.
      *
-     * @see #reject(java.util.Collection, Filter)
+     * @see #reject(Iterable, Filter)
      */
     public static <T> List<T> select(final Iterable<T> items, final Filter< ? super T> filter) {
         assertNotNull(filter, "filter must not be null");
@@ -576,8 +576,8 @@ public class FunctionalPrimitives {
      * @throws jedi.assertion.AssertionError
      *             if the collection contains less or more than one item
      * @see #only(Collection)
-     * @see #headOrNullIfEmpty(Collection)
-     * @see #headOrDefaultIfEmpty(Collection,Object)
+     * @see #headOrNullIfEmpty(Iterable)
+     * @see #headOrDefaultIfEmpty(Iterable, Object)
      */
     public static <T> List<T> tail(final Iterable<T> items) {
         assertNotNull(items, "items must not be null");
@@ -681,8 +681,8 @@ public class FunctionalPrimitives {
      * @throws jedi.assertion.AssertionError
      *             if the collection contains less or more than one item
      * @see #only(Collection)
-     * @see #headOrNullIfEmpty(Collection)
-     * @see #headOrDefaultIfEmpty(Collection,Object)
+     * @see #headOrNullIfEmpty(Iterable)
+     * @see #headOrDefaultIfEmpty(Iterable, Object)
      */
     public static <T> T pop(Iterable<T> items) {
     	List<T> list = toList(items);

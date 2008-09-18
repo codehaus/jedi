@@ -81,7 +81,7 @@ public interface Option<T> extends Iterable<T>{
 	 * wrapped in a Some: <code>Some(f(this.get))</code>, otherwise return
 	 * <code>None</code>.
 	 * 
-	 * @param f
+	 * @param mappingFunction
 	 *            the function to apply
 	 */
 	<R> Option<R> map(Functor<T, R> mappingFunction);

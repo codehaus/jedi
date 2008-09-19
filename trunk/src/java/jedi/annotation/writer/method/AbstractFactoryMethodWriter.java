@@ -171,10 +171,6 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
     protected boolean isReturnRequired() {
         return false;
     }
-    
-	private void print(char c) {
-		getWriter().print(c);
-	}
 
     private void print(final String s) {
         getWriter().print(s);

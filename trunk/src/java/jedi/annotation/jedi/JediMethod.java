@@ -1,8 +1,8 @@
 package jedi.annotation.jedi;
 
 import static jedi.functional.FirstOrderLogic.invert;
+import static jedi.functional.FunctionalPrimitives.append;
 import static jedi.functional.FunctionalPrimitives.collect;
-import static jedi.functional.FunctionalPrimitives.join;
 import static jedi.functional.FunctionalPrimitives.select;
 
 import java.util.Collection;
@@ -18,6 +18,7 @@ import jedi.functional.Functor;
 
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
+import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
 public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
@@ -73,8 +74,8 @@ public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
         return !getGenericTypeParameters().isEmpty();
     }
     
-    private Collection< ? > getGenericTypeParameters() {
-        return declaration.getFormalTypeParameters();
+    private Collection< TypeParameterDeclaration > getGenericTypeParameters() {
+        return append(declaration.getFormalTypeParameters(), declaration.getDeclaringType().getFormalTypeParameters());
     }
 
     @Override
@@ -110,10 +111,6 @@ public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
 	}
 	
     public void writeGenericTypeParameters(JavaWriter writer) {
-        if (isGeneric()) {
-            writer.print('<');
-            writer.print(join(getGenericTypeParameters(), ", "));
-            writer.print('>');
-        }
+    	writer.printGenericTypeParameters(getGenericTypeParameters());
     }
 }

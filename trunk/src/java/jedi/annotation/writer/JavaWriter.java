@@ -15,6 +15,7 @@ import jedi.annotation.util.BoxerFunctor;
 import jedi.functional.Command;
 
 import com.sun.mirror.declaration.TypeDeclaration;
+import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
 public class JavaWriter extends PrintWriter {
@@ -104,4 +105,8 @@ public class JavaWriter extends PrintWriter {
     public void printBoxedCommaSeparatedList(List<Attribute> vs) {
         printCommaSeparatedList(collect(vs, new AttributeBoxedTypeFunctor()));
     }
+
+	public void printGenericTypeParameters(Collection<TypeParameterDeclaration> parameters) {
+		print(TypeDeclarationRenderer.render(parameters));
+	}
 }

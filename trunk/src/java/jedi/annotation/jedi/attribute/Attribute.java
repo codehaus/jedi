@@ -1,6 +1,7 @@
 package jedi.annotation.jedi.attribute;
 
 import jedi.annotation.util.BoxerFunctor;
+import jedi.annotation.writer.TypeDeclarationRenderer;
 
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.declaration.TypeDeclaration;
@@ -16,14 +17,14 @@ public class Attribute {
     }
     
     public Attribute(TypeDeclaration declaration, String name) {
-        this(declaration.getQualifiedName(), name);
+        this(TypeDeclarationRenderer.renderWithoutBounds(declaration), name);
     }
 
     public Attribute(TypeMirror mirror, String name) {
         this(mirror.toString(), new BoxerFunctor().execute(mirror), name);
     }
 
-    public Attribute(String type, String boxedType, String name) {
+    private Attribute(String type, String boxedType, String name) {
         this.type = type;
         this.boxedType = boxedType;
         this.name = name;

@@ -70,11 +70,8 @@ public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
         };
     }
     
-    private boolean isGeneric() {
-        return !getGenericTypeParameters().isEmpty();
-    }
-    
-    private Collection< TypeParameterDeclaration > getGenericTypeParameters() {
+    @SuppressWarnings("unchecked")
+	private Collection< TypeParameterDeclaration > getGenericTypeParameters() {
         return append(declaration.getFormalTypeParameters(), declaration.getDeclaringType().getFormalTypeParameters());
     }
 

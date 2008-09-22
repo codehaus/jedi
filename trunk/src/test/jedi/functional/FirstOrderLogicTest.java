@@ -12,20 +12,23 @@ import java.util.List;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
+import org.junit.Test;
 
 public class FirstOrderLogicTest extends MockObjectTestCase {
 
-	private Mock	mockPredicate	= mock(Filter.class);
+	private Mock mockPredicate = mock(Filter.class);
 	@SuppressWarnings("unchecked")
-    private Filter	predicate		= (Filter) mockPredicate.proxy();
-	private List<?>	predicated		= Coercions.list(new Object(), new Object());
+	private Filter predicate = (Filter) mockPredicate.proxy();
+	private List<?> predicated = Coercions.list(new Object(), new Object());
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testExistsReturnsFalseWithEmptyCollection() {
 		assertFalse(exists(set(), predicate));
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testExistsReturnsFalseWhenNoElementsMatchThePredicate() {
 		expectPredicateExecution(predicated.get(0), false);
 		expectPredicateExecution(predicated.get(1), false);
@@ -34,6 +37,7 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testExistsReturnsTrueWhenAtLeastOneElementMatchesThePredicate() {
 		expectPredicateExecution(predicated.get(0), true);
 
@@ -41,11 +45,13 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testAllReturnsTrueWithEmptyCollection() {
 		assertTrue(all(set(), predicate));
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testAllReturnsFalseWhenAtLeastOneElementDoesNotMatchThePredicate() {
 		expectPredicateExecution(predicated.get(0), false);
 
@@ -53,11 +59,13 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testZeroOrOneReturnsTrueWithEmptyCollection() {
 		assertTrue(zeroOrOne(set(), predicate));
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testZeroOrOneReturnsTrueWhenNoElementsMatchThePredicate() {
 		expectPredicateExecution(predicated.get(0), false);
 		expectPredicateExecution(predicated.get(1), false);
@@ -66,6 +74,7 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testZeroOrOneReturnsTrueWhenOneElementMatchesThePredicate() {
 		expectPredicateExecution(predicated.get(0), true);
 		expectPredicateExecution(predicated.get(1), false);
@@ -74,6 +83,7 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testZeroOrOneReturnsFalseWhenMoreThanOneElementMatchesThePredicate() {
 		expectPredicateExecution(predicated.get(0), true);
 		expectPredicateExecution(predicated.get(1), true);
@@ -81,6 +91,7 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 		assertFalse(zeroOrOne(predicated, predicate));
 	}
 
+	@Test
 	public void testInvertCreatesAnInvertingFilter() {
 		assertInvertedFilterResult(false);
 		assertInvertedFilterResult(true);
@@ -94,67 +105,83 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
-    public void testAndCreatesAFilterThatAlwaysReturnsTrueIfTheGivenListOfFiltersIsEmpty() {
+	@Test
+	public void testAndCreatesAFilterThatAlwaysReturnsTrueIfTheGivenListOfFiltersIsEmpty() {
 		assertTrue(FirstOrderLogic.and().execute(new Object()));
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testAndCreatesAShortCircuitingConjunctiveFilter() {
 		Object testObject = new Object();
-		assertEquals(Boolean.FALSE, FirstOrderLogic.and(createPredicateWithExpectation(testObject, false), (Filter) mock(Filter.class).proxy()).execute(testObject));
-		assertEquals(Boolean.FALSE, FirstOrderLogic.and(createPredicateWithExpectation(testObject, true), createPredicateWithExpectation(testObject, false)).execute(testObject));
-		assertEquals(Boolean.TRUE, FirstOrderLogic.and(createPredicateWithExpectation(testObject, true), createPredicateWithExpectation(testObject, true)).execute(testObject));
+		assertEquals(Boolean.FALSE, FirstOrderLogic.and(createPredicateWithExpectation(testObject, false),
+				(Filter) mock(Filter.class).proxy()).execute(testObject));
+		assertEquals(Boolean.FALSE, FirstOrderLogic.and(createPredicateWithExpectation(testObject, true),
+				createPredicateWithExpectation(testObject, false)).execute(testObject));
+		assertEquals(Boolean.TRUE, FirstOrderLogic.and(createPredicateWithExpectation(testObject, true),
+				createPredicateWithExpectation(testObject, true)).execute(testObject));
 	}
 
 	@SuppressWarnings("unchecked")
-    public void testOrCreatesAFilterThatAlwaysReturnsFalseIfTheGivenListOfFiltersIsEmpty() {
+	@Test
+	public void testOrCreatesAFilterThatAlwaysReturnsFalseIfTheGivenListOfFiltersIsEmpty() {
 		assertFalse(FirstOrderLogic.or().execute(new Object()));
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testOrCreatesAShortCircuitingDisjunctiveFilter() {
 		Object testObject = new Object();
-		assertEquals(Boolean.FALSE, FirstOrderLogic.or(createPredicateWithExpectation(testObject, false), createPredicateWithExpectation(testObject, false)).execute(testObject));
-		assertEquals(Boolean.TRUE, FirstOrderLogic.or(createPredicateWithExpectation(testObject, true), (Filter) mock(Filter.class).proxy()).execute(testObject));
-		assertEquals(Boolean.TRUE, FirstOrderLogic.or(createPredicateWithExpectation(testObject, false), createPredicateWithExpectation(testObject, true)).execute(testObject));
+		assertEquals(Boolean.FALSE, FirstOrderLogic.or(createPredicateWithExpectation(testObject, false),
+				createPredicateWithExpectation(testObject, false)).execute(testObject));
+		assertEquals(Boolean.TRUE, FirstOrderLogic
+				.or(createPredicateWithExpectation(testObject, true), (Filter) mock(Filter.class).proxy()).execute(testObject));
+		assertEquals(Boolean.TRUE, FirstOrderLogic.or(createPredicateWithExpectation(testObject, false),
+				createPredicateWithExpectation(testObject, true)).execute(testObject));
 	}
 
 	@SuppressWarnings("unchecked")
-    public void testIntersectionReturnsEmptySetWhenNoArgumentsAreGiven() {
-        assertTrue(intersection().isEmpty());
-    }
+	@Test
+	public void testIntersectionReturnsEmptySetWhenNoArgumentsAreGiven() {
+		assertTrue(intersection().isEmpty());
+	}
 
-    @SuppressWarnings("unchecked")
-    public void testIntersectionReturnsAllElementsIfOnlyOneArgumentIsGiven() {
-        assertEquals(set(1, 2, 3), intersection(set(1, 2, 3)));
-    }
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testIntersectionReturnsAllElementsIfOnlyOneArgumentIsGiven() {
+		assertEquals(set(1, 2, 3), intersection(set(1, 2, 3)));
+	}
 
-    @SuppressWarnings("unchecked")
-    public void testIntersectionReturnsIntersectionIfSeveralArgumentsAreGiven() {
-        assertEquals(set(1, 2), intersection(set(1, 2, 3), set(1, 2, 4)));
-    }
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testIntersectionReturnsIntersectionIfSeveralArgumentsAreGiven() {
+		assertEquals(set(1, 2), intersection(set(1, 2, 3), set(1, 2, 4)));
+	}
 
-    @SuppressWarnings("unchecked")
-    public void testIntersectionReturnsEmptySetIfIntersectionIsEmpty() {
-        assertEquals(set(), intersection(set(1, 2), set(3, 4, 5)));
-    }
-    
-    @SuppressWarnings("unchecked")
-    public void testUnionReturnsAllElementsIfOnlyOneArgumentIsGiven() {
-        assertEquals(set(1, 2, 3), union(set(1, 2, 3)));
-    }
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testIntersectionReturnsEmptySetIfIntersectionIsEmpty() {
+		assertEquals(set(), intersection(set(1, 2), set(3, 4, 5)));
+	}
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testUnionReturnsAllElementsIfOnlyOneArgumentIsGiven() {
+		assertEquals(set(1, 2, 3), union(set(1, 2, 3)));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
 	public void testUnionReturnsUnionIfSeveralArgumentsAreGiven() {
-        assertEquals(set(1, 2, 3, 4), union(set(1, 2, 3), set(1, 2, 4)));
-    }
-    
-    private void expectPredicateExecution(Object value, boolean returnValue) {
+		assertEquals(set(1, 2, 3, 4), union(set(1, 2, 3), set(1, 2, 4)));
+	}
+
+	private void expectPredicateExecution(Object value, boolean returnValue) {
 		expectPredicateExecution(mockPredicate, value, returnValue);
 	}
 
 	@SuppressWarnings("unchecked")
-    private Filter createPredicateWithExpectation(Object testObject, boolean filterReturnValue) {
+	private Filter createPredicateWithExpectation(Object testObject, boolean filterReturnValue) {
 		Mock mockPredicate = mock(Filter.class);
 		expectPredicateExecution(mockPredicate, testObject, filterReturnValue);
 		return (Filter) mockPredicate.proxy();

@@ -3,6 +3,7 @@ package jedi.filters;
 import jedi.functional.Filter;
 
 import org.jmock.Mock;
+import org.junit.Test;
 
 public class DisjunctionTest extends LogicTestCase {
 
@@ -10,6 +11,7 @@ public class DisjunctionTest extends LogicTestCase {
 	private Mock filterB = mock(Filter.class);
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testReturnsTrueWhenAnyFiltersReturnTrue() throws Exception {
 		returnValue(filterA, true);
 		returnValue(filterB, false);
@@ -17,6 +19,7 @@ public class DisjunctionTest extends LogicTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Test
 	public void testReturnsFalseWhenAllFilterReturnsFalse() throws Exception {
 		returnValue(filterA, false);
 		returnValue(filterB, false);

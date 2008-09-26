@@ -17,3 +17,6 @@ Version Change
 
 2.5		@JediFunctor and @JediFilter annotations can now be used to annotate non-private fields.
 		Generated factories have Javadoc with links to the annotated methods.
+
+2.6		Improved handling of generics in code generation. Still not perfect.
+		Replaced collections with iterables everywhere possible. JDK1.4 compatibility cannot now be achieved.

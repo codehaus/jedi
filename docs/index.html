@@ -51,31 +51,14 @@
                 commands or actions in Struts / Webwork, or any 'callback' mechanism).</p>
             <p>The problem with closures in Java is that, while they really represent functions, they must be presented as objects. Since methods / functions are
                 not first class objects in Java, any closure must be 'wrapped' in an object, which means creating a class, either named or anonymous. Jedi helps with
-                this by providing JDK 1.5 annotations which will generate the necessary code. Although JDK 1.5 is required at build time, the compiled code can be
-                run under JDK 1.4 (using the <code>javac&nbsp;-target&nbsp;jsr14</code> flag). No use is made of JDK 1.5 APIs in the generated code or the Jedi
-                APIs.</p>
+                this by providing annotations which will generate the necessary code.</p>
             <p>The generated code supports unit testing by providing several different ways to inject dependencies. You can therefore select the mechanism which
                 supports your style of programming and testing.</p>
             
             <div class="sectionHeading"> <a name="compiling">Compiling</a>
             </div>
-            <p>Two jars are provided with Jedi:</p>
-            <ul>
-                <li>jedi_&lt;version&gt;_jdk1.4.jar - Byte code compatible with JDK 1.4</li>
-                <li>jedi_&lt;version&gt;_1.5.jar - Requires JDK 1.5 (but see below). This jar also contains annotations and an annotation processor.</li>
-            </ul>
-            <p>If you want to make use of JDK 1.5 syntax enhancements but need to deploy to a JDK 1.4 compatible environment, you can safely develop using the
-                jedi_&lt;version&gt;_1.5.jar, compile using the <code>-target jsr14</code> compiler flag and deploy with the jedi_&lt;version&gt;_jdk1.4.jar</p>
-            <div class="subSectionHeading"> <a name="compiling">Processing Annotations</a>
-            </div>
             <p>JDK 1.5 comes with Sun's Annotation Processing Tool, <a href="http://java.sun.com/j2se/1.5.0/docs/guide/apt/index.html"
-                    title="Sun's APT tool">APT</a>. <a href="http://ant.apache.org/" title="Ant homepage">Ant</a> version 1.7, in beta when this page
-                was written, comes with an <code>apt</code> task.</p>
-            <p>In JDK 1.6, Sun made annotation processing part of the <code>javac</code> process.</p>
-            <p>For those that want to develop with the JDK 1.5 syntax enhancements but who need to deploy to a JDK 1.4 compatible environment can get
-                <code>apt</code> to process annotations, producing additional source code, which can then be compiled with <code>javac</code> using the
-                <code>-target jsr14</code> compiler flag. For an example of this, see the <code>build.xml</code> file in the Empire example, which can be found
-                in the 'examples' directory of the distribution.</p>
+                    title="Sun's APT tool">APT</a>. <a href="http://ant.apache.org/" title="Ant homepage">Ant</a> version 1.7 comes with an <code>apt</code> task. In JDK 1.6, Sun made annotation processing part of the <code>javac</code> process.</p>
             <div class="subSectionHeading"><a name="options">Annotation Processor Options</a></div>
             <p>Annotation processor options are specified with the <code>-A</code> switch on the <code>apt</code> command line. None of these options require values;
             	the presence of the option is sufficient.</p>

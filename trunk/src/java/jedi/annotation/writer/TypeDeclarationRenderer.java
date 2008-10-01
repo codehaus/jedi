@@ -4,6 +4,7 @@ import static jedi.functional.FunctionalPrimitives.collect;
 import static jedi.functional.FunctionalPrimitives.join;
 
 import java.util.Collection;
+import java.util.List;
 
 import jedi.functional.Functor;
 
@@ -39,6 +40,14 @@ public class TypeDeclarationRenderer {
 	}
 	
 	public static String renderWithoutBounds(Collection<TypeParameterDeclaration> typeParameters) {
-		return typeParameters.isEmpty() ? "" : "<" + join(typeParameters, ", ") + ">";
+		return typeParameters.isEmpty() ? "" : "<" + join(collectNames(typeParameters), ", ") + ">";
+	}
+
+	private static List<String> collectNames(Collection<TypeParameterDeclaration> typeParameters) {
+		return collect(typeParameters, new Functor<TypeParameterDeclaration, String>() {
+			public String execute(TypeParameterDeclaration value) {
+				return value.getSimpleName();
+			}
+		});
 	}
 }

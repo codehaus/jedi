@@ -1,4 +1,4 @@
-<project name="jedi options example" basedir="." default="compile">
+<project name="jedi project euler example" basedir="." default="compile">
     <property name="lib" location="../.."/>
     
     <property name="1.5_jar_file" location="${lib}/Jedi_@version.number@_jdk1.5.jar"/>
@@ -38,6 +38,7 @@
             </classpath>
             <src path="${java.src.dir}"/>
             <src path="${build.1.5.preprocess.dir}"/>
+        	<compilerarg value="-AjediSuppressProxySuffix"/>
         </apt>
     </target>
 

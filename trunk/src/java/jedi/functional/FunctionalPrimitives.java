@@ -277,7 +277,10 @@ public class FunctionalPrimitives {
             return defaultValue;
         }
 
-        return (items instanceof List ? (List< ? extends T>) items : asList(items)).get(0);
+        if (items instanceof List) {
+        	return ((List< ? extends T>) items).get(0);
+        }
+        return items.iterator().next();
     }
 
     /**

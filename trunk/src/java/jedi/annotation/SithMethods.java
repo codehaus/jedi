@@ -1,9 +1,9 @@
 package jedi.annotation;
 
 public @interface SithMethods {
-    SithCommand[] commands() default {};;
+	SithCommand[] commands() default {};;
 
-    SithFilter[] filters() default {};;
+	SithFilter[] filters() default {};;
 
-    SithFunctor[] functors() default {};;
+	SithFunctor[] functors() default {};;
 }

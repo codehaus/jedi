@@ -12,40 +12,41 @@ import jedi.functional.Filter;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
 public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
-    private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
+	private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
 
-    public MembershipFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-    	super(environment);
-        setReceiverInvocationWriter(new MembershipFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
-    }
+	public MembershipFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
+		super(environment);
+		setReceiverInvocationWriter(new MembershipFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
+	}
 
-    @Override
-    protected String getExecuteMethodReturnType() {
-        return Boolean.class.getName();
-    }
+	@Override
+	protected String getExecuteMethodReturnType() {
+		return Boolean.class.getName();
+	}
 
-    @Override
-    protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-        return list(new Attribute("java.util.Collection<? extends " + getBoxedQualifiedTypeName(getDelegateMethodReturnType()) + ">", TEST_VALUE_PARAMETER_NAME));
-    }
+	@Override
+	protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
+		return list(new Attribute("java.util.Collection<? extends " + getBoxedQualifiedTypeName(getDelegateMethodReturnType()) + ">",
+				TEST_VALUE_PARAMETER_NAME));
+	}
 
-    @Override
-    protected String getFactoryMethodNameRequiredSuffix() {
-        return "Membership";
-    }
+	@Override
+	protected String getFactoryMethodNameRequiredSuffix() {
+		return "Membership";
+	}
 
-    @Override
-    public Class< ? > getOneParameterClosureClass() {
-        return Filter.class;
-    }
+	@Override
+	public Class<?> getOneParameterClosureClass() {
+		return Filter.class;
+	}
 
-    @Override
-    protected boolean hasCorrectReturnType(final Annotateable method) {
-        return !(method.isVoid() || method.isBoolean());
-    }
+	@Override
+	protected boolean hasCorrectReturnType(final Annotateable method) {
+		return !(method.isVoid() || method.isBoolean());
+	}
 
-    @Override
-    protected boolean isReturnRequired() {
-        return true;
-    }
+	@Override
+	protected boolean isReturnRequired() {
+		return true;
+	}
 }

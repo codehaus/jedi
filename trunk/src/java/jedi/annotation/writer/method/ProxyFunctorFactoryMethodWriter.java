@@ -9,26 +9,26 @@ public class ProxyFunctorFactoryMethodWriter extends AbstractProxyFactoryMethodW
 	public ProxyFunctorFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
 		super(environment);
 	}
-	
-    @Override
-    protected Class< ? > getOneParameterClosureClass() {
-        return Functor.class;
-    }
-    
-    @Override
-    protected boolean isReturnRequired() {
-        return true;
-    }
 
-    @Override
-    protected boolean hasCorrectReturnType(Annotateable method) {
-        return !method.isVoid();
-    }
+	@Override
+	protected Class<?> getOneParameterClosureClass() {
+		return Functor.class;
+	}
 
-    @Override
-    protected void writeClosureTypes() {
-        super.writeClosureTypes();
-        getWriter().print(", ");
-        getWriter().printBoxedQualifiedTypeName(getDelegateMethodReturnType());
-    }
+	@Override
+	protected boolean isReturnRequired() {
+		return true;
+	}
+
+	@Override
+	protected boolean hasCorrectReturnType(Annotateable method) {
+		return !method.isVoid();
+	}
+
+	@Override
+	protected void writeClosureTypes() {
+		super.writeClosureTypes();
+		getWriter().print(", ");
+		getWriter().printBoxedQualifiedTypeName(getDelegateMethodReturnType());
+	}
 }

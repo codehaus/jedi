@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
 public @interface JediCommand {
-    String name() default "";
-    JediCut[] cut() default {};
+	String name() default "";
+
+	JediCut[] cut() default {};
 }

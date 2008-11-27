@@ -128,7 +128,6 @@ public class Box {
 		return unbox(Coercions.asArray(boxed));
 	}
 
-
 	public static Integer[] boxInts(int... unboxed) {
 		assertNotNull(unboxed, "unboxed must not be null");
 

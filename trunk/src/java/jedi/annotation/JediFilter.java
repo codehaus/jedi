@@ -5,9 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Target( { ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.SOURCE)
 public @interface JediFilter {
-    String name() default "";
-    JediCut[] cut() default {};
+	String name() default "";
+
+	JediCut[] cut() default {};
 }

@@ -1,5 +1,5 @@
 package jedi.functional;
 
-public interface Functor <T, R> {
-    R execute(T value);
+public interface Functor<T, R> {
+	R execute(T value);
 }

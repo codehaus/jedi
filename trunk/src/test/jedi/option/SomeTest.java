@@ -22,12 +22,13 @@ public class SomeTest extends MockObjectTestCase {
 	public void testMatchWithOptionMatcher() {
 		Option<Integer> opt = some(new Integer(1));
 
-		opt.match(new OptionMatcher<Integer>() {
-			public void caseNone(None<Integer> none) {
+		opt.match(new OptionMatcher<Number>() {
+			public void caseNone() {
 				fail();
 			}
 
-			public void caseSome(Integer value) {
+			public void caseSome(Number value) {
+				// don't care
 			}
 		});
 	}
@@ -65,12 +66,28 @@ public class SomeTest extends MockObjectTestCase {
 		assertEquals(some(true), some("string").map((Functor<String, Boolean>) functor.proxy()));
 	}
 
+	public void testMapWithSuperCommand() {
+		assertEquals(some(Boolean.TRUE), some(Bar.BAR).map(new Functor<Foo, Boolean>() {
+			public Boolean execute(Foo value) {
+				return Boolean.TRUE;
+			}
+		}));
+	}
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testForEach() {
 		Mock command = mock(Command.class);
 		command.expects(once()).method("execute").with(eq("x"));
 		some("x").forEach((Command<String>) command.proxy());
+	}
+
+	public void testForEachWithSuperclassCommand() {
+		some(Bar.BAR).forEach(new Command<Foo>() {
+			public void execute(Foo value) {
+				assertSame(Bar.BAR, value);
+			}
+		});
 	}
 
 	@Test

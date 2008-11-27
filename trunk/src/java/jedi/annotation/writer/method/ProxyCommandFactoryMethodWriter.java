@@ -9,14 +9,14 @@ public class ProxyCommandFactoryMethodWriter extends AbstractProxyFactoryMethodW
 	public ProxyCommandFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
 		super(environment);
 	}
-	
-    @Override
-    protected Class< ? > getOneParameterClosureClass() {
-        return Command.class;
-    }
-    
-    @Override
-    protected boolean hasCorrectReturnType(Annotateable method) {
-        return true;
-    }
+
+	@Override
+	protected Class<?> getOneParameterClosureClass() {
+		return Command.class;
+	}
+
+	@Override
+	protected boolean hasCorrectReturnType(Annotateable method) {
+		return true;
+	}
 }

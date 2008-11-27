@@ -33,111 +33,108 @@ import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.util.DeclarationFilter;
 
 public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
-    private static final DeclarationFilter INTERESTING_METHOD_FILTER =
-        new DeclarationFilter() {
-            @Override
-            public boolean matches(Declaration declaration) {
-                return declaration instanceof MethodDeclaration;
-            }
-        }.and(DeclarationFilter.FILTER_PUBLIC.or(DeclarationFilter.FILTER_PACKAGE));
+	private static final DeclarationFilter INTERESTING_METHOD_FILTER = new DeclarationFilter() {
+		@Override
+		public boolean matches(Declaration declaration) {
+			return declaration instanceof MethodDeclaration;
+		}
+	}.and(DeclarationFilter.FILTER_PUBLIC.or(DeclarationFilter.FILTER_PACKAGE));
 
-    private static final DeclarationFilter INTERESTING_FIELD_FILTER =
-        new DeclarationFilter() {
-            @Override
-            public boolean matches(Declaration declaration) {
-                return declaration instanceof FieldDeclaration;
-            }
-        }.and(DeclarationFilter.FILTER_PUBLIC.or(DeclarationFilter.FILTER_PACKAGE));
-        
-    public ClosureAnnotationProcessor(AnnotationProcessorEnvironment environment) {
-        super(environment, JediCommand.class, JediFilter.class, JediFunctor.class);
-    }
+	private static final DeclarationFilter INTERESTING_FIELD_FILTER = new DeclarationFilter() {
+		@Override
+		public boolean matches(Declaration declaration) {
+			return declaration instanceof FieldDeclaration;
+		}
+	}.and(DeclarationFilter.FILTER_PUBLIC.or(DeclarationFilter.FILTER_PACKAGE));
 
-    @SuppressWarnings("unchecked")
-	@Override
-    protected Set<Annotateable> getInterestingDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
-        return asSet(append(
-        	flatten(ClosureAnnotationProcessor.INTERESTING_METHOD_FILTER.filter(environment.getDeclarationsAnnotatedWith(annotationTypeDeclaration)), new Functor<Declaration, Set<? extends Annotateable>>() {
-	                public Set<? extends Annotateable> execute(Declaration value) {
-	                    return getRequiredMethods(annotationTypeDeclaration, (MethodDeclaration) value);
-	                }
-	            }),
-	        flatten(ClosureAnnotationProcessor.INTERESTING_FIELD_FILTER.filter(environment.getDeclarationsAnnotatedWith(annotationTypeDeclaration)), new Functor<Declaration, Set<? extends Annotateable>>() {
-		        	public Set<? extends Annotateable> execute(Declaration value) {
-		        		return getRequiredMethods(annotationTypeDeclaration, (FieldDeclaration) value);
-		        	}
-		        })));
-    }
-
-    private Set<? extends Annotateable> getRequiredMethods(AnnotationTypeDeclaration annotationTypeDeclaration, FieldDeclaration field) {
-        AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(field, annotationTypeDeclaration)));
-        String factoryPrefix = (String) interpreter.getValue("name");
-        if (factoryPrefix == null) {
-            factoryPrefix = field.getSimpleName();
-        }
-        return set(new JediField(field, annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
+	public ClosureAnnotationProcessor(AnnotationProcessorEnvironment environment) {
+		super(environment, JediCommand.class, JediFilter.class, JediFunctor.class);
 	}
 
 	@SuppressWarnings("unchecked")
-    private Set<? extends Annotateable> getRequiredMethods(final AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method) {
-        AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(method, annotationTypeDeclaration)));
-        String factoryPrefix = (String) interpreter.getValue("name");
-        if (factoryPrefix == null) {
-            factoryPrefix = method.getSimpleName();
-        }
+	@Override
+	protected Set<Annotateable> getInterestingDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
+		return asSet(append(flatten(ClosureAnnotationProcessor.INTERESTING_METHOD_FILTER.filter(environment
+				.getDeclarationsAnnotatedWith(annotationTypeDeclaration)), new Functor<Declaration, Set<? extends Annotateable>>() {
+			public Set<? extends Annotateable> execute(Declaration value) {
+				return getRequiredMethods(annotationTypeDeclaration, (MethodDeclaration) value);
+			}
+		}), flatten(ClosureAnnotationProcessor.INTERESTING_FIELD_FILTER.filter(environment
+				.getDeclarationsAnnotatedWith(annotationTypeDeclaration)), new Functor<Declaration, Set<? extends Annotateable>>() {
+			public Set<? extends Annotateable> execute(Declaration value) {
+				return getRequiredMethods(annotationTypeDeclaration, (FieldDeclaration) value);
+			}
+		})));
+	}
 
-        List<AnnotationValue> value = (List<AnnotationValue>) interpreter.getValue("cut");
-        return value != null
-            ? getCuts(annotationTypeDeclaration, method, value, factoryPrefix)
-            : set(new JediMethod(method, annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
-    }
+	private Set<? extends Annotateable> getRequiredMethods(AnnotationTypeDeclaration annotationTypeDeclaration, FieldDeclaration field) {
+		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(field, annotationTypeDeclaration)));
+		String factoryPrefix = (String) interpreter.getValue("name");
+		if (factoryPrefix == null) {
+			factoryPrefix = field.getSimpleName();
+		}
+		return set(new JediField(field, annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
+	}
 
-    private Set<Annotateable> getCuts(final AnnotationTypeDeclaration annotationTypeDeclaration, final MethodDeclaration method, List<AnnotationValue> cuts, final String factoryPrefix) {
-        return asSet(
-            select(collect(cuts, new Functor<AnnotationValue, Annotateable>() {
-			    public Annotateable execute(AnnotationValue value) {
-			        return createCutMethod(annotationTypeDeclaration, method, ((AnnotationMirror) value.getValue()), factoryPrefix);
-			    }
-			}),
-            new NotNullFilter<Annotateable>()));
-    }
+	@SuppressWarnings("unchecked")
+	private Set<? extends Annotateable> getRequiredMethods(final AnnotationTypeDeclaration annotationTypeDeclaration,
+			MethodDeclaration method) {
+		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(method, annotationTypeDeclaration)));
+		String factoryPrefix = (String) interpreter.getValue("name");
+		if (factoryPrefix == null) {
+			factoryPrefix = method.getSimpleName();
+		}
 
-    @SuppressWarnings("unchecked")
-    private Annotateable createCutMethod(AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method, AnnotationMirror cut, String factoryPrefix) {
-        AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(cut);
+		List<AnnotationValue> value = (List<AnnotationValue>) interpreter.getValue("cut");
+		return value != null ? getCuts(annotationTypeDeclaration, method, value, factoryPrefix) : set(new JediMethod(method,
+				annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
+	}
 
-        String name = (String) interpreter.getValue("name");
-        if (name == null) {
-            name = factoryPrefix;
-        }
-        List<String> parameterNames = getCutParameterNames((List<AnnotationValue>) interpreter.getValue("parameters"));
+	private Set<Annotateable> getCuts(final AnnotationTypeDeclaration annotationTypeDeclaration, final MethodDeclaration method,
+			List<AnnotationValue> cuts, final String factoryPrefix) {
+		return asSet(select(collect(cuts, new Functor<AnnotationValue, Annotateable>() {
+			public Annotateable execute(AnnotationValue value) {
+				return createCutMethod(annotationTypeDeclaration, method, ((AnnotationMirror) value.getValue()), factoryPrefix);
+			}
+		}), new NotNullFilter<Annotateable>()));
+	}
 
-        return validateCutParameters(method, parameterNames)
-            ? new JediMethod(method, annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), name, asSet(parameterNames))
-            : null;
+	@SuppressWarnings("unchecked")
+	private Annotateable createCutMethod(AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method,
+			AnnotationMirror cut, String factoryPrefix) {
+		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(cut);
 
-    }
+		String name = (String) interpreter.getValue("name");
+		if (name == null) {
+			name = factoryPrefix;
+		}
+		List<String> parameterNames = getCutParameterNames((List<AnnotationValue>) interpreter.getValue("parameters"));
 
-    private boolean validateCutParameters(MethodDeclaration method, List<String> parameterNames) {
-        List<String> outstanding = asList(parameterNames);
-        outstanding.removeAll(getNames(method.getParameters()));
-        if (outstanding.isEmpty()) {
-            return true;
-        }
+		return validateCutParameters(method, parameterNames) ? new JediMethod(method, annotationTypeToFactoryMethodWriterMap
+				.get(annotationTypeDeclaration), name, asSet(parameterNames)) : null;
 
-        environment.getMessager().printError(method.getPosition(), "Cut parameters do not exist in formal parameter list: " + outstanding);
-        return false;
-    }
+	}
 
-    private List<String> getNames(Collection<ParameterDeclaration> parameters) {
-        return collect(parameters, new Functor<ParameterDeclaration, String>() {
-            public String execute(ParameterDeclaration value) {
-                return value.getSimpleName();
-            }
-        });
-    }
+	private boolean validateCutParameters(MethodDeclaration method, List<String> parameterNames) {
+		List<String> outstanding = asList(parameterNames);
+		outstanding.removeAll(getNames(method.getParameters()));
+		if (outstanding.isEmpty()) {
+			return true;
+		}
 
-    private List<String> getCutParameterNames(List<AnnotationValue> values) {
-        return values == null ? Collections.<String>emptyList() : collect(values, new AnnotationValueValueFunctor<String>());
-    }
+		environment.getMessager().printError(method.getPosition(), "Cut parameters do not exist in formal parameter list: " + outstanding);
+		return false;
+	}
+
+	private List<String> getNames(Collection<ParameterDeclaration> parameters) {
+		return collect(parameters, new Functor<ParameterDeclaration, String>() {
+			public String execute(ParameterDeclaration value) {
+				return value.getSimpleName();
+			}
+		});
+	}
+
+	private List<String> getCutParameterNames(List<AnnotationValue> values) {
+		return values == null ? Collections.<String> emptyList() : collect(values, new AnnotationValueValueFunctor<String>());
+	}
 }

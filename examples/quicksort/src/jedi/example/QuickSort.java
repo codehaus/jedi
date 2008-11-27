@@ -13,18 +13,15 @@ import java.util.List;
 
 public class QuickSort {
 
-    @SuppressWarnings("unchecked")
-    public static <T> List<T> sort(final List<T> collection, final Comparator<T> comparator) {
-    	if (collection.size() < 2) {
-    		return asList(collection);
-    	}
-    	
-    	final T head = head(collection);
-    	List<List<T>> partitioned = partition(tail(collection), lessThan(head, comparator));
-    	return append(
-    			sort(partitioned.get(0), comparator), 
-    			list(head), 
-    			sort(partitioned.get(1), comparator));
-    }
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> sort(final List<T> collection, final Comparator<T> comparator) {
+		if (collection.size() < 2) {
+			return asList(collection);
+		}
+
+		final T head = head(collection);
+		List<List<T>> partitioned = partition(tail(collection), lessThan(head, comparator));
+		return append(sort(partitioned.get(0), comparator), list(head), sort(partitioned.get(1), comparator));
+	}
 
 }

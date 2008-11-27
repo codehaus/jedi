@@ -37,66 +37,72 @@ import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.TypeDeclaration;
 
 public abstract class AbstractClosureAnnotationProcessor implements AnnotationProcessor {
-    protected final AnnotationProcessorEnvironment environment;
-    protected final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap;
+	protected final AnnotationProcessorEnvironment environment;
+	protected final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap;
 
-    public AbstractClosureAnnotationProcessor(final AnnotationProcessorEnvironment environment, final Class< ? > commandAnnotationClass, final Class< ? > filterAnnotationClass, final Class< ? > functorAnnotationClass) {
-        this.environment = environment;
+	public AbstractClosureAnnotationProcessor(final AnnotationProcessorEnvironment environment, final Class<?> commandAnnotationClass,
+			final Class<?> filterAnnotationClass, final Class<?> functorAnnotationClass) {
+		this.environment = environment;
 
-        annotationTypeToFactoryMethodWriterMap = new HashMap<AnnotationTypeDeclaration, FactoryMethodWriter>();
-        putAnnotationClassToWriterMapping(commandAnnotationClass, new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(environment), new ProxyCommandFactoryMethodWriter(environment)));
-        putAnnotationClassToWriterMapping(filterAnnotationClass, new CompositeFactoryMethodWriter(new FilterFactoryMethodWriter(environment), new EqualsFilterFactoryMethodWriter(environment), new MembershipFilterFactoryMethodWriter(environment), new ProxyFilterFactoryMethodWriter(environment)));
-        putAnnotationClassToWriterMapping(functorAnnotationClass, new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(environment), new ProxyFunctorFactoryMethodWriter(environment)));
-    }
+		annotationTypeToFactoryMethodWriterMap = new HashMap<AnnotationTypeDeclaration, FactoryMethodWriter>();
+		putAnnotationClassToWriterMapping(commandAnnotationClass, new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(
+				environment), new ProxyCommandFactoryMethodWriter(environment)));
+		putAnnotationClassToWriterMapping(filterAnnotationClass, new CompositeFactoryMethodWriter(
+				new FilterFactoryMethodWriter(environment), new EqualsFilterFactoryMethodWriter(environment),
+				new MembershipFilterFactoryMethodWriter(environment), new ProxyFilterFactoryMethodWriter(environment)));
+		putAnnotationClassToWriterMapping(functorAnnotationClass, new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(
+				environment), new ProxyFunctorFactoryMethodWriter(environment)));
+	}
 
-    private Set<Annotateable> getInterestingDeclarations() {
-        final Set<Annotateable> interestingMethodDeclarations = new HashSet<Annotateable>();
-        for (final AnnotationTypeDeclaration annotationTypeDeclaration : annotationTypeToFactoryMethodWriterMap.keySet()) {
-            interestingMethodDeclarations.addAll(getInterestingDeclarations(annotationTypeDeclaration));
-        }
-        return interestingMethodDeclarations;
-    }
+	private Set<Annotateable> getInterestingDeclarations() {
+		final Set<Annotateable> interestingMethodDeclarations = new HashSet<Annotateable>();
+		for (final AnnotationTypeDeclaration annotationTypeDeclaration : annotationTypeToFactoryMethodWriterMap.keySet()) {
+			interestingMethodDeclarations.addAll(getInterestingDeclarations(annotationTypeDeclaration));
+		}
+		return interestingMethodDeclarations;
+	}
 
-    abstract protected Set<Annotateable> getInterestingDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
+	abstract protected Set<Annotateable> getInterestingDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
 
-    private Map<TypeDeclaration, List<Annotateable>> getMethodsByType() {
-        return group(getInterestingDeclarations(), new Functor<Annotateable, TypeDeclaration>() {
-            public TypeDeclaration execute(final Annotateable method) {
-                return method.getDeclaringType();
-            }
-        });
-    }
+	private Map<TypeDeclaration, List<Annotateable>> getMethodsByType() {
+		return group(getInterestingDeclarations(), new Functor<Annotateable, TypeDeclaration>() {
+			public TypeDeclaration execute(final Annotateable method) {
+				return method.getDeclaringType();
+			}
+		});
+	}
 
-    protected Collection<AnnotationMirror> getMirrors(final Declaration declaration, final AnnotationTypeDeclaration annotationTypeDeclaration) {
-        return select(declaration.getAnnotationMirrors(), new Filter<AnnotationMirror>() {
-            public Boolean execute(final AnnotationMirror mirror) {
-                return mirror.getAnnotationType().getDeclaration().equals(annotationTypeDeclaration);
-            }
-        });
-    }
+	protected Collection<AnnotationMirror> getMirrors(final Declaration declaration,
+			final AnnotationTypeDeclaration annotationTypeDeclaration) {
+		return select(declaration.getAnnotationMirrors(), new Filter<AnnotationMirror>() {
+			public Boolean execute(final AnnotationMirror mirror) {
+				return mirror.getAnnotationType().getDeclaration().equals(annotationTypeDeclaration);
+			}
+		});
+	}
 
-    protected AnnotationTypeDeclaration getTypeDeclaration(final Class< ? > annotationClass) {
-        return (AnnotationTypeDeclaration) environment.getTypeDeclaration(annotationClass.getName());
-    }
+	protected AnnotationTypeDeclaration getTypeDeclaration(final Class<?> annotationClass) {
+		return (AnnotationTypeDeclaration) environment.getTypeDeclaration(annotationClass.getName());
+	}
 
-    public void process() {
-        process(new InterfaceFactoryType(), new InstanceFactoryType(), new StaticFactoryType());
-    }
+	public void process() {
+		process(new InterfaceFactoryType(), new InstanceFactoryType(), new StaticFactoryType());
+	}
 
-    protected void process(final FactoryType... types) {
-        final Map<TypeDeclaration, List<Annotateable>> methodsByType = getMethodsByType();
-        for (final FactoryType type : types) {
-            writeFactories(methodsByType, type);
-        }
-    }
+	protected void process(final FactoryType... types) {
+		final Map<TypeDeclaration, List<Annotateable>> methodsByType = getMethodsByType();
+		for (final FactoryType type : types) {
+			writeFactories(methodsByType, type);
+		}
+	}
 
-    private void putAnnotationClassToWriterMapping(final Class< ? > commandAnnotationClass, final FactoryMethodWriter writer) {
-        annotationTypeToFactoryMethodWriterMap.put(getTypeDeclaration(commandAnnotationClass), writer);
-    }
+	private void putAnnotationClassToWriterMapping(final Class<?> commandAnnotationClass, final FactoryMethodWriter writer) {
+		annotationTypeToFactoryMethodWriterMap.put(getTypeDeclaration(commandAnnotationClass), writer);
+	}
 
-    private void writeFactories(final Map<TypeDeclaration, List<Annotateable>> methodsByType, final FactoryType type) {
-        for (final Entry<TypeDeclaration, List<Annotateable>> entry : methodsByType.entrySet()) {
-            new FactoryWriter(environment, entry.getKey(), type, annotationTypeToFactoryMethodWriterMap).write(entry.getValue());
-        }
-    }
+	private void writeFactories(final Map<TypeDeclaration, List<Annotateable>> methodsByType, final FactoryType type) {
+		for (final Entry<TypeDeclaration, List<Annotateable>> entry : methodsByType.entrySet()) {
+			new FactoryWriter(environment, entry.getKey(), type, annotationTypeToFactoryMethodWriterMap).write(entry.getValue());
+		}
+	}
 }

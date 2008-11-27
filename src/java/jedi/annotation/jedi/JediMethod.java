@@ -22,63 +22,62 @@ import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
 public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
-    private Set<String> cutParameterNames;
+	private Set<String> cutParameterNames;
 
-    public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter) {
-        this(declaration, factoryMethodWriter, null, null);
-    }
-    
-    public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter, String factoryMethodPrefix) {
-        this(declaration, factoryMethodWriter, factoryMethodPrefix, null);
-    }
+	public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter) {
+		this(declaration, factoryMethodWriter, null, null);
+	}
 
-    public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter, String cutName, Set<String> cutParameterNames) {
-    	super(declaration, factoryMethodWriter, cutName);
-        this.cutParameterNames = (cutParameterNames == null ? new HashSet<String>() : cutParameterNames);
-    }
+	public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter, String factoryMethodPrefix) {
+		this(declaration, factoryMethodWriter, factoryMethodPrefix, null);
+	}
 
-    public TypeMirror getType() {
-        return declaration.getReturnType();
-    }
+	public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter, String cutName, Set<String> cutParameterNames) {
+		super(declaration, factoryMethodWriter, cutName);
+		this.cutParameterNames = (cutParameterNames == null ? new HashSet<String>() : cutParameterNames);
+	}
 
-    private Collection<Attribute> getParameters() {
-        return collect(
-            declaration.getParameters(), new Functor<ParameterDeclaration, Attribute>() {
-                public Attribute execute(ParameterDeclaration value) {
-                    return new Attribute(value);
-                }
-            });
-    }
-    
-    public List<Attribute> getUncutParameters() {
-        return getSelectedParameters(invert(createCutParameterFilter()));
-    }
-    
-    public List<Attribute> getCutParameters() {
-        return getSelectedParameters(createCutParameterFilter());
-    }
+	public TypeMirror getType() {
+		return declaration.getReturnType();
+	}
 
-    private List<Attribute> getSelectedParameters(final Filter<Attribute> filter) {
-        return select(getParameters(), filter);
-    }
+	private Collection<Attribute> getParameters() {
+		return collect(declaration.getParameters(), new Functor<ParameterDeclaration, Attribute>() {
+			public Attribute execute(ParameterDeclaration value) {
+				return new Attribute(value);
+			}
+		});
+	}
 
-    private Filter<Attribute> createCutParameterFilter() {
-        return new Filter<Attribute>() {
-            public Boolean execute(Attribute value) {
-                return cutParameterNames.contains(value.getName());
-            }
-        };
-    }
-    
-    @SuppressWarnings("unchecked")
-	private Collection< TypeParameterDeclaration > getGenericTypeParameters() {
-        return append(declaration.getFormalTypeParameters(), declaration.getDeclaringType().getFormalTypeParameters());
-    }
+	public List<Attribute> getUncutParameters() {
+		return getSelectedParameters(invert(createCutParameterFilter()));
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-    	return super.equals(obj) && ((JediMethod) obj).cutParameterNames.equals(cutParameterNames);
-    }
+	public List<Attribute> getCutParameters() {
+		return getSelectedParameters(createCutParameterFilter());
+	}
+
+	private List<Attribute> getSelectedParameters(final Filter<Attribute> filter) {
+		return select(getParameters(), filter);
+	}
+
+	private Filter<Attribute> createCutParameterFilter() {
+		return new Filter<Attribute>() {
+			public Boolean execute(Attribute value) {
+				return cutParameterNames.contains(value.getName());
+			}
+		};
+	}
+
+	@SuppressWarnings("unchecked")
+	private Collection<TypeParameterDeclaration> getGenericTypeParameters() {
+		return append(declaration.getFormalTypeParameters(), declaration.getDeclaringType().getFormalTypeParameters());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj) && ((JediMethod) obj).cutParameterNames.equals(cutParameterNames);
+	}
 
 	private String removeNamePrefix(String prefix) {
 		return Character.toString(Character.toLowerCase(name.charAt(prefix.length()))) + name.substring(prefix.length() + 1);
@@ -87,16 +86,16 @@ public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
 	private boolean isNamePrefixedWith(String prefix) {
 		return name.startsWith(prefix) && name.length() > prefix.length() && Character.isUpperCase(name.charAt(prefix.length()));
 	}
-	
+
 	public void writeInvocation(JavaWriter writer, String receiverName) {
 		writer.print(receiverName + "." + getOriginalName());
 		writer.printSimpleNamesAsActualParameterList(getParameters());
 	}
-	
+
 	public String getName(boolean simplified) {
 		return simplified ? getSimplifiedName() : name;
 	}
-	
+
 	private String getSimplifiedName() {
 		if (isNamePrefixedWith("get")) {
 			return removeNamePrefix("get");
@@ -106,8 +105,8 @@ public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
 		}
 		return name;
 	}
-	
-    public void writeGenericTypeParameters(JavaWriter writer) {
-    	writer.printGenericTypeParameters(getGenericTypeParameters());
-    }
+
+	public void writeGenericTypeParameters(JavaWriter writer) {
+		writer.printGenericTypeParameters(getGenericTypeParameters());
+	}
 }

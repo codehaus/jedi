@@ -9,19 +9,19 @@ public class ProxyFilterFactoryMethodWriter extends AbstractProxyFactoryMethodWr
 	public ProxyFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
 		super(environment);
 	}
-	
-    @Override
-    protected Class< ? > getOneParameterClosureClass() {
-        return Filter.class;
-    }
-    
-    @Override
-    protected boolean isReturnRequired() {
-        return true;
-    }
 
-    @Override
-    protected boolean hasCorrectReturnType(Annotateable method) {
-        return method.isBoolean();
-    }
+	@Override
+	protected Class<?> getOneParameterClosureClass() {
+		return Filter.class;
+	}
+
+	@Override
+	protected boolean isReturnRequired() {
+		return true;
+	}
+
+	@Override
+	protected boolean hasCorrectReturnType(Annotateable method) {
+		return method.isBoolean();
+	}
 }

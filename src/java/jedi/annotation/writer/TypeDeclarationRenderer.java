@@ -18,9 +18,7 @@ public class TypeDeclarationRenderer {
 	}
 
 	public static String render(Collection<TypeParameterDeclaration> typeParameters) {
-		return typeParameters.isEmpty() ?
-			"" :
-			"<" + join(collect(typeParameters, createTypeParameterDeclarationRenderer()), ", ") + ">";
+		return typeParameters.isEmpty() ? "" : "<" + join(collect(typeParameters, createTypeParameterDeclarationRenderer()), ", ") + ">";
 	}
 
 	private static Functor<TypeParameterDeclaration, String> createTypeParameterDeclarationRenderer() {
@@ -38,7 +36,7 @@ public class TypeDeclarationRenderer {
 	public static String renderWithoutBounds(TypeDeclaration declaration) {
 		return declaration.getQualifiedName() + renderWithoutBounds(declaration.getFormalTypeParameters());
 	}
-	
+
 	public static String renderWithoutBounds(Collection<TypeParameterDeclaration> typeParameters) {
 		return typeParameters.isEmpty() ? "" : "<" + join(collectNames(typeParameters), ", ") + ">";
 	}

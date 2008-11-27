@@ -5,9 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.METHOD, ElementType.TYPE, ElementType.FIELD})
+@Target( { ElementType.METHOD, ElementType.TYPE, ElementType.FIELD })
 @Retention(RetentionPolicy.SOURCE)
 public @interface SithFilter {
-    Class<?> type();
-    SithMethod[] methods();
+	Class<?> type();
+
+	SithMethod[] methods();
 }

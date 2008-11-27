@@ -14,24 +14,24 @@ public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMe
 	public AbstractProxyFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
 		super(environment);
 	}
-	
-    @Override
-    protected final List<Attribute> getExecuteMethodParameters(Annotateable method) {
-        return method.getUncutParameters();
-    }
-    
-    @Override
-    protected final List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-        return list(new Attribute(getDelegateMethodDeclaringType(), RECEIVER_PARAMETER_NAME));
-    }
 
-    @Override
-    protected final Collection<Attribute> getFactoryMethodBasicParameters() {
-        return getMethod().getCutParameters();
-    }
+	@Override
+	protected final List<Attribute> getExecuteMethodParameters(Annotateable method) {
+		return method.getUncutParameters();
+	}
 
-    @Override
-    protected final String getFactoryMethodNameReturnTypeSuffix() {
-        return optional("-AjediSuppressProxySuffix", "", "Proxy") + super.getFactoryMethodNameReturnTypeSuffix();
-    }
+	@Override
+	protected final List<Attribute> getFactoryMethodAdditionalFormalParameters() {
+		return list(new Attribute(getDelegateMethodDeclaringType(), RECEIVER_PARAMETER_NAME));
+	}
+
+	@Override
+	protected final Collection<Attribute> getFactoryMethodBasicParameters() {
+		return getMethod().getCutParameters();
+	}
+
+	@Override
+	protected final String getFactoryMethodNameReturnTypeSuffix() {
+		return optional("-AjediSuppressProxySuffix", "", "Proxy") + super.getFactoryMethodNameReturnTypeSuffix();
+	}
 }

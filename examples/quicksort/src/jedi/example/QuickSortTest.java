@@ -17,16 +17,16 @@ public class QuickSortTest extends TestCase {
 				return o1.compareTo(o2);
 			}
 		});
-		assertEquals(asList(boxInts(0,1,1,3,4,8)), result);
+		assertEquals(asList(boxInts(0, 1, 1, 3, 4, 8)), result);
 	}
 
 	public void testSort2() throws Exception {
-		Collection<String> result = QuickSort.sort(list("x","d","a"), String.CASE_INSENSITIVE_ORDER);
-		assertEquals(list("a","d","x"), result);
+		Collection<String> result = QuickSort.sort(list("x", "d", "a"), String.CASE_INSENSITIVE_ORDER);
+		assertEquals(list("a", "d", "x"), result);
 	}
 
 	public void testSortEmptyList() throws Exception {
-		Collection<String> result = QuickSort.sort(asList(new String[]{}), String.CASE_INSENSITIVE_ORDER);
+		Collection<String> result = QuickSort.sort(asList(new String[] {}), String.CASE_INSENSITIVE_ORDER);
 		assertEquals(asList(new String[] {}), result);
 	}
 }

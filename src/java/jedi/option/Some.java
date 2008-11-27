@@ -29,36 +29,37 @@ public final class Some<T> implements Option<T> {
 		return singletonList(get());
 	}
 
-	public T getOrElse(Functor0<T> generator) {
+	public T getOrElse(Functor0<? extends T> generator) {
 		return get();
 	}
-	
-	public T getOrElse(final T defaultValue) {
+
+	public <E extends T> T getOrElse(E defaultValue) {
 		return get();
 	}
 
 	/**
 	 * Get the value this Some contains.
+	 * 
 	 * @return the value, guaranteed to not be null.
 	 */
 	public T get() {
 		return value;
 	}
 
-	public void match(OptionMatcher<T> matcher) {
+	public void match(OptionMatcher<? super T> matcher) {
 		assertNotNull(matcher, "OptionMatcher must not be null");
 		matcher.caseSome(value);
 	}
-	
-	public void match(Command<T> someCommand, Command0 noneCommand) {
+
+	public void match(Command<? super T> someCommand, Command0 noneCommand) {
 		someCommand.execute(get());
 	}
-	
-	public <R> R match(Functor<T, R> someFunctor, Functor0<R> noneFunctor) {
+
+	public <R> R match(Functor<? super T, R> someFunctor, Functor0<R> noneFunctor) {
 		return someFunctor.execute(get());
 	}
 
-	public <R> Option<R> map(Functor<T, R> mappingFunction) {
+	public <R> Option<R> map(Functor<? super T, R> mappingFunction) {
 		R result = mappingFunction.execute(get());
 		assertNotNull(result, "The result of the supplied mapping function is null.");
 		return some(result);
@@ -80,12 +81,12 @@ public final class Some<T> implements Option<T> {
 		return "Some: " + get();
 	}
 
-	public void forEach(Command<T> command) {
+	public void forEach(Command<? super T> command) {
 		command.execute(get());
 	}
 
-	public Option<T> filter(Filter<T> f) {
-		return f.execute(get()) ? this : Options.<T>none();
+	public Option<T> filter(Filter<? super T> f) {
+		return f.execute(get()) ? this : Options.<T> none();
 	}
 
 	public Iterator<T> iterator() {

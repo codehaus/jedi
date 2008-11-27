@@ -29,38 +29,34 @@ public final class None<T> implements Option<T> {
 			throw new UnsupportedOperationException();
 		}
 	}
-	
-	private final EmptyIterator iterator = new EmptyIterator();
 
-	public None() {
-	}
+	private final EmptyIterator iterator = new EmptyIterator();
 
 	public List<T> asList() {
 		return Collections.<T> emptyList();
 	}
 
-	public T getOrElse(Functor0<T> generator) {
+	public T getOrElse(Functor0<? extends T> generator) {
 		return generator.execute();
 	}
-	
-	public T getOrElse(T defaultValue) {
+
+	public <E extends T> T getOrElse(E defaultValue) {
 		return defaultValue;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void match(OptionMatcher matcher) {
-		matcher.caseNone(this);
+	public void match(OptionMatcher<? super T> matcher) {
+		matcher.caseNone();
 	}
 
-	public void match(Command<T> someCommand, Command0 noneCommand) {
+	public void match(Command<? super T> someCommand, Command0 noneCommand) {
 		noneCommand.execute();
 	}
-	
-	public <R> R match(Functor<T, R> someFunctor, Functor0<R> noneFunctor) {
+
+	public <R> R match(Functor<? super T, R> someFunctor, Functor0<R> noneFunctor) {
 		return noneFunctor.execute();
 	}
-	
-	public <R> Option<R> map(Functor<T, R> mappingFunction) {
+
+	public <R> Option<R> map(Functor<? super T, R> mappingFunction) {
 		return Options.<R> none();
 	}
 
@@ -68,7 +64,7 @@ public final class None<T> implements Option<T> {
 	public boolean equals(Object obj) {
 		return obj instanceof None;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return getClass().hashCode();
@@ -79,16 +75,16 @@ public final class None<T> implements Option<T> {
 		return "None";
 	}
 
-	public void forEach(Command<T> command) {
-		// no-op
+	public Iterator<T> iterator() {
+		return iterator;
 	}
 
-	public Option<T> filter(Filter<T> f) {
+	public Option<T> filter(Filter<? super T> f) {
 		return this;
 	}
 
-	public Iterator<T> iterator() {
-		return iterator;
+	public void forEach(Command<? super T> command) {
+		// no op
 	}
 
 }

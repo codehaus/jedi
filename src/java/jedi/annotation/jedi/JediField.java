@@ -15,26 +15,26 @@ public class JediField extends AbstractAnnotateable<FieldDeclaration> {
 	public JediField(FieldDeclaration declaration, FactoryMethodWriter writer, String name) {
 		super(declaration, writer, name);
 	}
-	
+
 	public List<Attribute> getCutParameters() {
 		return list();
 	}
-	
+
 	public String getName(boolean simplified) {
 		return declaration.getSimpleName();
 	}
-	
+
 	public TypeMirror getType() {
 		return declaration.getType();
 	}
-	
+
 	public List<Attribute> getUncutParameters() {
 		return list();
 	}
-	
+
 	public void writeGenericTypeParameters(JavaWriter writer) {
 	}
-	
+
 	public void writeInvocation(JavaWriter writer, String receiverName) {
 		writer.print(receiverName + "." + getOriginalName());
 	}

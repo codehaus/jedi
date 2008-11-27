@@ -6,19 +6,20 @@ import java.util.Collection;
 import java.util.Set;
 
 public class MembershipFilter<T> extends AbstractUnaryFilter<T, Set<T>> {
-    public MembershipFilter(Set<T> collection) {
-        super(collection);
-    }
+	public MembershipFilter(Set<T> collection) {
+		super(collection);
+	}
 
-    public static <T> MembershipFilter<T> create(Collection<T> collection) {
-        return new MembershipFilter<T>(asSet(collection));
-    }
+	public static <T> MembershipFilter<T> create(Collection<T> collection) {
+		return new MembershipFilter<T>(asSet(collection));
+	}
 
-    public Boolean execute(T value) {
-        return getTestValue().contains(value);
-    }
+	public Boolean execute(T value) {
+		return getTestValue().contains(value);
+	}
 
-    protected String getFunctionName() {
-        return "member";
-    }
+	@Override
+	protected String getFunctionName() {
+		return "member";
+	}
 }

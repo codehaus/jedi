@@ -1,5 +1,5 @@
 package jedi.functional;
 
-public interface Command <T> {
-    void execute(T value);
+public interface Command<T> {
+	void execute(T value);
 }

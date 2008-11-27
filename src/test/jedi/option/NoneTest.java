@@ -20,11 +20,12 @@ public class NoneTest extends MockObjectTestCase {
 	public void testMatch() {
 		Option<Integer> opt = none();
 
-		opt.match(new OptionMatcher<Integer>() {
-			public void caseNone(None<Integer> none) {
+		opt.match(new OptionMatcher<Number>() {
+			public void caseNone() {
+				// don't care
 			}
 
-			public void caseSome(Integer value) {
+			public void caseSome(Number value) {
 				fail();
 			}
 		});
@@ -64,6 +65,14 @@ public class NoneTest extends MockObjectTestCase {
 		Mock generator = mock(Functor0.class);
 		generator.expects(once()).method("execute").will(returnValue("x"));
 		assertEquals("x", Options.<String> none().getOrElse((Functor0<String>) generator.proxy()));
+	}
+
+	public void testGetOrElseSubclassGenerator() {
+		assertSame(Bar.BAR, Options.<Foo> none().getOrElse(new BarFunctor0()));
+	}
+
+	public void testGetOrElseSubclassValue() {
+		assertSame(Bar.BAR, Options.<Foo> none().getOrElse(Bar.BAR));
 	}
 
 	@SuppressWarnings("unchecked")

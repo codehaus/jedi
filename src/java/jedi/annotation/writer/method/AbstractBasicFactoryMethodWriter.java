@@ -15,20 +15,20 @@ public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMe
 	public AbstractBasicFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
 		super(environment);
 	}
-	
-    @SuppressWarnings("unchecked")
-    @Override
-    protected final List<Attribute> getExecuteMethodParameters(Annotateable method) {
-        return append(list(new Attribute(method.getDeclaringType(), RECEIVER_PARAMETER_NAME)), method.getCutParameters());
-    }
-        
-    @Override
-    protected final Collection<Attribute> getFactoryMethodBasicParameters() {
-        return getMethod().getUncutParameters();
-    }
-    
-    @Override
-    protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-        return list();
-    }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected final List<Attribute> getExecuteMethodParameters(Annotateable method) {
+		return append(list(new Attribute(method.getDeclaringType(), RECEIVER_PARAMETER_NAME)), method.getCutParameters());
+	}
+
+	@Override
+	protected final Collection<Attribute> getFactoryMethodBasicParameters() {
+		return getMethod().getUncutParameters();
+	}
+
+	@Override
+	protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
+		return list();
+	}
 }

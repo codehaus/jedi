@@ -12,40 +12,40 @@ import jedi.functional.Filter;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
 public class EqualsFilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
-    private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
+	private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
 
-    public EqualsFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-    	super(environment);
-        setReceiverInvocationWriter(new EqualsFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
-    }
+	public EqualsFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
+		super(environment);
+		setReceiverInvocationWriter(new EqualsFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
+	}
 
-    @Override
-    protected String getExecuteMethodReturnType() {
-        return Boolean.class.getName();
-    }
+	@Override
+	protected String getExecuteMethodReturnType() {
+		return Boolean.class.getName();
+	}
 
-    @Override
-    protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-        return list(new Attribute(getDelegateMethodReturnType(), TEST_VALUE_PARAMETER_NAME));
-    }
+	@Override
+	protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
+		return list(new Attribute(getDelegateMethodReturnType(), TEST_VALUE_PARAMETER_NAME));
+	}
 
-    @Override
-    protected String getFactoryMethodNameRequiredSuffix() {
-        return "Equals";
-    }
+	@Override
+	protected String getFactoryMethodNameRequiredSuffix() {
+		return "Equals";
+	}
 
-    @Override
-    public Class< ? > getOneParameterClosureClass() {
-        return Filter.class;
-    }
+	@Override
+	public Class<?> getOneParameterClosureClass() {
+		return Filter.class;
+	}
 
-    @Override
-    protected boolean hasCorrectReturnType(final Annotateable method) {
-        return !(method.isVoid() || method.isBoolean());
-    }
+	@Override
+	protected boolean hasCorrectReturnType(final Annotateable method) {
+		return !(method.isVoid() || method.isBoolean());
+	}
 
-    @Override
-    protected boolean isReturnRequired() {
-        return true;
-    }
+	@Override
+	protected boolean isReturnRequired() {
+		return true;
+	}
 }

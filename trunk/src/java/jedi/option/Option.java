@@ -59,7 +59,7 @@ public interface Option<T> extends Iterable<T> {
 	 *            the functor to execute if this Option is a {@link None}
 	 * @return the result of executing the functor
 	 */
-	<R> R match(Functor<? super T, R> someFunctor, Functor0<R> noneFunctor);
+	<R1, R2 extends R1> R1 match(Functor<? super T, R1> someFunctor, Functor0<R2> noneFunctor);
 
 	/**
 	 * An empty list for {@link None} or an immutable list with

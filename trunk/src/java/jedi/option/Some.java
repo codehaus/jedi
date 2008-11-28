@@ -55,7 +55,7 @@ public final class Some<T> implements Option<T> {
 		someCommand.execute(get());
 	}
 
-	public <R> R match(Functor<? super T, R> someFunctor, Functor0<R> noneFunctor) {
+	public <R1, R2 extends R1> R1 match(Functor<? super T, R1> someFunctor, Functor0<R2> noneFunctor) {
 		return someFunctor.execute(get());
 	}
 

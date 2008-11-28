@@ -15,12 +15,12 @@ import jedi.functional.Functor0;
 public interface Option<T> extends Iterable<T> {
 
 	/**
-	 * Emulates Scala's pattern match on optional types.
-	 * 
+	 * Accept a for this {@link Option}.
+	 * In languages like Scala we can do this kind of thing:
 	 * <pre>
 	 * x match {
-	 *   case Some(s) =&gt; s
-	 *   case None =&gt; &quot;?&quot;
+	 *   case {@link Some}(s) =&gt; s
+	 *   case {@link None} =&gt; &quot;?&quot;
 	 * }
 	 * </pre>
 	 * 
@@ -29,8 +29,8 @@ public interface Option<T> extends Iterable<T> {
 	 * 
 	 * <pre>
 	 * x.match(new OptionMatcher() {
-	 *   public void case(String value) { // excellent we can use the value }
-	 *   public void case(None&lt;String&gt; none) { // no value, deal with it }
+	 *   public void caseSome(T value) { // excellent we can use the value }
+	 *   public void caseNone() { // no value, deal with it }
 	 * });
 	 * </pre>
 	 */
@@ -39,14 +39,14 @@ public interface Option<T> extends Iterable<T> {
 	/**
 	 * A match strategy based on Commands. Since annotated methods become
 	 * commands in Jedi, this approach is a very simple solution to dealing with
-	 * Some and None.
+	 * {@link Some} and {@link None}.
 	 * 
 	 * @param someCommand
 	 *            a command that will receive the callback in the event that
-	 *            Some is matched
+	 *            {@link Some} is matched
 	 * @param noneCommand
 	 *            a command that will receive the callback in the event that
-	 *            None is matched
+	 *            {@link None} is matched
 	 */
 	void match(Command<? super T> someCommand, Command0 noneCommand);
 
@@ -56,19 +56,19 @@ public interface Option<T> extends Iterable<T> {
 	 * @param someFunctor
 	 *            the functor to execute if this Option is a Same
 	 * @param noneFunctor
-	 *            the functor to execute if this Option is a None
+	 *            the functor to execute if this Option is a {@link None}
 	 * @return the result of executing the functor
 	 */
 	<R> R match(Functor<? super T, R> someFunctor, Functor0<R> noneFunctor);
 
 	/**
-	 * An empty list for <code>None</code> or an immutable list with
+	 * An empty list for {@link None} or an immutable list with
 	 * {@link Some#get}.
 	 */
 	List<T> asList();
 
 	/**
-	 * If the option is <code>Some</code> return its value, otherwise return the
+	 * If the option is {@link Some} return its value, otherwise return the
 	 * result of evaluating the generator expression.
 	 * 
 	 * @param generator
@@ -77,15 +77,15 @@ public interface Option<T> extends Iterable<T> {
 	T getOrElse(Functor0<? extends T> generator);
 
 	/**
-	 * If the option is <code>Some</code> return its value, otherwise return a
+	 * If the option is {@link Some} return its value, otherwise return a
 	 * default value.
 	 */
-	<E extends T> T getOrElse(E defaultValue);
+	T getOrElse(T defaultValue);
 
 	/**
-	 * If the option is <code>Some</code>, return a function applied to its
-	 * value, wrapped in a Some: <code>Some(f(this.get))</code>, otherwise
-	 * return <code>None</code>.
+	 * If the option is {@link Some}, return a function applied to its
+	 * value, wrapped in a {@link Some}: <code>{@link Some}(f(this.get))</code>, otherwise
+	 * return {@link None}.
 	 * 
 	 * @param mappingFunction
 	 *            the function to apply
@@ -93,8 +93,8 @@ public interface Option<T> extends Iterable<T> {
 	<R> Option<R> map(Functor<? super T, R> mappingFunction);
 
 	/**
-	 * Apply the given Command to the option's value if it is not None. Do
-	 * nothing if it is None.
+	 * Apply the given Command to the option's value if it is not {@link None}. Do
+	 * nothing if it is {@link None}.
 	 * 
 	 * @param command
 	 *            the Command to apply.
@@ -103,7 +103,7 @@ public interface Option<T> extends Iterable<T> {
 
 	/**
 	 * If this option is {@link Some} and the given functor <code>f</code>
-	 * yields <code>false</code> on its value, return <code>None</code>.
+	 * yields <code>false</code> on its value, return {@link None}.
 	 * Otherwise return this option.
 	 * 
 	 * @param f

@@ -17,15 +17,15 @@ import org.junit.Test;
 public class NoneTest extends MockObjectTestCase {
 
 	@Test
-	public void testMatch() {
-		Option<Integer> opt = none();
+	public void testMatchWithSuperMatcher() {
+		Option<Bar> opt = none();
 
-		opt.match(new OptionMatcher<Number>() {
+		opt.match(new OptionMatcher<Foo>() {
 			public void caseNone() {
 				// don't care
 			}
 
-			public void caseSome(Number value) {
+			public void caseSome(Foo value) {
 				fail();
 			}
 		});

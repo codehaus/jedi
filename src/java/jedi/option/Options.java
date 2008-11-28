@@ -34,7 +34,7 @@ public final class Options {
 	}
 
 	/**
-	 * Get an Option from a Map.
+	 * Get an Option for a key's value in a Map.
 	 * 
 	 * @param map
 	 *            the map to retrieve a value from
@@ -44,6 +44,6 @@ public final class Options {
 	 *         Some(value) if the map did contain the value.
 	 */
 	public static <K, V> Option<V> get(Map<K, V> map, K key) {
-		return map.containsKey(key) ? some(map.get(key)) : Options.<V> none();
+		return map.containsKey(key) ? some(map.get(key)) : Options.<V>none();
 	}
 }

@@ -33,19 +33,24 @@ import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.util.DeclarationFilter;
 
 public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
+	private static final DeclarationFilter MEMBER_VISIBILITY_FILTER = //
+		DeclarationFilter.FILTER_PUBLIC //
+		.or(DeclarationFilter.FILTER_PACKAGE) //
+		.or(DeclarationFilter.FILTER_PROTECTED);
+
 	private static final DeclarationFilter INTERESTING_METHOD_FILTER = new DeclarationFilter() {
 		@Override
 		public boolean matches(Declaration declaration) {
 			return declaration instanceof MethodDeclaration;
 		}
-	}.and(DeclarationFilter.FILTER_PUBLIC.or(DeclarationFilter.FILTER_PACKAGE));
+	}.and(MEMBER_VISIBILITY_FILTER);
 
 	private static final DeclarationFilter INTERESTING_FIELD_FILTER = new DeclarationFilter() {
 		@Override
 		public boolean matches(Declaration declaration) {
 			return declaration instanceof FieldDeclaration;
 		}
-	}.and(DeclarationFilter.FILTER_PUBLIC.or(DeclarationFilter.FILTER_PACKAGE));
+	}.and(MEMBER_VISIBILITY_FILTER);
 
 	public ClosureAnnotationProcessor(AnnotationProcessorEnvironment environment) {
 		super(environment, JediCommand.class, JediFilter.class, JediFunctor.class);

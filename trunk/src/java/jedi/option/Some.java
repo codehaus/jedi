@@ -33,7 +33,7 @@ public final class Some<T> implements Option<T> {
 		return get();
 	}
 
-	public <E extends T> T getOrElse(E defaultValue) {
+	public T getOrElse(T defaultValue) {
 		return get();
 	}
 

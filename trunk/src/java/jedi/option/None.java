@@ -40,7 +40,7 @@ public final class None<T> implements Option<T> {
 		return generator.execute();
 	}
 
-	public <E extends T> T getOrElse(E defaultValue) {
+	public T getOrElse(T defaultValue) {
 		return defaultValue;
 	}
 

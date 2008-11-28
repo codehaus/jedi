@@ -400,6 +400,18 @@ public class FunctionalPrimitives {
 	}
 
 	/**
+	 * Get the first item (in iteration order) from a collection as an
+	 * {@link Option}.
+	 * 
+	 * @param items
+	 * @return the first item (in iteration order) from a collection as
+	 *         {@link Some} or {@link None} if the collection is empty.
+	 */
+	public static <T> Option<T> firstOption(final Iterable<T> items) {
+		return option(headOrNullIfEmpty(items));
+	}
+
+	/**
 	 * An alias for fold.
 	 * 
 	 * @see #fold(Object, Iterable, Functor2)

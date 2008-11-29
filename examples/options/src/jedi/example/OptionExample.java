@@ -11,7 +11,7 @@ public class OptionExample {
 		Option<String> x = Some("foo");
 		
 		x.match(new OptionMatcher<String>() {
-			public void caseNone(None<String> none) {
+			public void caseNone() {
 				System.out.println("oops, shouldn't be here");
 			}
 

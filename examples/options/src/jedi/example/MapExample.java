@@ -15,7 +15,7 @@ public class MapExample {
 		
 		Options.get(map, "a").match(new OptionMatcher<Integer>() {
 		
-			public void caseNone(None<Integer> none) {
+			public void caseNone() {
 				System.out.println("oops, shouldn't be here");
 			}
 

@@ -207,7 +207,7 @@
                 <li><a href="javadoc/jedi/option/Option.html">Option</a>&lt;String&gt; foo = <a href="javadoc/jedi/option/Options.html">Options</a>.<a href="javadoc/jedi/option/Options.html#get(java.util.Map,%20K)">get</a>(map, "key");</li>
                 <li>foo.<a href="javadoc/jedi/option/Option.html#match(jedi.option.OptionMatcher)">match</a>(new <a href="javadoc/jedi/option/OptionMatcher.html">OptionMatcher</a>() {</li>
                 <li>&nbsp;&nbsp;public void caseSome(String value) { // excellent we can use the value }</li>
-                <li>&nbsp;&nbsp;public void caseNone(<a href="javadoc/jedi/option/None.html">None</a>&lt;String&gt; none) { throw <span class="keyword">new</span> WhatsItException("Where's the foo?"); }</li>
+                <li>&nbsp;&nbsp;public void caseNone() { throw <span class="keyword">new</span> WhatsItException("Where's the foo?"); }</li>
                 <li>});</li>
             </ul>
             <p>The point is that there are no <code>null</code>s in this code and the possibility that the value may not exist has to be dealt with.</p>

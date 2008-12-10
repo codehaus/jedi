@@ -24,3 +24,5 @@ Version Change
 2.7		Change the OptionMatcher interface. Warning: this is an API breaking change. Apologies.
 		Improved the Option generics.
 		Allow protected methods to be annotated.
+		
+2.7.1	Added a '.jar' extension to the jar file in the deployment. Doh!

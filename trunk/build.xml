@@ -14,12 +14,12 @@
     <property name="build.test.dir" value="${build.dir}/classes/test"/>
     <property name="report.dir" location="${build.dir}/report"/>
 
-	<property name="version.number" value="2.7"/>
+	<property name="version.number" value="2.7.1"/>
 
 	<property name="dist.name" value="jedi_${version.number}"/>
     <property name="dist" location="${build.dir}/${dist.name}"/>
 	<property name="distfile.base.name" value="${dist}/${project.name}_${version.number}"/>
-    <property name="dist.jar.file" location="${distfile.base.name}"/>
+    <property name="dist.jar.file" location="${distfile.base.name}.jar"/>
 	<property name="src.zip.file" location="${distfile.base.name}_src.zip"/>
 	
     <path id="test.classpath">

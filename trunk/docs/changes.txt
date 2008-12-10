@@ -20,3 +20,7 @@ Version Change
 
 2.6		Improved handling of generics in code generation. Still not perfect.
 		Replaced collections with iterables everywhere possible. JDK1.4 compatibility cannot now be achieved.
+		
+2.7		Change the OptionMatcher interface. Warning: this is an API breaking change. Apologies.
+		Improved the Option generics.
+		Allow protected methods to be annotated.

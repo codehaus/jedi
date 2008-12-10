@@ -9,21 +9,21 @@
     <property name="meta-inf.dir" location="src/META-INF"/>
 	
     <property name="build.dir" value="build"/>
-    <property name="build.classes.1.5.dir" value="${build.dir}/classes/1.5"/>
+    <property name="build.classes.dir" value="${build.dir}/classes"/>
 
     <property name="build.test.dir" value="${build.dir}/classes/test"/>
     <property name="report.dir" location="${build.dir}/report"/>
 
-	<property name="version.number" value="2.6"/>
+	<property name="version.number" value="2.7"/>
 
 	<property name="dist.name" value="jedi_${version.number}"/>
     <property name="dist" location="${build.dir}/${dist.name}"/>
-	<property name="distfile.base.name" value="${dist}/${project.name}_${version.number}_"/>
-    <property name="1.5_jar_file" location="${distfile.base.name}jdk1.5.jar"/>
-	<property name="src.zip.file" location="${distfile.base.name}src.zip"/>
+	<property name="distfile.base.name" value="${dist}/${project.name}_${version.number}"/>
+    <property name="dist.jar.file" location="${distfile.base.name}"/>
+	<property name="src.zip.file" location="${distfile.base.name}_src.zip"/>
 	
     <path id="test.classpath">
-        <pathelement path="${build.classes.1.5.dir}"/>
+        <pathelement path="${build.classes.dir}"/>
         <fileset dir="${lib}" includes="*.jar"/>
         <pathelement path="${build.test.dir}"/>
     </path>
@@ -41,16 +41,16 @@
         <delete dir="${dist}"/>
     </target>
 
-    <target name="build_1.5_jar">
-        <jar file="${1.5_jar_file}">
-            <fileset dir="${build.classes.1.5.dir}" includes="**/*"/>
+    <target name="build_jar">
+        <jar file="${dist.jar.file}">
+            <fileset dir="${build.classes.dir}" includes="**/*"/>
 			<metainf dir="${meta-inf.dir}" includes="**/*"/>
         </jar>
     </target>
 
-    <target name="compile_1.5">
-        <mkdir dir="${build.classes.1.5.dir}"/>
-        <javac destdir="${build.classes.1.5.dir}" debug="on" target="1.5">
+    <target name="compile">
+        <mkdir dir="${build.classes.dir}"/>
+        <javac destdir="${build.classes.dir}" debug="on" target="1.5">
             <src path="${java.src.dir}"/>
         </javac>
     </target>
@@ -63,13 +63,13 @@
         </javac>
     </target>
 
-    <target name="compile" depends="clean, init, compile_1.5"/>
+    <target name="clean-compile" depends="clean, init, compile"/>
 	
 	<target name="zipsource" depends="init">
 		<zip basedir="${java.src.dir}" destfile="${src.zip.file}"/>
 	</target>
 
-    <target name="build" depends="compile, unit_test, build_1.5_jar, docs, examples, zipsource"/>
+    <target name="build" depends="clean-compile, unit_test, build_jar, docs, examples, zipsource"/>
 	
 	<target name="distribution" depends="clean, build">
 		<zip destfile="${build.dir}/${dist.name}_${DSTAMP}${TSTAMP}.zip">

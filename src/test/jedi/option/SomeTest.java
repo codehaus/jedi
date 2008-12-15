@@ -160,4 +160,10 @@ public class SomeTest extends MockObjectTestCase {
 			}
 		}, (Functor0<Integer>) noneFunctor.proxy()));
 	}
+
+	@Test
+	public void testUnsafeGet() {
+		String value = "value";
+		assertSame(value, some(value).unsafeGet());
+	}
 }

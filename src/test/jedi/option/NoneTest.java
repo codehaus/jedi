@@ -115,4 +115,9 @@ public class NoneTest extends MockObjectTestCase {
 		Iterator<String> iterator = option.iterator();
 		assertFalse(iterator.hasNext());
 	}
+
+	@Test
+	public void testUnsafeGet() {
+		assertNull(none().unsafeGet());
+	}
 }

@@ -111,4 +111,9 @@ public interface Option<T> extends Iterable<T> {
 	 */
 	Option<T> filter(Filter<? super T> f);
 
+	/**
+	 * Get the value returning <code>null</code> for None.
+	 */
+	T unsafeGet();
+
 }

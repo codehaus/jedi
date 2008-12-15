@@ -92,4 +92,8 @@ public final class Some<T> implements Option<T> {
 	public Iterator<T> iterator() {
 		return asList().iterator();
 	}
+
+	public T unsafeGet() {
+		return value;
+	}
 }

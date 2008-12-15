@@ -87,4 +87,11 @@ public final class None<T> implements Option<T> {
 		// no op
 	}
 
+	/**
+	 * @return null
+	 */
+	public T unsafeGet() {
+		return null;
+	}
+
 }

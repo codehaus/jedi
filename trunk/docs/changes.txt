@@ -1,5 +1,4 @@
 Version Change
-NEXT	Added Options.unsageGet()
 2.1     Add SithMethods to wrap a bunch of Sith annotations because you can only use an annotation once on a particular element
 		When generating Sith factories, if the package of the target class begins with 'java.', replace that prefix with 'sith.'
 		Making Assert constructor protected, so it can be extended
@@ -27,3 +26,4 @@ NEXT	Added Options.unsageGet()
 		Allow protected methods to be annotated.
 		
 2.7.1	Added a '.jar' extension to the jar file in the deployment. Doh!
+NEXT	Added Options.unsafeGet()

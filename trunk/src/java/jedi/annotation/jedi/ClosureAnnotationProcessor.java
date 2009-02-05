@@ -59,17 +59,17 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Set<Annotateable> getInterestingDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
-		return asSet(append(flatten(ClosureAnnotationProcessor.INTERESTING_METHOD_FILTER.filter(environment
-				.getDeclarationsAnnotatedWith(annotationTypeDeclaration)), new Functor<Declaration, Set<? extends Annotateable>>() {
+		final Collection<Declaration> annotatedDeclarations = environment.getDeclarationsAnnotatedWith(annotationTypeDeclaration);
+		return asSet(append(flatten(INTERESTING_METHOD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
 			public Set<? extends Annotateable> execute(Declaration value) {
 				return getRequiredMethods(annotationTypeDeclaration, (MethodDeclaration) value);
 			}
-		}), flatten(ClosureAnnotationProcessor.INTERESTING_FIELD_FILTER.filter(environment
-				.getDeclarationsAnnotatedWith(annotationTypeDeclaration)), new Functor<Declaration, Set<? extends Annotateable>>() {
-			public Set<? extends Annotateable> execute(Declaration value) {
-				return getRequiredMethods(annotationTypeDeclaration, (FieldDeclaration) value);
-			}
-		})));
+		}), flatten(
+				INTERESTING_FIELD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
+					public Set<? extends Annotateable> execute(Declaration value) {
+						return getRequiredMethods(annotationTypeDeclaration, (FieldDeclaration) value);
+					}
+				})));
 	}
 
 	private Set<? extends Annotateable> getRequiredMethods(AnnotationTypeDeclaration annotationTypeDeclaration, FieldDeclaration field) {
@@ -82,8 +82,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 	}
 
 	@SuppressWarnings("unchecked")
-	private Set<? extends Annotateable> getRequiredMethods(final AnnotationTypeDeclaration annotationTypeDeclaration,
-			MethodDeclaration method) {
+	private Set<? extends Annotateable> getRequiredMethods(final AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method) {
 		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(method, annotationTypeDeclaration)));
 		String factoryPrefix = (String) interpreter.getValue("name");
 		if (factoryPrefix == null) {
@@ -105,8 +104,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 	}
 
 	@SuppressWarnings("unchecked")
-	private Annotateable createCutMethod(AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method,
-			AnnotationMirror cut, String factoryPrefix) {
+	private Annotateable createCutMethod(AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method, AnnotationMirror cut, String factoryPrefix) {
 		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(cut);
 
 		String name = (String) interpreter.getValue("name");

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import jedi.annotation.JediCommand;
+import jedi.annotation.JediCut;
 import jedi.annotation.JediFilter;
 import jedi.annotation.JediFunctor;
 import jedi.functional.Coercions;
@@ -21,7 +22,7 @@ public class ProcessorFactory implements AnnotationProcessorFactory {
 	}
 
 	public Collection<String> supportedAnnotationTypes() {
-		return Coercions.set(JediCommand.class.getName(), JediFilter.class.getName(), JediFunctor.class.getName());
+		return Coercions.set(JediCommand.class.getName(), JediFilter.class.getName(), JediFunctor.class.getName(), JediCut.class.getName());
 	}
 
 	public AnnotationProcessor getProcessorFor(Set<AnnotationTypeDeclaration> typeDeclarations, AnnotationProcessorEnvironment environment) {

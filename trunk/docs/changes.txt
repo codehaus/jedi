@@ -26,4 +26,7 @@ Version Change
 		Allow protected methods to be annotated.
 		
 2.7.1	Added a '.jar' extension to the jar file in the deployment. Doh!
+
 2.8.0	Added Options.unsafeGet()
+
+2.9.0	I believe I have improved the performance of the annotation processor by about 15%

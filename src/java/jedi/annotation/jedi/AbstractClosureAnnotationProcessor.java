@@ -45,24 +45,30 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 		this.environment = environment;
 
 		annotationTypeToFactoryMethodWriterMap = new HashMap<AnnotationTypeDeclaration, FactoryMethodWriter>();
-		putAnnotationClassToWriterMapping(commandAnnotationClass, new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(
-				environment), new ProxyCommandFactoryMethodWriter(environment)));
-		putAnnotationClassToWriterMapping(filterAnnotationClass, new CompositeFactoryMethodWriter(
-				new FilterFactoryMethodWriter(environment), new EqualsFilterFactoryMethodWriter(environment),
-				new MembershipFilterFactoryMethodWriter(environment), new ProxyFilterFactoryMethodWriter(environment)));
-		putAnnotationClassToWriterMapping(functorAnnotationClass, new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(
-				environment), new ProxyFunctorFactoryMethodWriter(environment)));
+		putAnnotationClassToWriterMapping(commandAnnotationClass,
+				new CompositeFactoryMethodWriter(
+						new CommandFactoryMethodWriter(environment), new ProxyCommandFactoryMethodWriter(environment)));
+		putAnnotationClassToWriterMapping(filterAnnotationClass,
+				new CompositeFactoryMethodWriter(
+						new FilterFactoryMethodWriter(environment), new EqualsFilterFactoryMethodWriter(environment),
+						new MembershipFilterFactoryMethodWriter(environment), new ProxyFilterFactoryMethodWriter(environment)));
+		putAnnotationClassToWriterMapping(functorAnnotationClass,
+				new CompositeFactoryMethodWriter(
+						new FunctorFactoryMethodWriter(environment), new ProxyFunctorFactoryMethodWriter(environment)));
 	}
 
 	private Set<Annotateable> getInterestingDeclarations() {
 		final Set<Annotateable> interestingMethodDeclarations = new HashSet<Annotateable>();
 		for (final AnnotationTypeDeclaration annotationTypeDeclaration : annotationTypeToFactoryMethodWriterMap.keySet()) {
-			interestingMethodDeclarations.addAll(getInterestingDeclarations(annotationTypeDeclaration));
+			interestingMethodDeclarations.addAll(getInterestingNonCompositeDeclarations(annotationTypeDeclaration));
 		}
+		interestingMethodDeclarations.addAll(getInterestingCompositeDeclarations());
 		return interestingMethodDeclarations;
 	}
 
-	abstract protected Set<Annotateable> getInterestingDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
+	abstract protected Collection<Annotateable> getInterestingCompositeDeclarations();
+
+	abstract protected Set<Annotateable> getInterestingNonCompositeDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
 
 	private Map<TypeDeclaration, List<Annotateable>> getMethodsByType() {
 		return group(getInterestingDeclarations(), new Functor<Annotateable, TypeDeclaration>() {
@@ -72,8 +78,7 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 		});
 	}
 
-	protected Collection<AnnotationMirror> getMirrors(final Declaration declaration,
-			final AnnotationTypeDeclaration annotationTypeDeclaration) {
+	protected Collection<AnnotationMirror> getMirrors(final Declaration declaration, final AnnotationTypeDeclaration annotationTypeDeclaration) {
 		return select(declaration.getAnnotationMirrors(), new Filter<AnnotationMirror>() {
 			public Boolean execute(final AnnotationMirror mirror) {
 				return mirror.getAnnotationType().getDeclaration().equals(annotationTypeDeclaration);

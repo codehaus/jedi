@@ -58,7 +58,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Set<Annotateable> getInterestingDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
+	protected Set<Annotateable> getInterestingNonCompositeDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
 		final Collection<Declaration> annotatedDeclarations = environment.getDeclarationsAnnotatedWith(annotationTypeDeclaration);
 		return asSet(append(flatten(INTERESTING_METHOD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
 			public Set<? extends Annotateable> execute(Declaration value) {
@@ -70,6 +70,11 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 						return getRequiredMethods(annotationTypeDeclaration, (FieldDeclaration) value);
 					}
 				})));
+	}
+
+	@Override
+	protected Collection<Annotateable> getInterestingCompositeDeclarations() {
+		return Collections.<Annotateable>emptySet();
 	}
 
 	private Set<? extends Annotateable> getRequiredMethods(AnnotationTypeDeclaration annotationTypeDeclaration, FieldDeclaration field) {

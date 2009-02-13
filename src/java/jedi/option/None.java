@@ -3,10 +3,10 @@ package jedi.option;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import jedi.functional.Command;
 import jedi.functional.Command0;
+import jedi.functional.EmptyIterator;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
 import jedi.functional.Functor0;
@@ -16,21 +16,7 @@ import jedi.functional.Functor0;
  */
 public final class None<T> implements Option<T> {
 
-	private final class EmptyIterator implements Iterator<T> {
-		public boolean hasNext() {
-			return false;
-		}
-
-		public T next() {
-			throw new NoSuchElementException();
-		}
-
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-	}
-
-	private final EmptyIterator iterator = new EmptyIterator();
+	private final EmptyIterator<T> iterator = new EmptyIterator<T>();
 
 	public List<T> asList() {
 		return Collections.<T> emptyList();
@@ -60,6 +46,7 @@ public final class None<T> implements Option<T> {
 		return Options.<R> none();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof None;

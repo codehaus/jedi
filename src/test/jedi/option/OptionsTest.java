@@ -30,6 +30,13 @@ public class OptionsTest {
 	}
 
 	@Test
+	public void testMapGetNoneFromNull() {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("a", null);
+		assertEquals(none(), get(map, "a"));
+	}
+
+	@Test
 	public void testOptionWithNull() {
 		assertEquals(none(), option(null));
 	}

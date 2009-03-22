@@ -44,6 +44,6 @@ public final class Options {
 	 *         Some(value) if the map did contain the value.
 	 */
 	public static <K, V> Option<V> get(Map<K, V> map, K key) {
-		return map.containsKey(key) ? some(map.get(key)) : Options.<V>none();
+		return option(map.get(key));
 	}
 }

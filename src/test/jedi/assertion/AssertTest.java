@@ -20,12 +20,9 @@ public class AssertTest {
 		Assert.assertSame(this, this, "foo");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertSameWhenDifferent() throws Exception {
-		try {
-			Assert.assertSame("a", "b", "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertSame("a", "b", "name");
 	}
 
 	@Test
@@ -35,15 +32,12 @@ public class AssertTest {
 
 	@Test
 	public void testAssertEqualWhenEqual() {
-		Assert.assertEqual("a", "a", "name");
+		Assert.assertEqual("a", new String("a"), "name");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertEqualWhenNotEqual() {
-		try {
-			Assert.assertEqual("a", "b", "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertEqual("a", "b", "name");
 	}
 
 	@Test
@@ -51,12 +45,9 @@ public class AssertTest {
 		junit.framework.Assert.assertEquals("b", Assert.assertOneOf(AN_ARRAY, "b", "name"));
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertOneOfWhenValuesDoNotContainValue() {
-		try {
-			Assert.assertOneOf(AN_ARRAY, "c", "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertOneOf(AN_ARRAY, "d", "name");
 	}
 
 	@Test
@@ -64,12 +55,9 @@ public class AssertTest {
 		Assert.assertTrue(true, "name", CONTEXT);
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertTrueWhenFalse() {
-		try {
-			Assert.assertTrue(false, "name", CONTEXT);
-		} catch (AssertionError expected) {
-		}
+		Assert.assertTrue(false, "name", CONTEXT);
 	}
 
 	@Test
@@ -77,12 +65,9 @@ public class AssertTest {
 		Assert.assertNull(null, "name");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertNullWhenNotNull() {
-		try {
-			Assert.assertNull("a", "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertNull("a", "name");
 	}
 
 	@Test
@@ -91,21 +76,15 @@ public class AssertTest {
 		junit.framework.Assert.assertSame(x, Assert.assertNotNullOrEmpty(x, "name"));
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertStringNotNullOrEmptyWhenNull() {
 		String c = null;
-		try {
-			Assert.assertNotNullOrEmpty(c, "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertNotNullOrEmpty(c, "name");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertStringNotNullOrEmptyWhenEmpty() {
-		try {
-			Assert.assertNotNullOrEmpty("", "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertNotNullOrEmpty("", "name");
 	}
 
 	@Test
@@ -113,21 +92,15 @@ public class AssertTest {
 		junit.framework.Assert.assertSame(NON_EMPTY_COLLECTION, Assert.assertNotNullOrEmpty(NON_EMPTY_COLLECTION, "name"));
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertCollectionNotNullOrEmptyWhenNull() {
 		Collection<?> c = null;
-		try {
-			Assert.assertNotNullOrEmpty(c, "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertNotNullOrEmpty(c, "name");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertCollectionNotNullOrEmptyWhenEmpty() {
-		try {
-			Assert.assertNotNullOrEmpty(Collections.emptyList(), "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertNotNullOrEmpty(Collections.emptyList(), "name");
 	}
 
 	@Test
@@ -135,21 +108,15 @@ public class AssertTest {
 		junit.framework.Assert.assertSame(AN_ARRAY, Assert.assertNotNullOrEmpty(AN_ARRAY, "name"));
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertArrayNotNullOrEmptyWhenNull() {
 		Object[] c = null;
-		try {
-			Assert.assertNotNullOrEmpty(c, "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertNotNullOrEmpty(c, "name");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertArrayNotNullOrEmptyWhenEmpty() {
-		try {
-			Assert.assertNotNullOrEmpty(AN_EMPTY_ARRAY, "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertNotNullOrEmpty(AN_EMPTY_ARRAY, "name");
 	}
 
 	@Test
@@ -166,14 +133,11 @@ public class AssertTest {
 		junit.framework.Assert.assertSame(b, Assert.assertGreaterThanOrEqualTo(a, b, "name"));
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertGreaterThanOrEqualToWhenLessThan() {
 		String a = "b";
 		String b = "a";
-		try {
-			Assert.assertGreaterThanOrEqualTo(a, b, "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertGreaterThanOrEqualTo(a, b, "name");
 	}
 
 	@Test
@@ -190,24 +154,18 @@ public class AssertTest {
 		junit.framework.Assert.assertSame(b, Assert.assertLessThanOrEqualTo(a, b, "name"));
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertLessThanOrEqualToWhenGreaterThan() {
 		String a = "a";
 		String b = "b";
-		try {
-			Assert.assertLessThanOrEqualTo(a, b, "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertLessThanOrEqualTo(a, b, "name");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertWithinClosedRangeoWhenLessThanLowerValue() {
 		String b = "b";
 		String d = "d";
-		try {
-			Assert.assertWithinClosedRange(b, d, "a", "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertWithinClosedRange(b, d, "a", "name");
 	}
 
 	@Test
@@ -232,22 +190,16 @@ public class AssertTest {
 		junit.framework.Assert.assertSame(d, Assert.assertWithinClosedRange(b, d, d, "name"));
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertWithinClosedRangeoWhenGreaterThanUpoerValue() {
 		String b = "b";
 		String d = "d";
-		try {
-			Assert.assertWithinClosedRange(b, d, "e", "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertWithinClosedRange(b, d, "e", "name");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testFail() throws Exception {
-		try {
-			Assert.fail("fail", CONTEXT);
-		} catch (AssertionError expected) {
-		}
+		Assert.fail("fail", CONTEXT);
 	}
 
 	@Test
@@ -255,12 +207,9 @@ public class AssertTest {
 		Assert.assertFalse(false, "name");
 	}
 
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testAssertFalseWhenTrue() {
-		try {
-			Assert.assertFalse(true, "name");
-		} catch (AssertionError expected) {
-		}
+		Assert.assertFalse(true, "name");
 	}
 
 }

@@ -8,6 +8,7 @@ import static jedi.assertion.Assert.assertNotNullOrEmpty;
 import static jedi.assertion.Assert.assertTrue;
 import static jedi.functional.Coercions.asList;
 import static jedi.functional.Coercions.list;
+import static jedi.functional.Coercions.set;
 import static jedi.functional.Comparables.sort;
 import static jedi.functional.Comparables.sortInPlace;
 import static jedi.functional.FirstOrderLogic.invert;
@@ -19,9 +20,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jedi.option.None;
 import jedi.option.Option;
@@ -784,5 +787,96 @@ public class FunctionalPrimitives {
 	@SuppressWarnings("unchecked")
 	public static <T> List<List<T>> partition(Iterable<T> items, Filter<T> filter) {
 		return list(select(items, filter), select(items, invert(filter)));
+	}
+
+	/**
+	 * Return the set of all subsets of the provided collection.
+	 *
+	 * <p>For example, if all is the list ("x","y","z"), the return will be set containing
+	 * 8 lists as follows:</p>
+	 *
+	 * <ul>
+	 * 	<li>() - empty set</li>
+	 * 	<li>("x")</li>
+	 * 	<li>("y")</li>
+	 * 	<li>("z")</li>
+	 * 	<li>("x","y")</li>
+	 * 	<li>("x","z")</li>
+	 * 	<li>("y","z")</li>
+	 * 	<li>("x","y","z")</li>
+	 * </ul>
+	 *
+	 * <p>See <a href="http://en.wikipedia.org/wiki/Power_set">http://en.wikipedia.org/wiki/Power_set</a></p>
+	 * 
+	 * @see #powerset(Collection, Command)
+	 * @see #foldPowerset(Object, Collection, Functor2)
+	 *
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Set<List<T>> powerset(Collection<T> all) {
+		assertNotNull(all, "all must not be null");
+		return all.isEmpty() ? set(Collections.<T>emptyList()) : nonDegeneratePowerSet(all);
+	}
+
+	private static <T> Set<List<T>> nonDegeneratePowerSet(Collection<T> all) {
+		Set<List<T>> powerset = new HashSet<List<T>>();
+		int howManySubsetsInThePowerSet = 2 << (all.size() - 1);
+		for(int i = 0 ; i != howManySubsetsInThePowerSet ; i++) {
+			List<T> currentSubset = createSubsetFromOriginalSet(all, i);
+			powerset.add(currentSubset);
+		}
+		return powerset;
+	}
+
+	private static <T> List<T> createSubsetFromOriginalSet(Iterable<T> all, int elementsToIncludeBitMap) {
+		List<T> current = new ArrayList<T>();
+		int remainingElementsToInclude = elementsToIncludeBitMap;
+		for (T t : all) {
+			if ((remainingElementsToInclude & 1) == 1) {
+				current.add(t);
+			}
+			remainingElementsToInclude >>= 1;
+		}
+		return current;
+	}
+
+	/**
+	 * Iterate all powersets of the give collection, in no particular order.
+	 * @see #powerset(Collection)
+	 * @see #foldPowerset(Object, Collection, Functor2)
+	 */
+	public static <T> void powerset(Collection<T> all, Command<List<? super T>> command) {
+		assertNotNull(all, "all must not be null");
+		assertNotNull(command, "command must not be null");
+		recursePowerset(Collections.<T>emptyList(), asList(all), command);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> void recursePowerset(List<T> prefix, List<T> tail, Command<List<? super T>> command) {
+		command.execute(prefix);
+		for (int i = 0 ; i < tail.size() ; i++) {
+			recursePowerset(append(prefix, list(tail.get(i))), tail.subList(i + 1, tail.size()), command);
+		}
+	}
+
+	/**
+	 * Fold over all powersets of the give collection, in no particular order.
+	 * @see #powerset(Collection)
+	 * @see #powerset(Collection, Command)
+	 * @see #fold(Object, Iterable, Functor2)
+	 */
+	public static <T, R, I extends R> R foldPowerset(I initialValue, Collection<T> all, final Functor2<R, List<? super T>, R> functor2) {
+		assertNotNull(all, "all must not be null");
+		assertNotNull(functor2, "functor2 must not be null");
+		return recursePowerset(initialValue, Collections.<T>emptyList(), asList(all), functor2);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T, R, I extends R> R recursePowerset(I initialValue, List<T> prefix, List<T> tail, final Functor2<R, List<? super T>, R> functor2) {
+		R value = functor2.execute(initialValue, prefix);
+		for (int i = 0 ; i < tail.size() ; i++) {
+			value = recursePowerset(value, append(prefix, list(tail.get(i))), tail.subList(i + 1, tail.size()), functor2);
+		}
+		return value;
 	}
 }

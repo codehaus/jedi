@@ -1,5 +1,6 @@
 package jedi.functional;
 
+import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
 import static jedi.functional.Box.boxInts;
 import static jedi.functional.Coercions.asList;
@@ -11,6 +12,7 @@ import static jedi.functional.FunctionalPrimitives.drop;
 import static jedi.functional.FunctionalPrimitives.dropRight;
 import static jedi.functional.FunctionalPrimitives.flatten;
 import static jedi.functional.FunctionalPrimitives.fold;
+import static jedi.functional.FunctionalPrimitives.foldPowerset;
 import static jedi.functional.FunctionalPrimitives.forEach;
 import static jedi.functional.FunctionalPrimitives.group;
 import static jedi.functional.FunctionalPrimitives.head;
@@ -28,6 +30,7 @@ import static jedi.functional.FunctionalPrimitives.only;
 import static jedi.functional.FunctionalPrimitives.partition;
 import static jedi.functional.FunctionalPrimitives.pop;
 import static jedi.functional.FunctionalPrimitives.popOption;
+import static jedi.functional.FunctionalPrimitives.powerset;
 import static jedi.functional.FunctionalPrimitives.produce;
 import static jedi.functional.FunctionalPrimitives.reject;
 import static jedi.functional.FunctionalPrimitives.reverse;
@@ -185,7 +188,7 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 
 	@Test
 	public void testHeadOrDefaultIfEmptyWhenEmpty() {
-		assertEquals(FOO, headOrDefaultIfEmpty(Collections.EMPTY_LIST, FOO));
+		assertEquals(FOO, headOrDefaultIfEmpty(EMPTY_LIST, FOO));
 	}
 
 	@Test
@@ -228,7 +231,7 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 
 	@Test
 	public void testLastOrDefaultIfEmptyWhenEmpty() {
-		assertEquals(FOO, lastOrDefaultIfEmpty(Collections.EMPTY_LIST, FOO));
+		assertEquals(FOO, lastOrDefaultIfEmpty(EMPTY_LIST, FOO));
 	}
 
 	@Test
@@ -469,7 +472,7 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 
 	@Test
 	public void testTabulateWithEmptyList() throws Exception {
-		assertEquals(Collections.EMPTY_LIST, tabulate(Collections.EMPTY_LIST, 3));
+		assertEquals(EMPTY_LIST, tabulate(EMPTY_LIST, 3));
 	}
 
 	@Test
@@ -545,9 +548,107 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		assertEquals(expected, partition(list, FirstOrderLogic.not(new AllPassFilter<Integer>())));
 	}
 
+	@Test
+	public void testPowersetReturnsEmptySetForEmptyInput() {
+		Set output = powerset(EMPTY_LIST);
+
+		assertEquals(1, output.size());
+		assertTrue(output.contains(Collections.emptyList()));
+	}
+
+	@Test
+	public void testPowersetReturnsPowersetForOneElement() {
+		Set<List<String>> output = powerset(list("x"));
+
+		assertEquals(2, output.size());
+		assertTrue(output.contains(Collections.emptyList()));
+		assertTrue(output.contains(list("x")));
+	}
+
+	@Test
+	public void testPowersetReturnsPowersetForThreeElements() {
+		Set<List<String>> output = powerset(list("x", "y", "z"));
+
+		assertEquals(8, output.size());
+		assertTrue(output.contains(Collections.emptyList()));
+		assertTrue(output.contains(list("x")));
+		assertTrue(output.contains(list("y")));
+		assertTrue(output.contains(list("z")));
+		assertTrue(output.contains(list("x", "y")));
+		assertTrue(output.contains(list("x", "z")));
+		assertTrue(output.contains(list("y", "z")));
+		assertTrue(output.contains(list("x", "y", "z")));
+	}
+
 	private void assertNotSame(Object... objects) {
 		Set<Object> set = set(objects);
 		assertEquals("objects should be different", objects.length, set.size());
 	}
 
+	@Test
+	public void testPowersetAppliesCommandToEmptyListGivenAnEmptyCollection() {
+		Mock commandMock = mock(Command.class);
+		commandMock.expects(once()).method("execute").with(eq(Collections.EMPTY_LIST));
+
+		powerset(EMPTY_LIST, (Command) commandMock.proxy());
+	}
+
+	@Test
+	public void testPowersetAppliesCommandToPowersetElementsGivenACollectionWithOneElement() {
+		Mock commandMock = mock(Command.class);
+		commandMock.expects(once()).method("execute").with(eq(Collections.EMPTY_LIST));
+		commandMock.expects(once()).method("execute").with(eq(list("x")));
+
+		powerset(list("x"), (Command) commandMock.proxy());
+	}
+
+	@Test
+	public void testPowersetAppliesCommandToEachElementInThePowersetOfACollectionWithThreeElements() {
+		Mock commandMock = mock(Command.class);
+		commandMock.expects(once()).method("execute").with(eq(Collections.EMPTY_LIST));
+		commandMock.expects(once()).method("execute").with(eq(list("x")));
+		commandMock.expects(once()).method("execute").with(eq(list("y")));
+		commandMock.expects(once()).method("execute").with(eq(list("z")));
+		commandMock.expects(once()).method("execute").with(eq(list("x", "y")));
+		commandMock.expects(once()).method("execute").with(eq(list("x", "z")));
+		commandMock.expects(once()).method("execute").with(eq(list("y", "z")));
+		commandMock.expects(once()).method("execute").with(eq(list("x", "y", "z")));
+
+		powerset(list("x", "y", "z"), (Command) commandMock.proxy());
+	}
+
+	@Test
+	public void testPowersetAppliesFunctorToEmptyListGivenAnEmptyCollectionAndReturnsTheFunctorsReturnValue() {
+		Mock functorMock = mock(Functor2.class);
+		functorMock.expects(once()).method("execute").with(eq("a"), eq(EMPTY_LIST)).will(returnValue("b"));
+
+		Object result = foldPowerset("a", EMPTY_LIST, (Functor2) functorMock.proxy());
+		assertEquals("b", result);
+	}
+
+	@Test
+	public void testPowersetAppliesFunctorToPowersetElementsGivenACollectionWithOneElementAndReturnsTheAccumulatedValue() {
+		Mock functorMock = mock(Functor2.class);
+		functorMock.expects(once()).method("execute").with(eq("a"), eq(EMPTY_LIST)).will(returnValue("b"));
+		functorMock.expects(once()).method("execute").with(eq("b"), eq(list("x"))).will(returnValue("c"));
+
+		Object result = foldPowerset("a", list("x"), (Functor2) functorMock.proxy());
+		assertEquals("c", result);
+	}
+
+	@Test
+	public void testPowersetAppliesFunctorToEachElementInThePowersetOfACollectionWithThreeElementsAndReturnsTheAccumulatedValue() {
+		Mock functorMock = mock(Functor2.class);
+		functorMock.expects(once()).method("execute").with(eq("a"), eq(EMPTY_LIST)).will(returnValue("b"));
+		functorMock.expects(once()).method("execute").with(eq("b"), eq(list("x"))).will(returnValue("c"));
+		functorMock.expects(once()).method("execute").with(eq("c"), eq(list("x", "y"))).will(returnValue("d"));
+		functorMock.expects(once()).method("execute").with(eq("d"), eq(list("x", "y", "z"))).will(returnValue("e"));
+		functorMock.expects(once()).method("execute").with(eq("e"), eq(list("x", "z"))).will(returnValue("f"));
+		functorMock.expects(once()).method("execute").with(eq("f"), eq(list("y"))).will(returnValue("g"));
+		functorMock.expects(once()).method("execute").with(eq("g"), eq(list("y", "z"))).will(returnValue("h"));
+		functorMock.expects(once()).method("execute").with(eq("h"), eq(list("z"))).will(returnValue("i"));
+
+		Object returnValue = foldPowerset("a", list("x", "y", "z"), (Functor2) functorMock.proxy());
+		assertEquals("i", returnValue);
+	}
 }

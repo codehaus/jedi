@@ -30,3 +30,5 @@ Version Change
 2.8.0	Added Options.unsafeGet()
 
 2.9.0	I believe I have improved the performance of the annotation processor by about 15%
+
+2.10.0	Added powerset() methods to FunctionalPrimitives

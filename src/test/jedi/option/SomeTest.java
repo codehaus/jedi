@@ -93,6 +93,27 @@ public class SomeTest extends MockObjectTestCase {
 		assertEquals(some(true), some("string").map((Functor<String, Boolean>) functor.proxy()));
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMapMap() {
+		Mock functor1 = mock(Functor.class);
+		Mock functor2 = mock(Functor.class);
+		functor1.expects(once()).method("execute").with(eq("string")).will(returnValue(true));
+		functor2.expects(once()).method("execute").with(eq(true)).will(returnValue(1));
+		Functor<String, Boolean> firstFunction = (Functor<String, Boolean>) functor1.proxy();
+		Functor<? super Boolean, Number> secondFunction = (Functor<? super Boolean, Number>) functor2.proxy();
+
+		assertEquals(some(1), some("string").map(firstFunction).map(secondFunction));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMapWithNullReturnFromFunctor() {
+		Mock functor = mock(Functor.class);
+		functor.expects(once()).method("execute").with(eq("string")).will(returnValue(null));
+		assertEquals(none(), some("string").map((Functor<String, Boolean>) functor.proxy()));
+	}
+
 	public void testMapWithSuperCommand() {
 		assertEquals(some(Boolean.TRUE), some(Bar.BAR).map(new Functor<Foo, Boolean>() {
 			public Boolean execute(Foo value) {

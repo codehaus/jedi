@@ -4,6 +4,12 @@ import static jedi.functional.Coercions.asList;
 
 import java.util.Collection;
 
+/**
+ * A class of Asserts.
+ * The business of throwing an exception from this class is delegated to {@link AssertionDelegate}.
+ * {@link ErrorThrowingAssertionDelegate} is the default {@link AssertionDelegate} that throws an
+ * {@link AssertionError}
+ */
 public class Assert {
 
 	private static AssertionDelegate delegate = new ErrorThrowingAssertionDelegate();

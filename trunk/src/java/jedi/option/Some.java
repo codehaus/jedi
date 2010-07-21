@@ -61,8 +61,7 @@ public final class Some<T> implements Option<T> {
 
 	public <R> Option<R> map(Functor<? super T, R> mappingFunction) {
 		R result = mappingFunction.execute(get());
-		assertNotNull(result, "The result of the supplied mapping function is null.");
-		return some(result);
+		return result == null ? Options.<R>none() : some(result);
 	}
 
 	@Override

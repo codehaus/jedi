@@ -1,9 +1,9 @@
 package jedi.annotation.writer.method;
 
-import static jedi.functional.FirstOrderLogic.*;
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.FirstOrderLogic.exists;
+import static jedi.functional.FunctionalPrimitives.select;
 
-import java.util.Set;
+import java.util.List;
 
 import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.writer.JavaWriter;
@@ -12,10 +12,10 @@ import jedi.functional.Coercions;
 import jedi.functional.Filter;
 
 public class CompositeFactoryMethodWriter implements FactoryMethodWriter {
-	private final Set<? extends FactoryMethodWriter> children;
+	private final List<? extends FactoryMethodWriter> children;
 
 	public CompositeFactoryMethodWriter(FactoryMethodWriter... children) {
-		this.children = Coercions.set(children);
+		this.children = Coercions.list(children);
 	}
 
 	public boolean canHandle(Annotateable method) {

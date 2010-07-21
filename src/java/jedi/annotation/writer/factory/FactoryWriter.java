@@ -10,6 +10,7 @@ import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.method.FactoryMethodWriter;
+import jedi.functional.Comparables;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -77,8 +78,12 @@ public class FactoryWriter {
 	}
 
 	private void writeMethods(final List<Annotateable> methods) {
-		for (final Annotateable method : methods) {
+		for (final Annotateable method : sort(methods)) {
 			method.writeFactoryMethod();
 		}
+	}
+
+	private List<Annotateable> sort(List<Annotateable> methods) {
+		return Comparables.sort(methods, new AnnotateableComparator());
 	}
 }

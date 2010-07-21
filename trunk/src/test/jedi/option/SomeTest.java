@@ -123,6 +123,13 @@ public class SomeTest extends MockObjectTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
+	public void testFlatMap() {
+		Mock functor = mock(Functor.class);
+		functor.expects(once()).method("execute").with(eq("string")).will(returnValue(some(1)));
+		assertEquals(some(1), some("string").flatMap((Functor<String, Option<Number>>) functor.proxy()));
+	}
+
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testMatchWithCommands() {
 		Option<String> opt = some("x");

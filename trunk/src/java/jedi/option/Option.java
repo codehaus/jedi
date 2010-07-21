@@ -92,6 +92,8 @@ public interface Option<T> extends Iterable<T> {
 	 */
 	<R> Option<R> map(Functor<? super T, R> mappingFunction);
 
+	<R> Option<R> flatMap(Functor<? super T, Option<R>> mappingFunction);
+
 	/**
 	 * Apply the given Command to the option's value if it is not {@link None}. Do
 	 * nothing if it is {@link None}.

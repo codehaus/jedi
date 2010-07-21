@@ -46,6 +46,10 @@ public final class None<T> implements Option<T> {
 		return Options.<R> none();
 	}
 
+	public <R> Option<R> flatMap(Functor<? super T, Option<R>> mappingFunction) {
+		return Options.<R> none();
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {

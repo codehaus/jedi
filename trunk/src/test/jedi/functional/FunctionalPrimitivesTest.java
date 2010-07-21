@@ -10,6 +10,10 @@ import static jedi.functional.FunctionalPrimitives.append;
 import static jedi.functional.FunctionalPrimitives.collect;
 import static jedi.functional.FunctionalPrimitives.drop;
 import static jedi.functional.FunctionalPrimitives.dropRight;
+import static jedi.functional.FunctionalPrimitives.first;
+import static jedi.functional.FunctionalPrimitives.firstOption;
+import static jedi.functional.FunctionalPrimitives.firstOrDefault;
+import static jedi.functional.FunctionalPrimitives.firstOrNull;
 import static jedi.functional.FunctionalPrimitives.flatten;
 import static jedi.functional.FunctionalPrimitives.fold;
 import static jedi.functional.FunctionalPrimitives.foldPowerset;
@@ -55,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jedi.assertion.AssertionError;
 import jedi.filters.AllPassFilter;
 
 import org.jmock.Mock;
@@ -650,5 +655,77 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 
 		Object returnValue = foldPowerset("a", list("x", "y", "z"), (Functor2) functorMock.proxy());
 		assertEquals("i", returnValue);
+	}
+
+	@Test
+	public void testFirstReturnsTheFirstElementFromTheCollectionMatchingTheFilter() {
+		List<Integer> all = list(1,2,3,4);
+		assertEquals(new Integer(2), first(all, greaterThan(1)));
+	}
+
+	@Test
+	public void testFirstThrowsAnAssertionErrorIfNoElementMatchesTheFilter() {
+		List<Integer> all = list(1,2,3,4);
+		try {
+			first(all, greaterThan(5));
+			fail();
+		} catch (AssertionError e) {
+			// Expected
+		}
+	}
+
+	@Test
+	public void testFirstThrowsAnAssertionErrorIfIteratorIsEmpty() {
+		try {
+			first(Collections.EMPTY_LIST, greaterThan(5));
+			fail();
+		} catch (AssertionError e) {
+			// Expected
+		}
+	}
+
+	@Test
+	public void testFirstOrDefaultReturnsTheFirstElementFromTheCollectionMatchingTheFilter() {
+		List<Integer> all = list(1,2,3,4);
+		assertEquals(new Integer(2), firstOrDefault(all, greaterThan(1), new Integer(5)));
+	}
+
+	@Test
+	public void testFirstOrDefaultReturnsTheDefaultIfNoElementsMatch() {
+		List<Integer> all = list(1,2,3,4);
+		assertEquals(new Integer(5), firstOrDefault(all, greaterThan(4), new Integer(5)));
+	}
+
+	@Test
+	public void testFirstOrNullReturnsTheFirstElementFromTheCollectionMatchingTheFilter() {
+		List<Integer> all = list(1,2,3,4);
+		assertEquals(new Integer(2), firstOrNull(all, greaterThan(1)));
+	}
+
+	@Test
+	public void testFirstOrNullReturnsNullIfNoElementsMatch() {
+		List<Integer> all = list(1,2,3,4);
+		assertNull(firstOrNull(all, greaterThan(4)));
+	}
+
+
+	@Test
+	public void testFirstOptionReturnsSomeContainingTheFirstElementFromTheCollectionMatchingTheFilter() {
+		List<Integer> all = list(1,2,3,4);
+		assertEquals(some(2), firstOption(all, greaterThan(1)));
+	}
+
+	@Test
+	public void testFirstOptionReturnsNoneIfNoElementsMatch() {
+		List<Integer> all = list(1,2,3,4);
+		assertEquals(none(), firstOption(all, greaterThan(4)));
+	}
+
+	private Filter<Integer> greaterThan(final Integer boundary) {
+		return new Filter<Integer>(){
+			public Boolean execute(Integer value) {
+				return value > boundary;
+			}
+		};
 	}
 }

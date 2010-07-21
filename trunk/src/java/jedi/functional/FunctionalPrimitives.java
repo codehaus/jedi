@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jedi.assertion.AssertionError;
 import jedi.option.None;
 import jedi.option.Option;
 import jedi.option.Options;
@@ -400,6 +401,49 @@ public class FunctionalPrimitives {
 	 */
 	public static <T> T first(Iterable<? extends T> collection) {
 		return head(collection);
+	}
+
+	/**
+	 * Find the first item that matches the given filter
+	 * @return The first item that matches the given filter
+	 * @throws AssertionError if no match can be found
+	 */
+	public static <T> T first(Iterable<T> all, final Filter<? super T> filter) {
+		for (T t : all) {
+			if(filter.execute(t)) {
+				return t;
+			}
+		}
+		throw new AssertionError("At least one item should match the filter");
+	}
+
+	/**
+	 * Find the first item that matches the given filter or null if no match can be found
+	 * @return The first item that matches the given filter or null if no match can be found
+	 */
+	public static <T> T firstOrDefault(Iterable<? extends T> all, final Filter<? super T> filter, T defaultValue) {
+		for (T t : all) {
+			if(filter.execute(t)) {
+				return t;
+			}
+		}
+		return defaultValue;
+	}
+
+	/**
+	 * Find the first item that matches the given filter or null if no match can be found
+	 * @return The first item that matches the given filter or null if no match can be found
+	 */
+	public static <T> T firstOrNull(Iterable<T> all, final Filter<? super T> filter) {
+		return firstOrDefault(all, filter, null);
+	}
+
+	/**
+	 * Find the first item that matches the given filter
+	 * @return A Some Option on the first matching item or None if no items match
+	 */
+	public static <T> Option<T> firstOption(Iterable<T> all, final Filter<? super T> filter) {
+		return Options.option(firstOrNull(all, filter));
 	}
 
 	/**

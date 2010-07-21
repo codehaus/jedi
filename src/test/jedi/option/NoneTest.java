@@ -85,6 +85,14 @@ public class NoneTest extends MockObjectTestCase {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	public void testFlatMap() {
+		Mock functor = mock(Functor.class);
+		functor.expects(never()).method("execute");
+		assertEquals(Options.<Boolean> none(), Options.<String> none().flatMap((Functor<String, Option<Boolean>>) functor.proxy()));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
 	public void testForEach() {
 		Mock command = mock(Command.class);
 		command.expects(never()).method("execute");

@@ -64,6 +64,10 @@ public final class Some<T> implements Option<T> {
 		return result == null ? Options.<R>none() : some(result);
 	}
 
+	public <R> Option<R> flatMap(Functor<? super T, Option<R>> mappingFunction) {
+		return mappingFunction.execute(get());
+	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj) {

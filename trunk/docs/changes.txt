@@ -32,3 +32,8 @@ Version Change
 2.9.0	I believe I have improved the performance of the annotation processor by about 15%
 
 2.10.0	Added powerset() methods to FunctionalPrimitives
+
+2.11.0 Write generated methods out in a fixed order
+       JEDI-20: Add support for first() taking a filter
+       fixed Option.map that would thrown an exception if the supplied function returned null
+       added a flatmap to Option

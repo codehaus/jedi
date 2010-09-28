@@ -1,5 +1,7 @@
 package jedi.either;
 
+import java.util.Collections;
+
 import jedi.functional.Functor;
 
 import org.jmock.Mock;
@@ -29,5 +31,18 @@ public class RightTest extends MockObjectTestCase {
 	@Test
 	public void testSwap() {
 		assertEquals(new Left<Integer, String>(1), right.swap());
+	}
+
+	@Test
+	public void testAsList() {
+		assertEquals(Collections.emptyList(), right.asList());
+	}
+
+	@Test
+	public void testMap() {
+		Mock fa= mock(Functor.class);
+		fa.expects(never()).method("execute");
+
+		assertEquals(new Right(1), right.map((Functor<String, Integer>) fa.proxy()));
 	}
 }

@@ -1,5 +1,6 @@
 package jedi.either;
 
+import static jedi.functional.Coercions.list;
 import jedi.functional.Functor;
 
 import org.jmock.Mock;
@@ -29,5 +30,18 @@ public class LeftTest extends MockObjectTestCase {
 	@Test
 	public void testSwap() {
 		assertEquals(new Right<Integer, String>("a"), left.swap());
+	}
+
+	@Test
+	public void testAsList() {
+		assertEquals(list("a"), left.asList());
+	}
+
+	@Test
+	public void testMap() {
+		Mock fa= mock(Functor.class);
+		fa.expects(once()).method("execute").with(eq("a")).will(returnValue("ok"));
+
+		assertEquals(new Left("ok"), left.map((Functor<String, Integer>) fa.proxy()));
 	}
 }

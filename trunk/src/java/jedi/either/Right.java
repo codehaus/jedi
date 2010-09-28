@@ -1,5 +1,8 @@
 package jedi.either;
 
+import java.util.Collections;
+import java.util.List;
+
 import jedi.functional.Command;
 import jedi.functional.Functor;
 
@@ -55,5 +58,15 @@ public final class Right<A, B> extends Either<A, B> {
 	@Override
 	public String toString() {
 		return "Right:" + b;
+	}
+
+	@Override
+	public List<A> asList() {
+		return Collections.<A>emptyList();
+	}
+
+	@Override
+	public <X> Either<X, B> map(Functor<A, X> f) {
+		return new Right<X, B>(b);
 	}
 }

@@ -1,5 +1,9 @@
 package jedi.either;
 
+import static java.util.Collections.singletonList;
+
+import java.util.List;
+
 import jedi.functional.Command;
 import jedi.functional.Functor;
 
@@ -56,6 +60,16 @@ public final class Left<A, B> extends Either<A, B> {
 	@Override
 	public String toString() {
 		return "Left:" + a;
+	}
+
+	@Override
+	public List<A> asList() {
+		return singletonList(a);
+	}
+
+	@Override
+	public <X> Either<X, B> map(Functor<A, X> f) {
+		return new Left<X, B>(f.execute(a));
 	}
 
 }

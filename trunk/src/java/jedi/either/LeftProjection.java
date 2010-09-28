@@ -25,7 +25,7 @@ public final class LeftProjection<A, B> implements Iterable<A> {
 
 	/**
 	 * Returns the value from this <code>Left</code> or throws
-	 * <code>Prepublic.NoSuchElementException</code> if this is a
+	 * <code>NoSuchElementException</code> if this is a
 	 * <code>Right</code>.
 	 */
 	public A get() {

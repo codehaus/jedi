@@ -1,5 +1,7 @@
 package jedi.either;
 
+import java.util.List;
+
 import jedi.functional.Command;
 import jedi.functional.Functor;
 
@@ -48,4 +50,13 @@ public abstract class Either<A, B> {
 
 	public abstract Either<B, A> swap();
 
+	/**
+	 * @return Singleton list if Lift or empty list if Right.
+	 */
+	public abstract List<A> asList();
+
+	/**
+	 * Maps the function argument through <code>Left</code>.
+	 */
+	public abstract <X> Either<X, B> map(Functor<A, X> f);
 }

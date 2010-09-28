@@ -17,7 +17,6 @@ public class LeftTest extends MockObjectTestCase {
 		assertFalse(left.isRight());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testFold() {
 		Mock fa= mock(Functor.class);
@@ -39,9 +38,17 @@ public class LeftTest extends MockObjectTestCase {
 
 	@Test
 	public void testMap() {
-		Mock fa= mock(Functor.class);
+		Mock fa = mock(Functor.class);
 		fa.expects(once()).method("execute").with(eq("a")).will(returnValue("ok"));
 
 		assertEquals(new Left("ok"), left.map((Functor<String, Integer>) fa.proxy()));
+	}
+
+	@Test
+	public void testFlatMap() {
+		Mock fa = mock(Functor.class);
+		fa.expects(once()).method("execute").with(eq("a")).will(returnValue(new Left("fmap")));
+
+		assertEquals(new Left("fmap"), left.flatMap((Functor<String, Either<String, Integer>>) fa.proxy()));
 	}
 }

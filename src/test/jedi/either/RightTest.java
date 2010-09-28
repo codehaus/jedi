@@ -45,4 +45,12 @@ public class RightTest extends MockObjectTestCase {
 
 		assertEquals(new Right(1), right.map((Functor<String, Integer>) fa.proxy()));
 	}
+
+	@Test
+	public void testFlatMap() {
+		Mock fa = mock(Functor.class);
+		fa.expects(never()).method("execute");
+
+		assertEquals(new Right(1), right.flatMap((Functor<String, Either<String, Integer>>) fa.proxy()));
+	}
 }

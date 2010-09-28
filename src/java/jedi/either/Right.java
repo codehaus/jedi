@@ -69,4 +69,9 @@ public final class Right<A, B> extends Either<A, B> {
 	public <X> Either<X, B> map(Functor<A, X> f) {
 		return new Right<X, B>(b);
 	}
+
+	@Override
+	public <X> Either<X, B> flatMap(Functor<A, Either<X, B>> f) {
+		return new Right<X, B>(b);
+	}
 }

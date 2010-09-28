@@ -59,4 +59,6 @@ public abstract class Either<A, B> {
 	 * Maps the function argument through <code>Left</code>.
 	 */
 	public abstract <X> Either<X, B> map(Functor<A, X> f);
+
+	public abstract <X> Either<X, B> flatMap(Functor<A, Either<X, B>> f);
 }

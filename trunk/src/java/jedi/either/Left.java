@@ -72,4 +72,9 @@ public final class Left<A, B> extends Either<A, B> {
 		return new Left<X, B>(f.execute(a));
 	}
 
+	@Override
+	public <X> Either<X, B> flatMap(Functor<A, Either<X, B>> f) {
+		return f.execute(a);
+	}
+
 }

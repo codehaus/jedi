@@ -37,3 +37,5 @@ Version Change
        JEDI-20: Add support for first() taking a filter
        fixed Option.map that would thrown an exception if the supplied function returned null
        added a flatmap to Option
+
+2.12.0 JEDI-21 Added Complement Filter contributed by Toby Watson      

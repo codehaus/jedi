@@ -49,8 +49,10 @@ import static jedi.functional.FunctionalPrimitives.take;
 import static jedi.functional.FunctionalPrimitives.takeMiddle;
 import static jedi.functional.FunctionalPrimitives.takeRight;
 import static jedi.functional.FunctionalPrimitives.zip;
+import static jedi.functional.FunctionalPrimitives.zipWithIndex;
 import static jedi.option.Options.none;
 import static jedi.option.Options.some;
+import static jedi.tuple.Tuples.pair;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -494,6 +496,13 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		final List list = list(list("one", "two", "three"), list(1, 2, 3), list(true, false, true, false));
 		final List expected = list(list("one", 1, true), list("two", 2, false), list("three", 3, true));
 		assertEquals(expected, zip(list));
+	}
+
+	@Test
+	public void testZipWithIndex() throws Exception {
+		final List list = list("one", "two", "three");
+		final List expected = list(pair("one", 0), pair("two", 1), pair("three", 2));
+		assertEquals(expected, zipWithIndex(list));
 	}
 
 	@Test

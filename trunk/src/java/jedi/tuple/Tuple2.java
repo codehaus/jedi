@@ -1,6 +1,7 @@
 package jedi.tuple;
 
 import static jedi.option.Options.option;
+import jedi.option.Option;
 
 public class Tuple2<A,B> {
 	private final A a;
@@ -19,6 +20,20 @@ public class Tuple2<A,B> {
 		return b;
 	}
 
+	/**
+	 * @return a Tuple2 with a and b wrapped in an {@link Option}
+	 */
+	public Tuple2<Option<A>, Option<B>> withOptions() {
+		return new Tuple2<Option<A>, Option<B>>(option(a), option(b));
+	}
+
+	/**
+	 * Swap a and b
+	 */
+	public Tuple2<B, A> swap() {
+		return new Tuple2<B, A>(b, a);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -34,5 +49,10 @@ public class Tuple2<A,B> {
 	@Override
 	public int hashCode() {
 		return option(a).hashCode() ^ option(b).hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "(" + a + "," + b + ")";
 	}
 }

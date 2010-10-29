@@ -1,6 +1,7 @@
 package jedi.tuple;
 
 import static jedi.option.Options.option;
+import jedi.option.Option;
 
 public class Tuple4<A,B,C,D> {
 
@@ -30,6 +31,13 @@ public class Tuple4<A,B,C,D> {
 
 	public D d() {
 		return d;
+	}
+
+	/**
+	 * @return a Tuple4 with a, b, c and d wrapped in an {@link Option}
+	 */
+	public Tuple4<Option<A>, Option<B>, Option<C>, Option<D>> withOptions() {
+		return new Tuple4<Option<A>, Option<B>, Option<C>, Option<D>>(option(a), option(b), option(c), option(d));
 	}
 
 	@Override

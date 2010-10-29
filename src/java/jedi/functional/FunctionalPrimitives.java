@@ -31,6 +31,7 @@ import jedi.option.None;
 import jedi.option.Option;
 import jedi.option.Options;
 import jedi.option.Some;
+import jedi.tuple.Tuple2;
 
 /**
  * I provide operations of the kind found in Functional Programming languages.
@@ -46,7 +47,6 @@ public class FunctionalPrimitives {
 	private FunctionalPrimitives() {
 	}
 
-	@SuppressWarnings("unchecked")
 	private static final Comparator<Collection> COLLECTION_SIZE = new Comparator<Collection>() {
 		public int compare(Collection o1, Collection o2) {
 			return o1.size() - o2.size();
@@ -772,6 +772,20 @@ public class FunctionalPrimitives {
 		final List result = new ArrayList();
 		for (int i = 0; i < n; i++) {
 			result.add(slice(i, lists));
+		}
+		return result;
+	}
+
+	/**
+	 * ZipWithIndex Zips this list with its indices.
+	 * For example list("a", "b", "c").zipWithIndex = List(("a", 0), ("b", 1), ("c", 2))
+	 * where (x,y) is a {@link Tuple2}.
+	 * @return a list of Tuple2 containing elements of list and their index in the list.
+	 */
+	public static <T> List<Tuple2<T, Integer>> zipWithIndex(final List<T> list) {
+		final List<Tuple2<T, Integer>> result = new ArrayList<Tuple2<T, Integer>>();
+		for (int i = 0; i < list.size(); i++) {
+			result.add(new Tuple2<T, Integer>(list.get(i), i));
 		}
 		return result;
 	}

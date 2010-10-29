@@ -18,4 +18,14 @@ public class Tuple2Test {
 		assertFalse(tuple2(null, null).equals(tuple2("a", null)));
 	}
 
+	@Test
+	public void testWithOptionsEquals() {
+		assertEquals(tuple2(null,null).withOptions(), tuple2(null,null).withOptions());
+		assertEquals(tuple2(null,"a").withOptions(), tuple2(null,"a").withOptions());
+		assertEquals(tuple2("a", null).withOptions(), tuple2("a", null).withOptions());
+		assertEquals(tuple2(1,2).withOptions(), tuple2(1,2).withOptions());
+
+		assertFalse(tuple2(null, null).withOptions().equals(tuple2("a", null).withOptions()));
+	}
+
 }

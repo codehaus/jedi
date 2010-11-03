@@ -780,11 +780,6 @@ public class FunctionalPrimitives {
 	/**
 	 * Zips two lists returning a List of Tuple2.
 	 * The returned list's length is the smallest of listA and listB
-	 * @param <A>
-	 * @param <B>
-	 * @param listA
-	 * @param listB
-	 * @return
 	 */
 	public static <A, B> List<Tuple2<A,B>> zip(final List<A> listA, final List<B> listB) {
 		final int n = shortest(list(listA, listB)).size();

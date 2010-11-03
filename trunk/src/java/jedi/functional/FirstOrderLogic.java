@@ -132,6 +132,9 @@ public class FirstOrderLogic {
 		return union;
 	}
 
+	/**
+	 * Create a filter which is the exclusive or of the given <code>filters</code>.
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Filter<T> xor(Filter<T> a, Filter<T> b) {
 		return or(and(a, not(b)), and(not(a), b));

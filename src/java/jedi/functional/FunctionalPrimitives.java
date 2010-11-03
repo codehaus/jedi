@@ -32,6 +32,7 @@ import jedi.option.Option;
 import jedi.option.Options;
 import jedi.option.Some;
 import jedi.tuple.Tuple2;
+import jedi.tuple.Tuples;
 
 /**
  * I provide operations of the kind found in Functional Programming languages.
@@ -47,7 +48,7 @@ public class FunctionalPrimitives {
 	private FunctionalPrimitives() {
 	}
 
-	private static final Comparator<Collection> COLLECTION_SIZE = new Comparator<Collection>() {
+	private static final Comparator<Collection> COLLECTION_SIZE_COMPARATOR = new Comparator<Collection>() {
 		public int compare(Collection o1, Collection o2) {
 			return o1.size() - o2.size();
 		}
@@ -530,7 +531,7 @@ public class FunctionalPrimitives {
 	public static <U, T extends Collection<? extends U>> T longest(final Iterable<T> collections) {
 		assertNotNull(collections, "collections must not be null");
 		assertTrue(hasItems(collections), "collections must have at least one item");
-		return head(reverse(sortInPlace(asList(collections), COLLECTION_SIZE)));
+		return head(reverse(sortInPlace(asList(collections), COLLECTION_SIZE_COMPARATOR)));
 	}
 
 	/**
@@ -642,7 +643,7 @@ public class FunctionalPrimitives {
 	public static <U, T extends Collection<? extends U>> T shortest(final Iterable<T> collections) {
 		assertNotNull(collections, "lists must not be null");
 		assertTrue(hasItems(collections), "lists must have at least one item");
-		return head(sort(asList(collections), COLLECTION_SIZE));
+		return head(sort(asList(collections), COLLECTION_SIZE_COMPARATOR));
 	}
 
 	public static <T> boolean hasItems(final Iterable<T> iterable) {
@@ -772,6 +773,24 @@ public class FunctionalPrimitives {
 		final List result = new ArrayList();
 		for (int i = 0; i < n; i++) {
 			result.add(slice(i, lists));
+		}
+		return result;
+	}
+
+	/**
+	 * Zips two lists returning a List of Tuple2.
+	 * The returned list's length is the smallest of listA and listB
+	 * @param <A>
+	 * @param <B>
+	 * @param listA
+	 * @param listB
+	 * @return
+	 */
+	public static <A, B> List<Tuple2<A,B>> zip(final List<A> listA, final List<B> listB) {
+		final int n = shortest(list(listA, listB)).size();
+		final List<Tuple2<A, B>> result = new ArrayList<Tuple2<A, B>>();
+		for (int i = 0; i < n; i++) {
+			result.add(Tuples.pair(listA.get(i), listB.get(i)));
 		}
 		return result;
 	}

@@ -6,20 +6,22 @@ import static jedi.functional.FirstOrderLogic.exists;
 import static jedi.functional.FirstOrderLogic.intersection;
 import static jedi.functional.FirstOrderLogic.invert;
 import static jedi.functional.FirstOrderLogic.union;
+import static jedi.functional.FirstOrderLogic.xor;
 import static jedi.functional.FirstOrderLogic.zeroOrOne;
 
 import java.util.List;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
+import org.jmock.core.InvocationMatcher;
 import org.junit.Test;
 
 public class FirstOrderLogicTest extends MockObjectTestCase {
 
-	private Mock mockPredicate = mock(Filter.class);
+	private final Mock mockPredicate = mock(Filter.class);
 	@SuppressWarnings("unchecked")
-	private Filter predicate = (Filter) mockPredicate.proxy();
-	private List<?> predicated = Coercions.list(new Object(), new Object());
+	private final Filter predicate = (Filter) mockPredicate.proxy();
+	private final List<?> predicated = Coercions.list(new Object(), new Object());
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -140,6 +142,15 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 				createPredicateWithExpectation(testObject, true)).execute(testObject));
 	}
 
+	@Test
+	public void testXor() {
+		Object testObject = new Object();
+		assertEquals(Boolean.FALSE, xor(filter(false),filter(false)).execute(testObject));
+		assertEquals(Boolean.TRUE, xor(filter(false),filter(true)).execute(testObject));
+		assertEquals(Boolean.TRUE, xor(filter(true),filter(false)).execute(testObject));
+		assertEquals(Boolean.FALSE, xor(filter(true),filter(true)).execute(testObject));
+	}
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testIntersectionReturnsEmptySetWhenNoArgumentsAreGiven() {
@@ -177,17 +188,29 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 	}
 
 	private void expectPredicateExecution(Object value, boolean returnValue) {
-		expectPredicateExecution(mockPredicate, value, returnValue);
+		expectPredicateExecution(mockPredicate, value, returnValue, once());
 	}
 
 	@SuppressWarnings("unchecked")
 	private Filter createPredicateWithExpectation(Object testObject, boolean filterReturnValue) {
+		return createPredicateWithExpectation(testObject, filterReturnValue, once());
+	}
+
+	private Filter createPredicateWithExpectation(Object testObject, boolean filterReturnValue, InvocationMatcher matcher) {
 		Mock mockPredicate = mock(Filter.class);
-		expectPredicateExecution(mockPredicate, testObject, filterReturnValue);
+		expectPredicateExecution(mockPredicate, testObject, filterReturnValue, matcher);
 		return (Filter) mockPredicate.proxy();
 	}
 
-	private void expectPredicateExecution(Mock mockPredicate, Object testObject, boolean filterReturnValue) {
-		mockPredicate.expects(once()).method("execute").with(same(testObject)).will(returnValue(filterReturnValue));
+	private void expectPredicateExecution(Mock mockPredicate, Object testObject, boolean filterReturnValue, InvocationMatcher matcher) {
+		mockPredicate.expects(matcher).method("execute").with(same(testObject)).will(returnValue(filterReturnValue));
+	}
+
+	private Filter filter(final boolean filterReturnValue) {
+		return new Filter<Object>() {
+			public Boolean execute(Object value) {
+				return filterReturnValue;
+			}
+		};
 	}
 }

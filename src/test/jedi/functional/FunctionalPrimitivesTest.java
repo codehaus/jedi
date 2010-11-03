@@ -63,6 +63,7 @@ import java.util.Set;
 
 import jedi.assertion.AssertionError;
 import jedi.filters.AllPassFilter;
+import jedi.tuple.Tuple2;
 
 import org.jmock.Mock;
 import org.jmock.util.Dummy;
@@ -496,6 +497,25 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		final List list = list(list("one", "two", "three"), list(1, 2, 3), list(true, false, true, false));
 		final List expected = list(list("one", 1, true), list("two", 2, false), list("three", 3, true));
 		assertEquals(expected, zip(list));
+	}
+
+	@Test
+	public void testZipWithDifferentLengthLists() throws Exception {
+		final List list = list(list("one", "two", "three"), list(1, 2, 3, 4, 5, 6), list(true, false, true, false, true));
+		final List expected = list(list("one", 1, true), list("two", 2, false), list("three", 3, true));
+		assertEquals(expected, zip(list));
+	}
+
+	@Test
+	public void testZipToPair() throws Exception {
+		final List<Tuple2<String, Integer>> expected = list(pair("one", 1), pair("two", 2), pair("three", 3));
+		assertEquals(expected, zip(list("one", "two", "three"), list(1, 2, 3)));
+	}
+
+	@Test
+	public void testZipToPairWithDifferentLengthLists() throws Exception {
+		final List<Tuple2<String, Integer>> expected = list(pair("one", 1), pair("two", 2), pair("three", 3));
+		assertEquals(expected, zip(list("one", "two", "three"), list(1, 2, 3, 4, 5)));
 	}
 
 	@Test

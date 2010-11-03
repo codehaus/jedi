@@ -41,3 +41,4 @@ Version Change
 2.12.0 JEDI-21 Added Complement Filter contributed by Toby Watson   
 2.13.0 Added Tuples
 2.14.0 Did more with Tuples   
+2.15.0 added a typed zip method to FunctionalPrimitives taking two lists, and xor to FirstOrderLogic

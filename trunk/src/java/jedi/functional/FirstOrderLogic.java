@@ -132,6 +132,7 @@ public class FirstOrderLogic {
 		return union;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> Filter<T> xor(Filter<T> a, Filter<T> b) {
 		return or(and(a, not(b)), and(not(a), b));
 	}

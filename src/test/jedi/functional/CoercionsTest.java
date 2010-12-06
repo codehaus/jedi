@@ -231,4 +231,37 @@ public class CoercionsTest extends ClosureTestCase {
 
 		assertEquals(returnValue, asFunctor((Map) mockMap.proxy(), allowUncontainedKeys).execute(key));
 	}
+
+	/**
+	 * @see http://jira.codehaus.org/browse/JEDI-22
+	 */
+	@Test
+	public void asArrayWithEnumWithBehaviour() throws Exception {
+		List<AnimalWithBehaviour> animals = list(AnimalWithBehaviour.TIGER, AnimalWithBehaviour.LION, AnimalWithBehaviour.CAT);
+		asArray(animals);
+	}
+
+	enum AnimalWithBehaviour {
+		TIGER() {
+
+			@Override
+			boolean isBigCat() {
+				return true;
+			}
+		},
+		LION() {
+			@Override
+			boolean isBigCat() {
+				return true;
+			}
+		},
+		CAT() {
+			@Override
+			boolean isBigCat() {
+				return false;
+			}
+		};
+
+		abstract boolean isBigCat();
+	}
 }

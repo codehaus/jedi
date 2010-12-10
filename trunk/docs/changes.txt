@@ -44,3 +44,4 @@ Version Change
 2.15.0 Added a typed zip method to FunctionalPrimitives taking two lists, and xor to FirstOrderLogic
 2.16.0 Added FirstOrderLogic.xor(Filter, Filter) 
 	   Added FunctionalPrimitives.zip(List<A>, List<B>) that returns a List<Tuple2<A, B>> 
+2.17.0 Added Coercions.asArray(Class<T> clazz, Collection<T> items)

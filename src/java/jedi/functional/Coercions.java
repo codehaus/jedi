@@ -32,12 +32,23 @@ public class Coercions {
 	/**
 	 * Produce an array from a collection. All of the <code>items</code> must be
 	 * of the same class, otherwise an {@link ArrayStoreException} will be
-	 * thrown.
+	 * thrown. If you want to specify the type use {@link #asArray(Class, Collection)}.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] asArray(final Collection<T> items) {
 		assertNotNull(items, "items must not be null");
 		return items.toArray((T[]) Array.newInstance(head(select(items, new NotNullFilter<T>())).getClass(), items.size()));
+	}
+
+	/**
+	 * Produce an array from a collection.
+	 * @param clazz the type you want the array to be
+	 * @param items to convert to array
+	 * @return an array
+	 */
+	public static <T> T[] asArray(Class<T> clazz, Collection<T> items) {
+		assertNotNull(items, "items must not be null");
+		return items.toArray((T[]) Array.newInstance(clazz, items.size()));
 	}
 
 	/**

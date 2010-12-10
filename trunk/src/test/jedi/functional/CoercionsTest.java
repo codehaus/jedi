@@ -236,32 +236,11 @@ public class CoercionsTest extends ClosureTestCase {
 	 * @see http://jira.codehaus.org/browse/JEDI-22
 	 */
 	@Test
-	public void asArrayWithEnumWithBehaviour() throws Exception {
-		List<AnimalWithBehaviour> animals = list(AnimalWithBehaviour.TIGER, AnimalWithBehaviour.LION, AnimalWithBehaviour.CAT);
-		asArray(animals);
+	public void testAsArrayWithSubclassesButTypeSpecified() throws Exception {
+		asArray(FooSuper.class, list(new FooSub1(), new FooSub2()));
 	}
 
-	enum AnimalWithBehaviour {
-		TIGER() {
-
-			@Override
-			boolean isBigCat() {
-				return true;
-			}
-		},
-		LION() {
-			@Override
-			boolean isBigCat() {
-				return true;
-			}
-		},
-		CAT() {
-			@Override
-			boolean isBigCat() {
-				return false;
-			}
-		};
-
-		abstract boolean isBigCat();
-	}
+	class FooSuper {}
+	class FooSub1 extends FooSuper {}
+	class FooSub2 extends FooSuper {}
 }

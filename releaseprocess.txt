@@ -7,4 +7,4 @@
 7. Strip the timestamp from the end of the file so it looks like 'jedi_x.y'
 8. Copy the downloaded jedi.zip to the Codehaus webdav location: https://dav.codehaus.org/dist/jedi/
 9. Copy the Javadoc up to https://dav.codehaus.org/jedi/
-10.That's it
+10.Tag it in svn

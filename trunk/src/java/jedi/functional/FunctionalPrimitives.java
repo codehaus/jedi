@@ -35,7 +35,7 @@ import jedi.tuple.Tuple2;
 import jedi.tuple.Tuples;
 
 /**
- * InitialValue provide operations of the kind found in Functional Programming languages.
+ * I provide operations of the kind found in Functional Programming languages.
  * This allows you to remove a great deal of clutter from production code.
  * Ideally, you will never need to write another 'for' loop again, and a great
  * deal of explicit conditional logic should be removable as well.
@@ -162,7 +162,7 @@ public class FunctionalPrimitives {
 	/**
 	 * Suppose there is a collection of items (c1, c2, c3), each of which
 	 * contains a collection <i>i.e.</i> (c1 = (c1_1, c1_2, ...), c2=(c2_1,
-	 * c2_2, ...). InitialValue can produce a collection containing all of the 'leaf' items
+	 * c2_2, ...). I can produce a collection containing all of the 'leaf' items
 	 * <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2)
 	 * 
 	 * @param items
@@ -514,7 +514,7 @@ public class FunctionalPrimitives {
 	 * @param n
 	 *            the length of the list
 	 * @param functor
-	 *            the functor taking an integer and returning an <Acc>
+	 *            the functor taking an integer and returning an <R>
 	 */
 	public static <R> List<R> listTabulate(final int n, final Functor<Integer, R> functor) {
 		assertNotNull(functor, "functor must not be null");

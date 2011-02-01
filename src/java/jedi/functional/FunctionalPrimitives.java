@@ -35,7 +35,7 @@ import jedi.tuple.Tuple2;
 import jedi.tuple.Tuples;
 
 /**
- * I provide operations of the kind found in Functional Programming languages.
+ * InitialValue provide operations of the kind found in Functional Programming languages.
  * This allows you to remove a great deal of clutter from production code.
  * Ideally, you will never need to write another 'for' loop again, and a great
  * deal of explicit conditional logic should be removable as well.
@@ -76,7 +76,7 @@ public class FunctionalPrimitives {
 	 * <code>collections</code> are appended first, then the items in the second
 	 * collection, etc.
 	 * 
-	 * @see #append(Collection...)
+	 * @see #append(java.util.Collection[])
 	 */
 	public static <T> List<T> append(final Iterable<? extends Iterable<? extends T>> collections) {
 		return flatten(collections, new Functor<Iterable<? extends T>, Iterable<T>>() {
@@ -162,7 +162,7 @@ public class FunctionalPrimitives {
 	/**
 	 * Suppose there is a collection of items (c1, c2, c3), each of which
 	 * contains a collection <i>i.e.</i> (c1 = (c1_1, c1_2, ...), c2=(c2_1,
-	 * c2_2, ...). I can produce a collection containing all of the 'leaf' items
+	 * c2_2, ...). InitialValue can produce a collection containing all of the 'leaf' items
 	 * <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2)
 	 * 
 	 * @param items
@@ -204,7 +204,7 @@ public class FunctionalPrimitives {
 	 * <p/>
 	 * 
 	 * <pre>
-	 *           Functor2&lt;Integer, Integer&gt; summer = new Functor2&lt;Integer, Integer&gt;() {
+	 *           Functor2&lt;Integer, Integer, Integer&gt; summer = new Functor2&lt;Integer, Integer, Integer&gt;() {
 	 *           	public Integer execute(Integer accumulator, Integer value) {
 	 *           		return accumulator + value;
 	 *           	}
@@ -216,12 +216,15 @@ public class FunctionalPrimitives {
 	 * For a more comprehensive description, see <a
 	 * href="http://srfi.schemers.org/srfi-1/srfi-1.html#FoldUnfoldMap"
 	 * >SRFI-1</a>
+     * @param initialValue the initial value for the fold
+     * @param collection the collection over which to fold
+     * @param functor2 the function to apply to values of the collection collected in Acc
 	 */
-	public static <T, R, I extends R> R fold(final I initialValue, final Iterable<T> collection, final Functor2<R, ? super T, R> functor2) {
+	public static <T, Acc, InitialValue extends Acc> Acc fold(final InitialValue initialValue, final Iterable<T> collection, final Functor2<Acc, ? super T, Acc> functor2) {
 		assertNotNull(collection, "collection must not be null");
 		assertNotNull(functor2, "functor2 must not be null");
 
-		R accumulated = initialValue;
+		Acc accumulated = initialValue;
 		for (final T t : collection) {
 			accumulated = functor2.execute(accumulated, t);
 		}
@@ -511,7 +514,7 @@ public class FunctionalPrimitives {
 	 * @param n
 	 *            the length of the list
 	 * @param functor
-	 *            the functor taking an integer and returning an <R>
+	 *            the functor taking an integer and returning an <Acc>
 	 */
 	public static <R> List<R> listTabulate(final int n, final Functor<Integer, R> functor) {
 		assertNotNull(functor, "functor must not be null");

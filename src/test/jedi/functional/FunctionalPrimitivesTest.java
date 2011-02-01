@@ -686,6 +686,12 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		assertEquals("i", returnValue);
 	}
 
+    @Test
+	public void testFirstReturnsTheFirstElementFromTheCollection() {
+		List<Integer> all = list(1,2,3,4);
+		assertEquals(new Integer(1), first(all));
+	}
+
 	@Test
 	public void testFirstReturnsTheFirstElementFromTheCollectionMatchingTheFilter() {
 		List<Integer> all = list(1,2,3,4);
@@ -737,6 +743,17 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		assertNull(firstOrNull(all, greaterThan(4)));
 	}
 
+    @Test
+    public void testFirstOptionReturnsSomeContainingTheFirstElementFromTheCollection() {
+        List<Integer> all = list(1,2,3,4);
+        assertEquals(some(1), firstOption(all));
+    }
+
+    @Test
+    public void testFirstOptionReturnsNone() {
+        List<Integer> all = list();
+        assertEquals(none(), firstOption(all));
+    }
 
 	@Test
 	public void testFirstOptionReturnsSomeContainingTheFirstElementFromTheCollectionMatchingTheFilter() {

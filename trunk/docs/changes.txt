@@ -46,3 +46,4 @@ Version Change
 	   Added FunctionalPrimitives.zip(List<A>, List<B>) that returns a List<Tuple2<A, B>> 
 2.17.0 Added Coercions.asArray(Class<T> clazz, Collection<T> items)
 2.18.0 Added some useful Functor subclasses and clarified the documentation for FunctionalPrimitives.fold
+2.18.1 IntelliJ randomnly changed some variables in functional primitives during a rename - well done.

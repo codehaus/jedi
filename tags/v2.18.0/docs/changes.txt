@@ -1,0 +1,48 @@
+Version Change
+2.1     Add SithMethods to wrap a bunch of Sith annotations because you can only use an annotation once on a particular element
+		When generating Sith factories, if the package of the target class begins with 'java.', replace that prefix with 'sith.'
+		Making Assert constructor protected, so it can be extended
+		Added FunctionalPrimitives.pop()
+		Added FunctionalPrimitives.tabulate()
+		Added FunctionalPrimitives.takeMiddle()
+
+2.2     Added license.txt (MIT)
+        Removal of unnecessary suppress warnings on FunctionalPrimitives
+        FunctionalPrimitives.join now supports a default delimiter (empty string) and more closely matches Ruby's Array.join behaviour
+		
+2.3		Applied Dante's patch for FunctionalPrimitives.last() functions
+
+2.4		Added Option
+		Added jediSuppressAccessorVerbs and jediSuppressSuffixes APT / javac options
+
+2.5		@JediFunctor and @JediFilter annotations can now be used to annotate non-private fields.
+		Generated factories have Javadoc with links to the annotated methods.
+
+2.6		Improved handling of generics in code generation. Still not perfect.
+		Replaced collections with iterables everywhere possible. JDK1.4 compatibility cannot now be achieved.
+		
+2.7		Change the OptionMatcher interface. Warning: this is an API breaking change. Apologies.
+		Improved the Option generics.
+		Allow protected methods to be annotated.
+		
+2.7.1	Added a '.jar' extension to the jar file in the deployment. Doh!
+
+2.8.0	Added Options.unsafeGet()
+
+2.9.0	I believe I have improved the performance of the annotation processor by about 15%
+
+2.10.0	Added powerset() methods to FunctionalPrimitives
+
+2.11.0 Write generated methods out in a fixed order
+       JEDI-20: Add support for first() taking a filter
+       fixed Option.map that would thrown an exception if the supplied function returned null
+       added a flatmap to Option
+
+2.12.0 JEDI-21 Added Complement Filter contributed by Toby Watson   
+2.13.0 Added Tuples
+2.14.0 Did more with Tuples   
+2.15.0 Added a typed zip method to FunctionalPrimitives taking two lists, and xor to FirstOrderLogic
+2.16.0 Added FirstOrderLogic.xor(Filter, Filter) 
+	   Added FunctionalPrimitives.zip(List<A>, List<B>) that returns a List<Tuple2<A, B>> 
+2.17.0 Added Coercions.asArray(Class<T> clazz, Collection<T> items)
+2.18.0 Added some useful Functor subclasses and clarified the documentation for FunctionalPrimitives.fold

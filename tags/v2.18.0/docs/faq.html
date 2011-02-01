@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>Jedi - Decluttering Java - FAQ</title>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <meta name="author" content="Lance Walton" lang="en-uk"/>
+    </head>
+    <body>
+        <div class="main">
+            <div class="pageTitle">Frequently Asked Questions</div>
+            <div class="contents">
+                <div class="contentsTitle">Contents</div>
+                <ul>
+                    <li><a href="index.html" title="Back to Jedi">Back to Jedi</a>
+                    </li>
+                    <li><a href="#forEach" title="What is the Point of FunctionalPrimitives.forEach()?">What is the Point of FunctionalPrimitives.forEach()?</a>
+                    </li>
+                    <li><a href="#OO" title="Don't Jedi Annotations Encourage non-OO Code?">Don't Jedi Annotations Encourage non-OO Code?</a>
+                    </li>
+                    <li><a href="#similarProjects" title="Are There Any Other Similar Projects?">Are There Any Other Similar Projects?</a>
+                    </li>
+                    <li><a href="#scala" title="Are You Aware of Scala?">Are You Aware of Scala?</a>
+                    </li>
+                    <li><a href="#javaClosures" title="Are You Aware of the Introduction of Closures in Java 1.7?">Are You Aware of the Introduction of Closures in Java 1.7?</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sectionHeading"><a name="forEach"/>What is the Point of <a
+                    href="javadoc/jedi/functional/FunctionalPrimitives.html#forEach(java.util.Collection,%20jedi.functional.Command)"
+                    title="JavaDoc for jedi.functional.FunctionalPrimitives.forEach() method">FunctionalPrimitives.forEach()</a>? </div>
+            <p>The full question here is 'Does <a
+                    href="javadoc/jedi/functional/FunctionalPrimitives.html#forEach(java.util.Collection,%20jedi.functional.Command)"
+                    title="JavaDoc for jedi.functional.FunctionalPrimitives.forEach() method">FunctionalPrimitives.forEach()</a> have any benefits over JDK 1.5's new
+                <code>for</code> loop construct when we simply want to invoke something on every item in a collection?' It is questionable. The new <code>for</code> loop construct
+                removes conditional logic associated with looping and therefore, although branching is implied, could reasonably be considered as representing a linear segment of
+                code.</p>
+            <p>There is certainly truth in the notion that, in software, on the one hand we have machine code and on the other, we have different ways of thinking about programming.
+                Sometimes a small piece of syntactic sugar such as the <code>for</code> loop construct can bring up interesting questions such as this one. You will have to judge for
+                yourself the conditions under which it makes sense to use <a
+                    href="javadoc/jedi/functional/FunctionalPrimitives.html#forEach(java.util.Collection,%20jedi.functional.Command)"
+                    title="JavaDoc for jedi.functional.FunctionalPrimitives.forEach() method">FunctionalPrimitives.forEach()</a> instead.</p>
+
+            <div class="sectionHeading"><a name="OO"/>Don't Jedi Annotations Encourage non-OO Code?</div>
+            <p>No. We have found that it encourages better encapsulation and abstraction because it is easier to place annotations under these conditions; logic seems to be encouraged
+                into more appropriate places in order to have a method on which to place an annotation.</p>
+
+            <div class="sectionHeading"><a name="similarProjects"/>Are There Any Other Similar Projects?</div>
+            <p>Plenty. However, we wanted a genericised set of closures and utility functions which we could not find. We also wanted the annotations. We are not aware of any other projects
+                that do anything similar to Jedi's annotations.</p>
+
+            <div class="sectionHeading"><a name="scala"/>Are You Aware of Scala?</div>
+            <p>Yes. If you can use it instead of Java, do so.</p>
+
+            <div class="sectionHeading"><a name="javaClosures"/>Are You Aware of the Introduction of Closures in Java 1.7 / JDK7 / J7EE / Whatever It Is?</div>
+            <p>Yes. In many cases this may obviate the need for Jedi. The presence of the generated closure factories may still be useful however.</p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,120 @@
+<project name="jedi" basedir="." default="distribution">
+	<!-- yes, this all blows up a bit .. need to remove duplication -->
+
+	<property name="project.name" value="jedi" />
+
+	<property name="lib" location="lib" />
+	<property name="java.src.dir" location="src/java" />
+	<property name="test.src.dir" location="src/test" />
+	<property name="meta-inf.dir" location="src/META-INF" />
+
+	<property name="build.dir" value="build" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+
+	<property name="build.test.dir" value="${build.dir}/classes/test" />
+	<property name="report.dir" location="${build.dir}/report" />
+
+	<property name="version.number" value="2.18.0" />
+
+	<property name="dist.name" value="jedi_${version.number}" />
+	<property name="dist" location="${build.dir}/${dist.name}" />
+	<property name="distfile.base.name" value="${dist}/${project.name}_${version.number}" />
+	<property name="dist.jar.file" location="${distfile.base.name}.jar" />
+	<property name="src.zip.file" location="${distfile.base.name}_src.zip" />
+
+	<path id="test.classpath">
+		<pathelement path="${build.classes.dir}" />
+		<fileset dir="${lib}" includes="*.jar" />
+		<pathelement path="${build.test.dir}" />
+	</path>
+
+	<target name="init">
+		<tstamp />
+
+		<echo message="Initializing project ${project.name}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="clean" description="Clean the build">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist}" />
+	</target>
+
+	<target name="build_jar">
+		<jar file="${dist.jar.file}">
+			<fileset dir="${build.classes.dir}" includes="**/*" />
+			<metainf dir="${meta-inf.dir}" includes="**/*" />
+		</jar>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${build.classes.dir}" />
+		<javac destdir="${build.classes.dir}" debug="on" target="1.5">
+			<src path="${java.src.dir}" />
+		</javac>
+	</target>
+
+	<target name="compile_test">
+		<mkdir dir="${build.test.dir}" />
+		<javac destdir="${build.test.dir}" debug="on">
+			<classpath refid="test.classpath" />
+			<src path="${test.src.dir}" />
+		</javac>
+	</target>
+
+	<target name="clean-compile" depends="clean, init, compile" />
+
+	<target name="zipsource" depends="init">
+		<zip basedir="${java.src.dir}" destfile="${src.zip.file}" />
+	</target>
+
+	<target name="build" depends="clean-compile, unit_test, build_jar, docs, examples, zipsource" />
+
+	<target name="distribution" depends="clean, build">
+		<zip destfile="${build.dir}/${dist.name}_${DSTAMP}${TSTAMP}.zip">
+			<zipfileset dir="${dist}" prefix="${dist.name}" />
+		</zip>
+	</target>
+
+	<target name="docs">
+		<copy todir="${dist}/docs">
+			<fileset dir="docs" includes="*" />
+		</copy>
+		<javadoc destdir="${dist}/docs/javadoc" defaultexcludes="yes" link="http://java.sun.com/j2se/1.4.2/docs/api/">
+			<packageset dir="src/java" includes="**/*" excludes="jedi/annotation/**" />
+		</javadoc>
+	</target>
+
+	<target name="examples">
+		<copy todir="${dist}/examples" filtering="true">
+			<fileset dir="examples" includes="**/*" />
+			<filterset>
+				<filter token="version.number" value="${version.number}" />
+			</filterset>
+		</copy>
+	</target>
+
+	<target name="unit_test" depends="compile_test">
+		<mkdir dir="${report.dir}/xml" />
+		<junit fork="true" forkmode="once" printsummary="withOutAndErr" showoutput="true" haltonerror="false" haltonfailure="false" errorproperty="testFailure" failureproperty="testFailure" newenvironment="false" includeantruntime="true" reloading="false" maxmemory="512m">
+			<classpath refid="test.classpath" />
+			<batchtest todir="${report.dir}/xml">
+				<formatter type="xml" />
+				<fileset dir="${build.test.dir}" includes="**/*Test.class" />
+			</batchtest>
+		</junit>
+
+		<antcall target="produce_test_report" />
+		<fail if="testFailure" message="Test Failure" />
+	</target>
+
+	<target name="produce_test_report">
+		<junitreport todir="${report.dir}">
+			<fileset dir="${report.dir}/xml">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${report.dir}" />
+		</junitreport>
+	</target>
+</project>

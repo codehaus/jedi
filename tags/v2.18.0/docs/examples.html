@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>Jedi - Decluttering Java - Examples</title>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <meta name="author" content="Lance Walton" lang="en-uk"/>
+    </head>
+    <body>
+        <div class="main">
+            <div class="pageTitle">Jedi Examples</div>
+            <div class="contents">
+                <div class="contentsTitle">Contents</div>
+                <ul>
+                    <li> <a href="#quickSort" title="Quick Sort">Quick Sort</a>
+                    </li>
+                    <li> <a href="#stormtroopers" title="Stormtroopers">Stormtroopers</a>
+                    </li>
+                    <li> <a href="#option" title="Option">Option</a>
+                    </li>
+                    <li> <a href="index.html" title="Back to Jedi">Back to Jedi</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <p>More examples can be found in the 'examples' directory of the distribution. The 'empire' example found there includes an <a href="http://ant.apache.org/"
+                    title="Ant homepage"> Ant</a> build file, showing the use of the <code>apt</code> task for both JDK 1.4 and JDK 1.5 targets.</p>
+            
+            <div class="sectionHeading"> <a name="quickSort">Quick Sort</a>
+            </div>
+            <p>Here is a quick sort in Haskell:</p>
+            <ul class="codeBlock">
+                <li>qsort [] = []</li>
+                <li>qsort (x:xs) = qsort (filter (&lt; x) xs) ++ [x] ++ qsort (filter (&gt;= x) xs)</li>
+            </ul>
+            
+            <p>There is no way Java can beat Haskell here but here it is with Jedi:</p>
+            <ul class="codeBlock">
+                <li>
+                    <span class="keyword">public static</span> &lt;T&gt; Collection&lt;T&gt; sort(Collection&lt;T&gt;
+                    <span class="variable">collection</span>, Comparator&lt;T&gt;
+                    <span class="variable">comparator</span>) {</li>
+                <li>&nbsp;if (<span class="variable">collection</span>.size() &lt; 2) {</li>
+                <li>&nbsp;&nbsp;return
+                    <span class="variable">collection</span>;</li>
+                <li>&nbsp;}</li>
+                <li>&nbsp;T
+                    <span class="variable">head</span> = <a href="javadoc/jedi/functional/FunctionalPrimitives.html#head(java.util.Collection)">head</a>(<span class="variable">collection</span>);</li>
+                <li>&nbsp;List&lt;T&gt;
+                    <span class="variable">tail</span> = <a href="javadoc/jedi/functional/FunctionalPrimitives.html#tail(java.util.Collection)">tail</a>(<span class="variable">collection</span>);</li>
+                <li>&nbsp;List&lt;T&gt;
+                    <span class="variable">lower</span> =
+                    	<a href="javadoc/jedi/functional/FunctionalPrimitives.html#select(java.util.Collection,%20jedi.functional.Filter)">select</a>(<span class="variable">tail</span>,
+                    		<a href="javadoc/jedi/functional/Comparables.html#lessThan(T,%20java.util.Comparator)">lessThan</a>(<span class="variable">head</span>,
+                    			<span class="variable">comparator</span>));</li>
+                <li>&nbsp;List&lt;T&gt;
+                    <span class="variable">upper</span> =
+                    	<a href="javadoc/jedi/functional/FunctionalPrimitives.html#select(java.util.Collection,%20jedi.functional.Filter)">select</a>(<span class="variable">tail</span>,
+                    		<a href="javadoc/jedi/functional/FirstOrderLogic.html#not(jedi.functional.Filter)">not</a>(<a href="javadoc/jedi/functional/Comparables.html#lessThan(T,%20java.util.Comparator)">lessThan</a>(<span class="variable">head</span>,
+                    			<span class="variable">comparator</span>)));</li>
+                <li>&nbsp;<span class="keyword">return</span>
+                	<a href="javadoc/jedi/functional/FunctionalPrimitives.html#append(java.util.Collection...)">append</a>(sort(<span class="variable">lower</span>,
+                    	<span class="variable">comparator</span>),
+                    	<a href="javadoc/jedi/functional/Coercions.html#list(T...)">list</a>(<span class="variable">head</span>),
+                    	sort(<span class="variable">upper</span>,
+                    	<span class="variable">comparator</span>));</li>
+                <li>}</li>
+            </ul>
+            <p>Both the Haskell and Jedi examples communicate what is going on and is understandable even if the reader did not know how the Quick sort works.</p>
+            <p>Here it is in C which is pretty much how it would look in Java:</p>
+            <ul class="codeBlock">
+                <li>void qsort(int a[], int lo, int hi) {</li>
+                <li>{</li>
+                <li>&nbsp;int h, l, p, t;</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;if (lo &lt; hi) {</li>
+                <li>&nbsp;l = lo;</li>
+                <li>&nbsp;h = hi;</li>
+                <li>&nbsp;p = a[hi];</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;do {</li>
+                <li>&nbsp;&nbsp;while ((l &lt; h) &amp;&amp; (a[l] &lt;= p)) </li>
+                <li>&nbsp;&nbsp;&nbsp;l = l+1;</li>
+                <li>&nbsp;&nbsp;while ((h > l) &amp;&amp; (a[h] &gt;= p))</li>
+                <li>&nbsp;&nbsp;&nbsp;h = h-1;</li>
+                <li>&nbsp;&nbsp;if (l &lt; h) {</li>
+                <li>&nbsp;&nbsp;&nbsp;t = a[l];</li>
+                <li>&nbsp;&nbsp;&nbsp;a[l] = a[h];</li>
+                <li>&nbsp;&nbsp;&nbsp;a[h] = t;</li>
+                <li>&nbsp;&nbsp;}</li>
+                <li>&nbsp;} while (l &lt; h);</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;t = a[l];</li>
+                <li>&nbsp;a[l] = a[hi];</li>
+                <li>&nbsp;a[hi] = t;</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;qsort( a, lo, l-1 );</li>
+                <li>&nbsp;qsort( a, l+1, hi );</li>
+                <li>&nbsp;}</li>
+                <li>}</li>
+            </ul>
+            
+            <div class="sectionHeading"> <a name="stormtroopers">Storm Troopers</a>
+            </div>
+            <p>Suppose you have a galactic empire policed by stormtroopers and you wanted to tell all stormtroopers that are currently in the vicinity of the planet Dantooine (which you
+                intend to destroy as a demonstration of the power of your new Death Star) to return to the Death Star. You might (using JDK 1.5) conventionally write something like
+                this:</p>
+            <ul class="codeBlock">
+                <li>
+                    <span class="keyword">public class</span> Empire {</li>
+                <li>&nbsp;&nbsp;<span class="keyword">private</span> Set&lt;Stormtrooper&gt;
+                    <span class="variable">stormtroopers</span>;</li>
+                <li>&nbsp;&nbsp;<span class="keyword">private</span> Planet
+                    <span class="variable">planetToBlowUpNext</span>;</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;&#8230;
+                </li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;<span class="keyword">public void</span> extractStormtroopers() {</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> (Stormtrooper
+                    <span class="variable">stormtrooper</span> :
+                    <span class="variable">stormtroopers</span>) {</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> (
+                    <span class="variable">stormtrooper</span>.isCloseTo(
+                    <span class="variable">planetToBlowUpNext</span>)) {</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">stormtrooper</span>.returnToDeathStar();</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+                <li>&nbsp;&nbsp;}</li>
+                <li>}</li>
+            </ul>
+            <p>Code like that seen in the <code>extractStormtroopers()</code> method can be found in pretty much all Java projects world-wide. It suffers from the following
+                problems:</p>
+            <ul>
+                <li>Logic for iteration, querying and commanding are intermingled and are therefore not independently usable.</li>
+                <li>Because of the above, you will see repetitions of the 'loop over stormtroopers' code in several methods, with a different condition and / or a different command
+                    applied.</li>
+                <li>Because of the above, structurally similar unit tests will also be repeated.</li>
+            </ul>
+            <p>Using Jedi, the 5 lines of code in the <code>extractStormtroopers()</code> method above can be reduced to this rather more expressive and compact version:</p>
+            <ul class="codeBlock">
+                <li>
+                    <span class="keyword">public class</span> Empire {</li>
+                <li>&nbsp;&nbsp;<span class="keyword">private</span> Set&lt;Stormtrooper&gt;
+                    <span class="variable">stormtroopers</span>;</li>
+                <li>&nbsp;&nbsp;<span class="keyword">private</span> Planet
+                    <span class="variable">planetToBlowUpNext</span>;</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;&#8230;
+                </li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;<span class="keyword">public void</span> extractStormtroopers() {</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;Collection&lt;Stormtrooper&gt;
+                    <span class="variable">endangeredStormtroopers</span> = <a href="javadoc/jedi/functional/FunctionalPrimitives.html#select(java.util.Collection,%20jedi.functional.Filter)">select</a>(stormtroopers, closeToFilter(planetToBlowUpNext));</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javadoc/jedi/functional/FunctionalPrimitives.html#forEach(java.util.Collection,%20jedi.functional.Command)">forEach</a>(<span class="variable">endangeredStormtroopers</span>, returnToDeathStarCommand());</li>
+                <li>&nbsp;&nbsp;}</li>
+                <li>}</li>
+            </ul>
+            <p>Of course, once you are used to the <a href="javadoc/index.html" title="Jedi JavaDoc">API</a>
+                , you could inline the <code>endangeredStormtroopers</code> variable, reducing the original 5 lines of code to 1, and a <a
+                    href="http://en.wikipedia.org/wiki/Cyclomatic_complexity" title="Wikipedia page about Cyclomatic Complexity"> cyclomatic complexity</a>
+                reduction of 3 to 1. This scale of complexity reduction is common with Jedi.</p>
+            <p>The <code>xxxCommand()</code> and <code>xxxFilter()</code> methods are factory methods created by Jedi due to annotations added to the <code>Stormtrooper</code>
+                class:</p>
+            <ul class="codeBlock">
+                <li>
+                    <span class="keyword">public class</span> Stormtrooper {</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;&#8230;
+                </li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;@JediFilter</li>
+                <li>&nbsp;&nbsp;<span class="keyword">public boolean</span> isCloseTo(Planet planet) {&nbsp;&#8230;&nbsp;}</li>
+                <li>&nbsp;
+                </li>
+                <li>&nbsp;&nbsp;@JediCommand</li>
+                <li>&nbsp;&nbsp;<span class="keyword">public void</span> returnToDeathStar() {&nbsp;&#8230;&nbsp;}</li>
+                <li>}</li>
+            </ul>
+            <p>They are used in the <code>Empire</code> code above using <code>static import</code>s for brevity (not shown).</p>
+            
+            <div class="sectionHeading"> <a name="option">Option</a>
+            </div>
+            <p>Everyone has come across nasty code like this in many languages:</p>
+            <ul class="codeBlock">
+                <li>String foo = map.get("key");</li>
+                <li><span class="keyword">if</span> (foo == null) {</li>
+                <li>&nbsp;&nbsp;throw <span class="keyword">new</span> WhatsItException("Where's the foo");</li>
+                <li>}</li>
+                <li>// use foo</li>
+            </ul>
+            <p>These situations occur during lazy initialisation, retrieving values from maps, retrieving data from a database. It's everywhere and it's nasty.</p>
+            <p>The reason it's nasty is that a null reference sits around waiting for some unfortunate code to dereference it. The even more
+            	unfortunate programmer has to then figure where it came from which is not always trivial.</p>
+            <p>This is where <i>Option</i> comes in. Let's rewrite the above code block:</p>
+            <ul class="codeBlock">
+                <li><a href="javadoc/jedi/option/Option.html">Option</a>&lt;String&gt; foo = <a href="javadoc/jedi/option/Options.html">Options</a>.<a href="javadoc/jedi/option/Options.html#get(java.util.Map,%20K)">get</a>(map, "key");</li>
+                <li>foo.<a href="javadoc/jedi/option/Option.html#match(jedi.option.OptionMatcher)">match</a>(new <a href="javadoc/jedi/option/OptionMatcher.html">OptionMatcher</a>() {</li>
+                <li>&nbsp;&nbsp;public void caseSome(String value) { // excellent we can use the value }</li>
+                <li>&nbsp;&nbsp;public void caseNone() { throw <span class="keyword">new</span> WhatsItException("Where's the foo?"); }</li>
+                <li>});</li>
+            </ul>
+            <p>The point is that there are no <code>null</code>s in this code and the possibility that the value may not exist has to be dealt with.</p>
+            <p>This is JEDI though, so there is also another way to use Options:</p>
+            <ul class="codeBlock">
+                <li><a href="javadoc/jedi/option/Option.html">Option</a>&lt;String&gt; foo = <a href="javadoc/jedi/option/Options.html">Options</a>.<a href="javadoc/jedi/option/Options.html#get(java.util.Map,%20K)">get</a>(map, "key");</li>
+                <li>foo.<a href="javadoc/jedi/option/Option.html#match(jedi.functional.Command,%20jedi.functional.Command0)">match</a>(someCommand, noneCommand);</li>
+            </ul>
+            <p>Where <code>someCommand</code> and <code>noneCommand</code> are Commands to be executed depending on whether <code>foo</code>
+            is a Some or None. (The commands could be generated by annotations against existing methods of course.)
+            The <code>someCommand</code> will be given the actual value contained in the Some instance so it does not
+            need to match on an Option. This can be much more concise with a static import:</p>
+            <ul class="codeBlock">
+                <li><i><a href="javadoc/jedi/option/Options.html#get(java.util.Map,%20K)">get</a></i>(map, "key").<a href="javadoc/jedi/option/Option.html#match(jedi.functional.Command,%20jedi.functional.Command0)">match</a>(someCommand, noneCommand);</li>
+            </ul>
+            <p>Another use is performing some action if a value exists. Normally this requires a null check. In Jedi, with Commands and Option:</p>
+            <ul class="codeBlock">
+                <li><a href="javadoc/jedi/option/Option.html">Option</a>&lt;String&gt; foo = ...</li>
+                <li>foo.<a href="javadoc/jedi/option/Option.html#forEach(jedi.functional.Command)">forEach</a>(commandTakingString);</li>
+            </ul>
+            <p>To learn more about Optional values, read:</p>
+            <ul>
+            	<li><a href="http://www.scala-lang.org/docu/files/api/scala/Option.html">The Scala Option Scaladoc</a></li>
+            	<li><a href=http://blog.danielwellman.com/2008/03/using-scalas-op.html>Using Scala's Option class to help avoid NullPointerExceptions</a></li>
+            	<li><a href="http://blog.lostlake.org/index.php?/archives/50-The-Scala-Option-class-and-how-lift-uses-it.html">The Scala Option class and how lift uses it</a></li>
+            	<li><a href="http://blog.tmorris.net/scalaoption-cheat-sheet/">scala.Option Cheat Sheet</a></li>
+            </ul>
+        </div>
+    </body>
+</html>

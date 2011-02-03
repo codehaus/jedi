@@ -1,29 +1,24 @@
 package jedi.functors;
 
-import jedi.functional.Functor0;
+import jedi.functional.Functor;
 
 /**
- * A {@link }Functor0} that returns a constant.
+ * A {@link }Functor} that returns a constant regardless of its argument.
  */
-public class ConstantFunctor<R> implements Functor0<R> {
-    
-    private final R constant;
+public class ConstantFunctor<R> implements Functor<Object, R> {
 
-    /**
-     * A convenient factory to create a constant functor.
-     * @param constant
-     * @param <R>
-     * @return a functor that will always return <code>constant</code>
-     */
-    public static <R> ConstantFunctor<R> constant(R constant) {
-        return new ConstantFunctor(constant);
+    private final R r;
+
+    public static <R> ConstantFunctor<R> constant(R c) {
+        return new ConstantFunctor(c);
     }
 
-    public ConstantFunctor(R constant) {
-        this.constant = constant;
+    public ConstantFunctor(R r) {
+        this.r = r;
     }
 
-    public R execute() {
-        return constant;
+    public R execute(Object value) {
+        return r;
     }
+
 }

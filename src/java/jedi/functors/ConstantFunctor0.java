@@ -3,7 +3,7 @@ package jedi.functors;
 import jedi.functional.Functor0;
 
 /**
- * A {@link }Functor0} that returns a constant.
+ * A {@link Functor0} that returns a constant.
  */
 public class ConstantFunctor0<R> implements Functor0<R> {
     

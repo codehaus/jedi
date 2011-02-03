@@ -11,6 +11,18 @@ public class LeftTest extends MockObjectTestCase {
 
 	private final Left<String, Integer> left = new Left<String, Integer>("a");
 
+    @Test
+    public void testEqualsHashcodeWhenEqual() {
+        Left<String, Integer> another = new Left<String, Integer>("a");
+        assertEquals(left, another);
+        assertEquals(left.hashCode(), another.hashCode());
+    }
+
+    @Test
+    public void testEqualsWhenNotEqual() {
+        assertFalse(left.equals(new Left<String, Integer>("b")));
+    }
+
 	@Test
 	public void testIsLeft() {
 		assertTrue(left.isLeft());

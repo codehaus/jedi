@@ -9,6 +9,7 @@ import static jedi.functional.FirstOrderLogic.union;
 import static jedi.functional.FirstOrderLogic.xor;
 import static jedi.functional.FirstOrderLogic.zeroOrOne;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.jmock.Mock;
@@ -169,22 +170,24 @@ public class FirstOrderLogicTest extends MockObjectTestCase {
 		assertEquals(set(1, 2), intersection(set(1, 2, 3), set(1, 2, 4)));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testIntersectionReturnsEmptySetIfIntersectionIsEmpty() {
 		assertEquals(set(), intersection(set(1, 2), set(3, 4, 5)));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUnionReturnsAllElementsIfOnlyOneArgumentIsGiven() {
 		assertEquals(set(1, 2, 3), union(set(1, 2, 3)));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUnionReturnsUnionIfSeveralArgumentsAreGiven() {
 		assertEquals(set(1, 2, 3, 4), union(set(1, 2, 3), set(1, 2, 4)));
+	}
+
+    @Test
+	public void testUnionReturnsEmptySetForEmptyIterable() {
+		assertEquals(set(), union(new HashSet()));
 	}
 
 	private void expectPredicateExecution(Object value, boolean returnValue) {

@@ -650,7 +650,8 @@ public class FunctionalPrimitives {
 	}
 
 	public static <T> boolean hasItems(final Iterable<T> iterable) {
-		return iterable.iterator().hasNext();
+        Iterator<T> iterator = iterable.iterator();
+        return iterator.hasNext();
 	}
 
 	public static <T> boolean isEmpty(final Iterable<T> iterable) {

@@ -9,6 +9,11 @@ public class ConstantFunctor<R> implements Functor<Object, R> {
 
     private final R r;
 
+    /**
+     * A convenient factory to create a constant functor.
+     * @param c
+     * @return a functor that will always return <code>c</code>
+     */
     public static <R> ConstantFunctor<R> constant(R c) {
         return new ConstantFunctor(c);
     }

@@ -48,3 +48,4 @@ Version Change
 2.18.0 Added some useful Functor subclasses and clarified the documentation for FunctionalPrimitives.fold
 2.18.1 IntelliJ randomnly changed some variables in functional primitives during a rename - well done.
 2.18.2 Renamed ConstantFunctor to ConstantFunctor0 and created a new ConstantFunctor - naughty but I don't think anyone would have used ConstantFunctor yet.
+2.18.3 Fixing a few minor things. Overloaded the factory methods on ConstantFunctors so that you can statically import more than one with name collisions.

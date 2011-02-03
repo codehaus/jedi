@@ -68,12 +68,16 @@ public class SomeTest extends MockObjectTestCase {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
-	public void testGetOrElse() {
+	public void testGetOrElseWithFunctor() {
 		Mock generator = mock(Functor0.class);
 		generator.expects(never()).method("execute");
 		assertTrue(some(true).getOrElse((Functor0<Boolean>) generator.proxy()));
+	}
+
+    @Test
+	public void testGetOrElseWithDefault() {
+		assertTrue(some(true).getOrElse(false));
 	}
 
 	@Test
@@ -85,7 +89,6 @@ public class SomeTest extends MockObjectTestCase {
 		assertFalse(iterator.hasNext());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testMap() {
 		Mock functor = mock(Functor.class);
@@ -93,7 +96,6 @@ public class SomeTest extends MockObjectTestCase {
 		assertEquals(some(true), some("string").map((Functor<String, Boolean>) functor.proxy()));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testMapMap() {
 		Mock functor1 = mock(Functor.class);

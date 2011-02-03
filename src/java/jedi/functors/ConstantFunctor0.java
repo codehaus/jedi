@@ -19,6 +19,13 @@ public class ConstantFunctor0<R> implements Functor0<R> {
         return new ConstantFunctor0(constant);
     }
 
+    /**
+     * @see {@link #constant(Object)}
+     */
+    public static <R> ConstantFunctor0<R> constantFunctor0(R constant) {
+        return constant(constant);
+    }
+
     public ConstantFunctor0(R constant) {
         this.c = constant;
     }

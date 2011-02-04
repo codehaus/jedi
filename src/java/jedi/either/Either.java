@@ -5,6 +5,7 @@ import java.util.List;
 
 import jedi.functional.Command;
 import jedi.functional.Functor;
+import jedi.functional.Functor0;
 
 /**
  * The <code>Either</code> type represents a value of one of two possible types
@@ -18,6 +19,14 @@ public abstract class Either<A, B> implements Serializable {
 	 */
 	public static <A, B> Either<A, B> cond(boolean cond, A a, B b) {
 		return cond ? new Left<A, B>(a) : new Right<A, B>(b);
+	}
+
+    /**
+     * If the condition satisfies, return the result of executing a in <code>Left</code>,
+	 * otherwise, return the result of executing b in <code>Right</code>.
+     */
+    public static <A, B> Either<A, B> cond(boolean cond, Functor0<A> a, Functor0<B> b) {
+		return cond ? new Left<A, B>(a.execute()) : new Right<A, B>(b.execute());
 	}
 
 	public boolean isLeft() {

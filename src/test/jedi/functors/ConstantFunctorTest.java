@@ -1,8 +1,12 @@
 package jedi.functors;
 
+import jedi.either.Either;
+import jedi.either.Left;
 import jedi.option.Option;
 import jedi.option.Options;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 
 import static jedi.functors.ConstantFunctor.constant;
 import static jedi.option.Options.some;
@@ -17,7 +21,13 @@ public class ConstantFunctorTest {
 
     @Test
     public void mappingToTestGenerics() {
-        Option<String> o = some("foo");
+        Option<Integer> o = some(3);
         assertEquals(some("a"), o.map(constant("a")));
+    }
+
+    @Test
+    public void mappingEither() {
+        Either<BigDecimal, String> either = new Left<BigDecimal, String>(new BigDecimal("3"));
+        assertEquals("z", either.fold(constant("z"), constant("y")));
     }
 }

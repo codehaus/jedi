@@ -50,3 +50,4 @@ Version Change
 2.18.2 Renamed ConstantFunctor to ConstantFunctor0 and created a new ConstantFunctor - naughty but I don't think anyone would have used ConstantFunctor yet.
 2.18.3 Fixing a few minor things. Overloaded the factory methods on ConstantFunctors so that you can statically import more than one with name collisions.
 2.18.4 Made Option and Either serializable and fixed the generics for Either
+2.19.0 Added Either.cond taking functors to generate the right and left values

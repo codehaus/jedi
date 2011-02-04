@@ -23,7 +23,7 @@ public final class Right<A, B> extends Either<A, B> {
 	}
 
 	@Override
-	public <X> X fold(Functor<A, X> fa, Functor<B, X> fb) {
+	public <X> X fold(Functor<? super A, X> fa, Functor<? super B, X> fb) {
 		return fb.execute(b);
 	}
 
@@ -66,12 +66,12 @@ public final class Right<A, B> extends Either<A, B> {
 	}
 
 	@Override
-	public <X> Either<X, B> map(Functor<A, X> f) {
+	public <X> Either<X, B> map(Functor<? super A, X> f) {
 		return new Right<X, B>(b);
 	}
 
 	@Override
-	public <X> Either<X, B> flatMap(Functor<A, Either<X, B>> f) {
+	public <X> Either<X, B> flatMap(Functor<? super A, Either<X, B>> f) {
 		return new Right<X, B>(b);
 	}
 }

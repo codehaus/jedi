@@ -1,5 +1,6 @@
 package jedi.option;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jedi.functional.Command;
@@ -12,7 +13,7 @@ import jedi.functional.Functor0;
  * An optional value inspired by sensible languages like <a
  * href="http://www.scala-lang.org/docu/files/api/scala/Option.html">Scala</a>.
  */
-public interface Option<T> extends Iterable<T> {
+public interface Option<T> extends Iterable<T>, Serializable{
 
 	/**
 	 * Accept a for this {@link Option}.

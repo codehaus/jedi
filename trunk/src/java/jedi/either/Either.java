@@ -1,5 +1,6 @@
 package jedi.either;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jedi.functional.Command;
@@ -9,7 +10,7 @@ import jedi.functional.Functor;
  * The <code>Either</code> type represents a value of one of two possible types
  * (a disjoint union) and was Inspired by Scala's Either.
  */
-public abstract class Either<A, B> {
+public abstract class Either<A, B> implements Serializable {
 
 	/**
 	 * If the condition satisfies, return the given A in <code>Left</code>,
@@ -44,7 +45,7 @@ public abstract class Either<A, B> {
 	 *            the functor to apply if this is a Left
 	 * @return the result of applying the appropriate functor.
 	 */
-	public abstract <X> X fold(Functor<A, X> fa, Functor<B, X> fb);
+	public abstract <X> X fold(Functor<? super A, X> fa, Functor<? super B, X> fb);
 
 	public abstract void execute(Command<A> ca, Command<B> cb);
 
@@ -58,7 +59,7 @@ public abstract class Either<A, B> {
 	/**
 	 * Maps the function argument through <code>Left</code>.
 	 */
-	public abstract <X> Either<X, B> map(Functor<A, X> f);
+	public abstract <X> Either<X, B> map(Functor<? super A, X> f);
 
-	public abstract <X> Either<X, B> flatMap(Functor<A, Either<X, B>> f);
+	public abstract <X> Either<X, B> flatMap(Functor<? super A, Either<X, B>> f);
 }

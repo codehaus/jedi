@@ -81,7 +81,7 @@ public final class RightProjection<A, B> implements Iterable<B> {
 	 * Returns <code>true</code> if <code>Left</code> or returns the result of
 	 * the application of the given function to the <code>Right</code> value.
 	 */
-	public Boolean forall(Functor<B, Boolean> f) {
+	public Boolean forall(Functor<? super B, Boolean> f) {
 		return either.isRight() ? f.execute(get()) : true;
 	}
 
@@ -96,17 +96,16 @@ public final class RightProjection<A, B> implements Iterable<B> {
 	/**
 	 * Binds the given function across <code>Right</code>.
 	 * 
-	 * @param The
-	 *            function to bind across <code>Right</code>.
+	 * @param f The function to bind across <code>Right</code>.
 	 */
-	public <X> Either<A, X> flatMap(Functor<B, Either<A, X>> f) {
+	public <X> Either<A, X> flatMap(Functor<? super B, Either<A, X>> f) {
 		return either.isRight() ? f.execute(get()) : new Left<A, X>(getLeft());
 	}
 
 	/**
 	 * Maps the function argument through <code>Right</code>.
 	 */
-	public <X> Either<A, X> map(Functor<B, X> f) {
+	public <X> Either<A, X> map(Functor<? super B, X> f) {
 		return either.isRight() ? new Right<A, X>(f.execute(get())) : new Left<A, X>(getLeft());
 	}
 

@@ -80,7 +80,6 @@ public class FunctionalPrimitives {
 	 */
 	public static <T> List<T> append(final Iterable<? extends Iterable<? extends T>> collections) {
 		return flatten(collections, new Functor<Iterable<? extends T>, Iterable<T>>() {
-			@SuppressWarnings("unchecked")
 			public Iterable<T> execute(final Iterable<? extends T> value) {
 				return (Iterable<T>) value;
 			}
@@ -130,6 +129,20 @@ public class FunctionalPrimitives {
 	public static <T, R> List<R> collect(final T[] items, final Functor<? super T, R> functor) {
 		return collect(asList(items), functor);
 	}
+
+    /**
+     * @see #collect(Iterable, Functor)
+     */
+    public static <T, R> List<R> map(List<T> list, Functor<? super T, R> functor) {
+        return collect(list, functor);
+    }
+
+    /**
+     * @see #collect(Iterable, Functor)
+     */
+    public static <T, R> Set<R> map(Set<T> set, Functor<? super T, R> functor) {
+        return Coercions.asSet(collect(set, functor));
+    }
 
 	/**
 	 * Get all but the first n elements of
@@ -661,7 +674,6 @@ public class FunctionalPrimitives {
 	/**
 	 * Create a list from the nth elements of the given lists.
 	 */
-	@SuppressWarnings("unchecked")
 	public static List slice(final int n, final Iterable<List> items) {
 		assertNotNull(items, "lists must not be null");
 		assertGreaterThanOrEqualTo(0, n, "n must be greater than or equal to 0");
@@ -771,7 +783,6 @@ public class FunctionalPrimitives {
 	 * @param lists
 	 * @return zipped lists
 	 */
-	@SuppressWarnings("unchecked")
 	public static List zip(final Iterable<List> lists) {
 		final int n = shortest(lists).size();
 		final List result = new ArrayList();
@@ -860,7 +871,6 @@ public class FunctionalPrimitives {
 	 *         the filter, the second item is a list of elements that did not
 	 *         pass the filter.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> List<List<T>> partition(Iterable<T> items, Filter<T> filter) {
 		return list(select(items, filter), select(items, invert(filter)));
 	}
@@ -888,7 +898,6 @@ public class FunctionalPrimitives {
 	 * @see #foldPowerset(Object, Collection, Functor2)
 	 *
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> Set<List<T>> powerset(Collection<T> all) {
 		assertNotNull(all, "all must not be null");
 		return all.isEmpty() ? set(Collections.<T>emptyList()) : nonDegeneratePowerSet(all);
@@ -927,7 +936,6 @@ public class FunctionalPrimitives {
 		recursePowerset(Collections.<T>emptyList(), asList(all), command);
 	}
 
-	@SuppressWarnings("unchecked")
 	private static <T> void recursePowerset(List<T> prefix, List<T> tail, Command<List<? super T>> command) {
 		command.execute(prefix);
 		for (int i = 0 ; i < tail.size() ; i++) {
@@ -947,7 +955,6 @@ public class FunctionalPrimitives {
 		return recursePowerset(initialValue, Collections.<T>emptyList(), asList(all), functor2);
 	}
 
-	@SuppressWarnings("unchecked")
 	private static <T, R, I extends R> R recursePowerset(I initialValue, List<T> prefix, List<T> tail, final Functor2<R, List<? super T>, R> functor2) {
 		R value = functor2.execute(initialValue, prefix);
 		for (int i = 0 ; i < tail.size() ; i++) {
@@ -955,4 +962,21 @@ public class FunctionalPrimitives {
 		}
 		return value;
 	}
+
+    /**
+     * Builds a new collection by applying a function to all elements of list and concatenating the results.
+     * @param iter the collection to map
+     * @param functor a functor yielding a collection from the application of an element from iter
+     * @return a flattened List
+     */
+    public static <T, R> List<R> flatMap(Iterable<T> iter, final Functor<? super T, ? extends Iterable<R>> functor) {
+        return fold(new ArrayList<R>(), iter, new Functor2<List<R>, T, List<R>>() {
+            @Override
+            public List<R> execute(List<R> acc, T t) {
+                Iterable<R> iterable = functor.execute(t);
+                for(R i : iterable) acc.add(i);
+                return acc;
+            }
+        });
+    }
 }

@@ -35,19 +35,19 @@
 		<mkdir dir="${dist}" />
 	</target>
 
-	<target name="clean" description="Clean the build" depends="init">
+	<target name="clean" description="Clean the build">
 		<delete dir="${build.dir}" />
 		<delete dir="${dist}" />
 	</target>
 
-	<target name="build_jar" depends="compile">
+	<target name="build_jar">
 		<jar file="${dist.jar.file}">
 			<fileset dir="${build.classes.dir}" includes="**/*" />
 			<metainf dir="${meta-inf.dir}" includes="**/*" />
 		</jar>
 	</target>
 
-	<target name="compile" depends="clean">
+	<target name="compile">
 		<mkdir dir="${build.classes.dir}" />
 		<javac destdir="${build.classes.dir}" debug="on" target="1.5">
 			<src path="${java.src.dir}" />

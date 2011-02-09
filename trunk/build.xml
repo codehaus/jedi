@@ -30,7 +30,6 @@
 
 	<target name="init">
 		<tstamp />
-
 		<echo message="Initializing project ${project.name}" />
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist}" />

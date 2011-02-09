@@ -12,6 +12,14 @@
       <maximumStackSize value="32" />
       <properties />
     </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/ProcessorTests/build.xml">
+      <additionalClassPath />
+      <antReference projectDefault="true" />
+      <customJdkName value="" />
+      <maximumHeapSize value="128" />
+      <maximumStackSize value="2" />
+      <properties />
+    </buildFile>
   </component>
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
@@ -40,7 +48,7 @@
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
     </wildcardResourcePatterns>
-    <annotationProcessing enabled="false" useClasspath="true" />
+    <annotationProcessing enabled="true" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -224,6 +232,11 @@
         <inspection_tool class="SameReturnValue" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="ShiftOutOfRange" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="SimplifiableConditionalExpression" enabled="false" level="WARNING" enabled_by_default="false" />
+        <inspection_tool class="SpellCheckingInspection" enabled="true" level="TYPO" enabled_by_default="true">
+          <option name="processCode" value="false" />
+          <option name="processLiterals" value="true" />
+          <option name="processComments" value="true" />
+        </inspection_tool>
         <inspection_tool class="StringConcatenationInsideStringBufferAppend" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="StringConstructor" enabled="false" level="WARNING" enabled_by_default="false">
           <option name="ignoreSubstringArguments" value="false" />
@@ -265,6 +278,9 @@
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_PROFILE" value="true" />
     <version value="1.0" />
+  </component>
+  <component name="JavacSettings">
+    <option name="MAXIMUM_HEAP_SIZE" value="256" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -413,19 +429,28 @@
   <component name="ProjectDetails">
     <option name="projectName" value="Jedi" />
   </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="channing">
+      <words>
+        <w>iterable</w>
+        <w>powersets</w>
+      </words>
+    </dictionary>
+  </component>
   <component name="ProjectKey">
     <option name="state" value="http://svn.codehaus.org/jedi/trunk/Jedi.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Jedi.iml" filepath="$PROJECT_DIR$/Jedi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProcessorTests/ProcessorTests.iml" filepath="$PROJECT_DIR$/ProcessorTests/ProcessorTests.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="RUBY_DOC_SETTINGS">
     <RUBY_DOC NAME="DEFAULTS" VALUE="TRUE" />

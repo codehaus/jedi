@@ -841,7 +841,7 @@ public class FunctionalPrimitives {
 	 * 
 	 * @return the last item in the collection
 	 * @throws jedi.assertion.AssertionError
-	 *             if the collection contains less or more than one item
+	 *             if the collection is empty
 	 * @see #only(Collection)
 	 * @see #headOrNullIfEmpty(Iterable)
 	 * @see #headOrDefaultIfEmpty(Iterable, Object)
@@ -970,7 +970,8 @@ public class FunctionalPrimitives {
      * @return a flattened List
      */
     public static <T, R> List<R> flatMap(Iterable<T> iter, final Functor<? super T, ? extends Iterable<R>> functor) {
-        return fold(new ArrayList<R>(), iter, new Functor2<List<R>, T, List<R>>() {
+        List<R> initialValue = new ArrayList<R>();
+        return fold(initialValue, iter, new Functor2<List<R>, T, List<R>>() {
             @Override
             public List<R> execute(List<R> acc, T t) {
                 Iterable<R> iterable = functor.execute(t);

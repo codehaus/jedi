@@ -414,6 +414,17 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
 		assertEquals("original list should not be changed", 4, in.size());
 	}
 
+    @Test
+	public void testTakeWithShortList() throws Exception {
+		List<Integer> in = list(1, 2, 3, 4);
+        try {
+            take(5, in);
+            fail();
+        } catch (AssertionError e) {
+            // expected
+        }
+    }
+
 	@Test
 	public void testTakeRight() throws Exception {
 		List<Integer> in = list(1, 2, 3, 4, 5);
@@ -738,10 +749,18 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     }
 
     @Test
-    public void testFlatMap() {
+    public void testFlatMapEmpty() {
         assertEquals(Collections.<Integer>emptyList(), flatMap(Collections.<Integer>emptyList(), doubler()));
+    }
+
+    @Test
+    public void testFlatMapList() {
         assertEquals(list(1,1,2,2,3,3), flatMap(list(1, 2, 3), doubler()));
-        assertEquals(list(1,1,2,2,3,3), flatMap(set(1, 2, 3), doubler()));
+    }
+
+    @Test
+    public void testFlatMapOption() {
+        assertEquals(list(3, 3), flatMap(some(3), doubler()));
     }
 
     private Functor<Integer, List<Integer>> doubler() {

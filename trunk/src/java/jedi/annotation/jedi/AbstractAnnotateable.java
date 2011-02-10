@@ -2,6 +2,7 @@ package jedi.annotation.jedi;
 
 import jedi.annotation.util.BooleanTypeMirrorFilter;
 import jedi.annotation.util.VoidTypeMirrorFilter;
+import jedi.annotation.writer.TypeDeclarationRenderer;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 
 import com.sun.mirror.declaration.MemberDeclaration;
@@ -58,7 +59,26 @@ abstract class AbstractAnnotateable<T extends MemberDeclaration> implements Anno
 		return new BooleanTypeMirrorFilter().execute(getType());
 	}
 
-	public TypeDeclaration getDeclaringType() {
+	public String getDeclaringTypeWithGenericsButWithoutBounds() {
+		return TypeDeclarationRenderer.renderWithoutBounds(getDeclaringType());
+	}
+
+	@Override
+	public String getQualifiedNameOfDeclaringType() {
+		return getDeclaringType().getQualifiedName();
+	}
+
+	@Override
+	public String getSimpleNameOfDeclaringType() {
+		return getDeclaringType().getSimpleName();
+	}
+
+	@Override
+	public String getPackage() {
+		return getDeclaringType().getPackage().getQualifiedName();
+	}
+
+	private TypeDeclaration getDeclaringType() {
 		return declaration.getDeclaringType();
 	}
 }

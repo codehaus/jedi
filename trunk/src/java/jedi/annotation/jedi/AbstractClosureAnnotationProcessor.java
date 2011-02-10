@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import jedi.annotation.processor.ProcessorOptions;
@@ -36,7 +35,6 @@ import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
-import com.sun.mirror.declaration.TypeDeclaration;
 
 public abstract class AbstractClosureAnnotationProcessor implements AnnotationProcessor {
 	protected final AnnotationProcessorEnvironment environment;
@@ -73,10 +71,10 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 
 	abstract protected Set<Annotateable> getInterestingNonCompositeDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
 
-	private Map<TypeDeclaration, List<Annotateable>> getMethodsByType() {
-		return group(getInterestingDeclarations(), new Functor<Annotateable, TypeDeclaration>() {
-			public TypeDeclaration execute(final Annotateable method) {
-				return method.getDeclaringType();
+	private Map<String, List<Annotateable>> getMethodsByQualifiedTypeName() {
+		return group(getInterestingDeclarations(), new Functor<Annotateable, String>() {
+			public String execute(final Annotateable method) {
+				return method.getQualifiedNameOfDeclaringType();
 			}
 		});
 	}
@@ -98,7 +96,7 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 	}
 
 	protected void process(final FactoryType... types) {
-		final Map<TypeDeclaration, List<Annotateable>> methodsByType = getMethodsByType();
+		final Map<String, List<Annotateable>> methodsByType = getMethodsByQualifiedTypeName();
 		for (final FactoryType type : types) {
 			writeFactories(methodsByType, type);
 		}
@@ -108,9 +106,9 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 		annotationTypeToFactoryMethodWriterMap.put(getTypeDeclaration(commandAnnotationClass), writer);
 	}
 
-	private void writeFactories(final Map<TypeDeclaration, List<Annotateable>> methodsByType, final FactoryType type) {
-		for (final Entry<TypeDeclaration, List<Annotateable>> entry : methodsByType.entrySet()) {
-			new FactoryWriter(environment, entry.getKey(), type, annotationTypeToFactoryMethodWriterMap).write(entry.getValue());
+	private void writeFactories(final Map<String, List<Annotateable>> methodsByType, final FactoryType factoryType) {
+		for (final List<Annotateable> annotateables : methodsByType.values()) {
+			new FactoryWriter(environment, factoryType, annotationTypeToFactoryMethodWriterMap).write(annotateables);
 		}
 	}
 }

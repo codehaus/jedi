@@ -2,17 +2,16 @@ package jedi.annotation.writer.factorytype;
 
 import java.io.PrintWriter;
 
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 import jedi.assertion.Assert;
-
-import com.sun.mirror.declaration.TypeDeclaration;
 
 public class StaticFactoryType extends ConcreteFactoryType {
 	private static final String DELEGATE_NAME = "$DELEGATE";
 
 	@Override
-	public String getSimpleTypeName(TypeDeclaration typeDeclaration) {
-		return typeDeclaration.getSimpleName() + "StaticClosureFactory";
+	public String getSimpleTypeName(Annotateable annotateable) {
+		return annotateable.getSimpleNameOfDeclaringType() + "StaticClosureFactory";
 	}
 
 	@Override
@@ -30,10 +29,10 @@ public class StaticFactoryType extends ConcreteFactoryType {
 	}
 
 	@Override
-	public void writeClassHeader(PrintWriter writer, TypeDeclaration typeDeclaration) {
-		String interfaceFactoryName = new InterfaceFactoryType().getSimpleTypeName(typeDeclaration);
+	public void writeClassHeader(PrintWriter writer, Annotateable annotateable) {
+		String interfaceFactoryName = new InterfaceFactoryType().getSimpleTypeName(annotateable);
 		writer.println("\tprivate static " + interfaceFactoryName + " " + DELEGATE_NAME + " = new "
-				+ new InstanceFactoryType().getSimpleTypeName(typeDeclaration) + "();");
+				+ new InstanceFactoryType().getSimpleTypeName(annotateable) + "();");
 		writer.println();
 		writer.println("\tpublic static void setDelegate(" + interfaceFactoryName + " newDelegate) {");
 		writer.println("\t\t" + Assert.class.getName() + ".assertNotNull(newDelegate, \"newDelegate must not be null\");");
@@ -41,7 +40,7 @@ public class StaticFactoryType extends ConcreteFactoryType {
 		writer.println("\t}");
 		writer.println();
 		writer.println("\tpublic static void useDefaultDelegate() {");
-		writer.println("\t\tsetDelegate(new " + new InstanceFactoryType().getSimpleTypeName(typeDeclaration) + "());");
+		writer.println("\t\tsetDelegate(new " + new InstanceFactoryType().getSimpleTypeName(annotateable) + "());");
 		writer.println("\t}");
 	}
 }

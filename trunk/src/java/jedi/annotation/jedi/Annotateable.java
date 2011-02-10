@@ -5,12 +5,14 @@ import java.util.List;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.writer.JavaWriter;
 
-import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.TypeMirror;
 import com.sun.mirror.util.SourcePosition;
 
 public interface Annotateable {
-	TypeDeclaration getDeclaringType();
+	String getPackage();
+	String getDeclaringTypeWithGenericsButWithoutBounds();
+	String getQualifiedNameOfDeclaringType();
+	String getSimpleNameOfDeclaringType();
 
 	void writeFactoryMethod();
 

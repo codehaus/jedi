@@ -20,7 +20,6 @@ import jedi.annotation.writer.method.receiver.ReceiverInvocationWriter;
 import jedi.functional.Functor;
 import jedi.functional.Functor2;
 
-import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
 public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWriter, FactoryMethodWriter {
@@ -87,8 +86,8 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		return "$" + parameterName;
 	}
 
-	protected final TypeDeclaration getDelegateMethodDeclaringType() {
-		return method.getDeclaringType();
+	protected final String getDelegateMethodDeclaringTypeWithoutBounds() {
+		return method.getDeclaringTypeWithGenericsButWithoutBounds();
 	}
 
 	protected final TypeMirror getDelegateMethodReturnType() {
@@ -178,7 +177,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 
 	private void writeJavadoc() {
 		println("\t/**");
-		println("\t * @see " + method.getDeclaringType().getQualifiedName() + "#" + method.getName(false));
+		println("\t * @see " + method.getQualifiedNameOfDeclaringType() + "#" + method.getName(false));
 		println("\t */");
 	}
 

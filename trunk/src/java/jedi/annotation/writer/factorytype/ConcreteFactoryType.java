@@ -1,13 +1,12 @@
 package jedi.annotation.writer.factorytype;
 
+import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.writer.JavaWriter;
-
-import com.sun.mirror.declaration.TypeDeclaration;
 
 public abstract class ConcreteFactoryType extends FactoryType {
 	@Override
-	public String getTypeDeclaration(TypeDeclaration typeDeclaration) {
-		return "class " + getSimpleTypeName(typeDeclaration);
+	public String getTypeDeclaration(Annotateable annotateable) {
+		return "class " + getSimpleTypeName(annotateable);
 	}
 
 	@Override

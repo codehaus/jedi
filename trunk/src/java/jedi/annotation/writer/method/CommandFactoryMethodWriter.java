@@ -1,13 +1,12 @@
 package jedi.annotation.writer.method;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-
 import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.ProcessorOptions;
 import jedi.functional.Command;
 
 public class CommandFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
-	public CommandFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-		super(environment);
+	public CommandFactoryMethodWriter(ProcessorOptions options) {
+		super(options);
 	}
 
 	@Override

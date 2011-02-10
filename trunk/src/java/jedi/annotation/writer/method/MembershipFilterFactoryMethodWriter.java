@@ -6,16 +6,15 @@ import java.util.List;
 
 import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
+import jedi.annotation.processor.ProcessorOptions;
 import jedi.annotation.writer.method.receiver.MembershipFilterReceiverInvocationWriter;
 import jedi.functional.Filter;
-
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
 public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
 	private static final String TEST_VALUE_PARAMETER_NAME = "$testValue";
 
-	public MembershipFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-		super(environment);
+	public MembershipFilterFactoryMethodWriter(ProcessorOptions options) {
+		super(options);
 		setReceiverInvocationWriter(new MembershipFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
 	}
 

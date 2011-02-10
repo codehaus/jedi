@@ -1,13 +1,12 @@
 package jedi.annotation.writer.method;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-
 import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.ProcessorOptions;
 import jedi.functional.Filter;
 
 public class ProxyFilterFactoryMethodWriter extends AbstractProxyFactoryMethodWriter {
-	public ProxyFilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-		super(environment);
+	public ProxyFilterFactoryMethodWriter(ProcessorOptions options) {
+		super(options);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import java.util.List;
 
 import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
+import jedi.annotation.processor.ProcessorOptions;
 import jedi.annotation.util.BoxerFunctor;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factory.FactoryWriterException;
@@ -19,7 +20,6 @@ import jedi.annotation.writer.method.receiver.ReceiverInvocationWriter;
 import jedi.functional.Functor;
 import jedi.functional.Functor2;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
@@ -29,12 +29,12 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	private JavaWriter writer;
 	private FactoryType factoryType;
 	private Annotateable method;
-	private AnnotationProcessorEnvironment environment;
+	protected final ProcessorOptions options;
 
 	private ReceiverInvocationWriter receiverInvocationWriter = new ReceiverInvocationWriter();
 
-	public AbstractFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-		this.environment = environment;
+	public AbstractFactoryMethodWriter(ProcessorOptions options) {
+		this.options = options;
 	}
 
 	public final boolean canHandle(final Annotateable method) {
@@ -110,20 +110,11 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	protected abstract Collection<Attribute> getFactoryMethodBasicParameters();
 
 	public final String getFactoryMethodName() {
-		return getStartOfMethodName() + getFactoryMethodNameRequiredSuffix()
-				+ optional("-AjediSuppressSuffixes", "", getFactoryMethodNameReturnTypeSuffix());
-	}
-
-	protected String optional(String option, String presentValue, String absentValue) {
-		return isOption(option) ? presentValue : absentValue;
+		return getStartOfMethodName() + getFactoryMethodNameRequiredSuffix() + (options.includeSuffixes() ? getFactoryMethodNameReturnTypeSuffix() : "");
 	}
 
 	private String getStartOfMethodName() {
-		return method.getName(isOption("-AjediSuppressAccessorVerbs"));
-	}
-
-	private boolean isOption(String key) {
-		return environment.getOptions().containsKey(key);
+		return method.getName(!options.includeAccessorVerbs());
 	}
 
 	protected String getFactoryMethodNameRequiredSuffix() {
@@ -131,7 +122,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	}
 
 	protected String getFactoryMethodNameReturnTypeSuffix() {
-		return optional("-AjediSuppressClosureTypeSuffix", "", getReturnType().getSimpleName());
+		return options.includeClosureTypeSuffix() ? getReturnType().getSimpleName() : "";
 	}
 
 	@SuppressWarnings("unchecked")

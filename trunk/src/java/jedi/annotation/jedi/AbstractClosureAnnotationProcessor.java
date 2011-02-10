@@ -8,9 +8,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import jedi.annotation.processor.ProcessorOptions;
+import jedi.annotation.processor5.OptionAccessor;
 import jedi.annotation.writer.factory.FactoryWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.factorytype.InstanceFactoryType;
@@ -45,16 +47,17 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 		this.environment = environment;
 
 		annotationTypeToFactoryMethodWriterMap = new HashMap<AnnotationTypeDeclaration, FactoryMethodWriter>();
+		final ProcessorOptions options = new ProcessorOptions(new OptionAccessor(environment));
 		putAnnotationClassToWriterMapping(commandAnnotationClass,
 				new CompositeFactoryMethodWriter(
-						new CommandFactoryMethodWriter(environment), new ProxyCommandFactoryMethodWriter(environment)));
+						new CommandFactoryMethodWriter(options), new ProxyCommandFactoryMethodWriter(options)));
 		putAnnotationClassToWriterMapping(filterAnnotationClass,
 				new CompositeFactoryMethodWriter(
-						new FilterFactoryMethodWriter(environment), new EqualsFilterFactoryMethodWriter(environment),
-						new MembershipFilterFactoryMethodWriter(environment), new ProxyFilterFactoryMethodWriter(environment)));
+						new FilterFactoryMethodWriter(options), new EqualsFilterFactoryMethodWriter(options),
+						new MembershipFilterFactoryMethodWriter(options), new ProxyFilterFactoryMethodWriter(options)));
 		putAnnotationClassToWriterMapping(functorAnnotationClass,
 				new CompositeFactoryMethodWriter(
-						new FunctorFactoryMethodWriter(environment), new ProxyFunctorFactoryMethodWriter(environment)));
+						new FunctorFactoryMethodWriter(options), new ProxyFunctorFactoryMethodWriter(options)));
 	}
 
 	private Set<Annotateable> getInterestingDeclarations() {

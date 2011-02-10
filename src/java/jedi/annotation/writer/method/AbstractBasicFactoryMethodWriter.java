@@ -1,19 +1,18 @@
 package jedi.annotation.writer.method;
 
-import static jedi.functional.Coercions.*;
-import static jedi.functional.FunctionalPrimitives.*;
+import static jedi.functional.Coercions.list;
+import static jedi.functional.FunctionalPrimitives.append;
 
 import java.util.Collection;
 import java.util.List;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-
 import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
+import jedi.annotation.processor.ProcessorOptions;
 
 public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMethodWriter {
-	public AbstractBasicFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-		super(environment);
+	public AbstractBasicFactoryMethodWriter(ProcessorOptions options) {
+		super(options);
 	}
 
 	@SuppressWarnings("unchecked")

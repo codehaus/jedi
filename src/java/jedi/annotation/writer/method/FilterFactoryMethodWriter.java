@@ -1,13 +1,12 @@
 package jedi.annotation.writer.method;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-
 import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.ProcessorOptions;
 import jedi.functional.Filter;
 
 public class FilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {
-	public FilterFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-		super(environment);
+	public FilterFactoryMethodWriter(ProcessorOptions options) {
+		super(options);
 	}
 
 	@Override

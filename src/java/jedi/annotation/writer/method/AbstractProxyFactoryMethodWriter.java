@@ -7,12 +7,11 @@ import java.util.List;
 
 import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
-
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
+import jedi.annotation.processor.ProcessorOptions;
 
 public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMethodWriter {
-	public AbstractProxyFactoryMethodWriter(AnnotationProcessorEnvironment environment) {
-		super(environment);
+	public AbstractProxyFactoryMethodWriter(ProcessorOptions options) {
+		super(options);
 	}
 
 	@Override
@@ -32,6 +31,6 @@ public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMe
 
 	@Override
 	protected final String getFactoryMethodNameReturnTypeSuffix() {
-		return optional("-AjediSuppressProxySuffix", "", "Proxy") + super.getFactoryMethodNameReturnTypeSuffix();
+		return (options.includeProxySuffix() ? "Proxy" : "") + super.getFactoryMethodNameReturnTypeSuffix();
 	}
 }

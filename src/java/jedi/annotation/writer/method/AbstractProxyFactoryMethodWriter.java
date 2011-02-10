@@ -21,7 +21,7 @@ public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMe
 
 	@Override
 	protected final List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-		return list(new Attribute(getDelegateMethodDeclaringType(), RECEIVER_PARAMETER_NAME));
+		return list(new Attribute(getDelegateMethodDeclaringTypeWithoutBounds(), RECEIVER_PARAMETER_NAME));
 	}
 
 	@Override

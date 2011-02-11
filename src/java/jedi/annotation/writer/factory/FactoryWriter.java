@@ -5,8 +5,8 @@ import static jedi.functional.FunctionalPrimitives.head;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import jedi.annotation.processor.Environment;
 import jedi.annotation.processor.model.Annotateable;
@@ -16,18 +16,16 @@ import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.functional.Comparables;
 
-import com.sun.mirror.declaration.AnnotationTypeDeclaration;
-
 public class FactoryWriter {
 	private final StringWriter stringWriter = new StringWriter();
 	private final JavaWriter writer = new JavaWriter(stringWriter);
 	private final Environment environment;
 	private final FactoryType factoryType;
 
-	public FactoryWriter(final Environment environment, final FactoryType type, final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
+	public FactoryWriter(final Environment environment, final FactoryType type, final Collection<FactoryMethodWriter> factoryMethodWriters) {
 		this.environment = environment;
 		this.factoryType = type;
-		initialiseWriters(factoryType, annotationTypeToFactoryMethodWriterMap);
+		initialiseWriters(factoryType, factoryMethodWriters);
 	}
 
 	private void endFactory(Annotateable annotateable) throws IOException {
@@ -48,8 +46,8 @@ public class FactoryWriter {
 		return packageName.startsWith("java.") ? ("sith" + packageName.substring(4)) : packageName;
 	}
 
-	private void initialiseWriters(final FactoryType factoryType, final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
-		for (final FactoryMethodWriter factoryMethodWriter : annotationTypeToFactoryMethodWriterMap.values()) {
+	private void initialiseWriters(final FactoryType factoryType, final Collection<FactoryMethodWriter> factoryMethodWriters) {
+		for (final FactoryMethodWriter factoryMethodWriter : factoryMethodWriters) {
 			factoryMethodWriter.initialise(writer, factoryType);
 		}
 	}

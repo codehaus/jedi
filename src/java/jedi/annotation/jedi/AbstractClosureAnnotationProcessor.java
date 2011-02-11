@@ -110,7 +110,7 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 
 	private void writeFactories(final Map<String, List<Annotateable>> methodsByType, final FactoryType factoryType) {
 		for (final List<Annotateable> annotateables : methodsByType.values()) {
-			new FactoryWriter(new Environment5(environment), factoryType, annotationTypeToFactoryMethodWriterMap).write(annotateables);
+			new FactoryWriter(new Environment5(environment), factoryType, annotationTypeToFactoryMethodWriterMap.values()).write(annotateables);
 		}
 	}
 }

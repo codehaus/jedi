@@ -10,6 +10,7 @@ import java.util.Map;
 
 import jedi.annotation.processor.Environment;
 import jedi.annotation.processor.model.Annotateable;
+import jedi.annotation.processor.model.AnnotateableComparator;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.method.FactoryMethodWriter;

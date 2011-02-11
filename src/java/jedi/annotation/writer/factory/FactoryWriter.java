@@ -9,21 +9,21 @@ import java.util.List;
 import java.util.Map;
 
 import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.Environment;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.functional.Comparables;
 
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 
 public class FactoryWriter {
 	private final StringWriter stringWriter = new StringWriter();
 	private final JavaWriter writer = new JavaWriter(stringWriter);
-	private final AnnotationProcessorEnvironment environment;
+	private final Environment environment;
 	private final FactoryType factoryType;
 
-	public FactoryWriter(final AnnotationProcessorEnvironment environment, final FactoryType type, final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
+	public FactoryWriter(final Environment environment, final FactoryType type, final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
 		this.environment = environment;
 		this.factoryType = type;
 		initialiseWriters(factoryType, annotationTypeToFactoryMethodWriterMap);
@@ -33,7 +33,7 @@ public class FactoryWriter {
 		writer.println("}");
 		writer.close();
 
-		final PrintWriter realWriter = environment.getFiler().createSourceFile(factoryType.getQualifiedTypeName(annotateable));
+		final PrintWriter realWriter = environment.createSourceFile(factoryType.getQualifiedTypeName(annotateable));
 		realWriter.print(stringWriter.getBuffer());
 		realWriter.close();
 	}
@@ -47,8 +47,7 @@ public class FactoryWriter {
 		return packageName.startsWith("java.") ? ("sith" + packageName.substring(4)) : packageName;
 	}
 
-	private void initialiseWriters(final FactoryType factoryType,
-			final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
+	private void initialiseWriters(final FactoryType factoryType, final Map<AnnotationTypeDeclaration, FactoryMethodWriter> annotationTypeToFactoryMethodWriterMap) {
 		for (final FactoryMethodWriter factoryMethodWriter : annotationTypeToFactoryMethodWriterMap.values()) {
 			factoryMethodWriter.initialise(writer, factoryType);
 		}
@@ -70,9 +69,9 @@ public class FactoryWriter {
 			writeMethods(methods);
 			endFactory(head(methods));
 		} catch (final IOException e) {
-			environment.getMessager().printError(e.getMessage());
+			environment.printError(e.getMessage());
 		} catch (final FactoryWriterException fwex) {
-			fwex.write(environment.getMessager());
+			fwex.write(environment);
 		}
 	}
 

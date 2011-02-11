@@ -28,6 +28,6 @@ public class ProxyFunctorFactoryMethodWriter extends AbstractProxyFactoryMethodW
 	protected void writeClosureTypes() {
 		super.writeClosureTypes();
 		getWriter().print(", ");
-		getWriter().printBoxedQualifiedTypeName(getDelegateMethodReturnType());
+		getWriter().print(getDelegateMethodReturnType());
 	}
 }

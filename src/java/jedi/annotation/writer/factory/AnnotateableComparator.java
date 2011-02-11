@@ -1,6 +1,3 @@
-/**
- * 
- */
 package jedi.annotation.writer.factory;
 
 import java.util.Comparator;

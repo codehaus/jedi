@@ -87,11 +87,11 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	}
 
 	protected final String getDelegateMethodDeclaringTypeWithoutBounds() {
-		return method.getDeclaringTypeWithGenericsButWithoutBounds();
+		return method.getDeclaringTypeWithUnboundedGenerics();
 	}
 
-	protected final TypeMirror getDelegateMethodReturnType() {
-		return method.getType();
+	protected final String getDelegateMethodReturnType() {
+		return method.getBoxedDeclaredType();
 	}
 
 	protected final List<Attribute> getExecuteMethodParameters() {
@@ -101,7 +101,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	protected abstract List<Attribute> getExecuteMethodParameters(Annotateable method);
 
 	protected String getExecuteMethodReturnType() {
-		return new BoxerFunctor().execute(getDelegateMethodReturnType());
+		return getDelegateMethodReturnType();
 	}
 
 	protected abstract Collection<Attribute> getFactoryMethodAdditionalFormalParameters();

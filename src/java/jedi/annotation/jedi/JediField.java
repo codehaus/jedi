@@ -24,7 +24,8 @@ public class JediField extends AbstractAnnotateable<FieldDeclaration> {
 		return declaration.getSimpleName();
 	}
 
-	public TypeMirror getType() {
+	@Override
+	protected TypeMirror getType() {
 		return declaration.getType();
 	}
 

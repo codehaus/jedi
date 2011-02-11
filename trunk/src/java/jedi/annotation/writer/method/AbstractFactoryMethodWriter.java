@@ -11,7 +11,7 @@ import java.util.List;
 import jedi.annotation.processor.ProcessorOptions;
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor.model.Attribute;
-import jedi.annotation.util.BoxerFunctor;
+import jedi.annotation.processor5.BoxerFunctor;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factory.FactoryWriterException;
 import jedi.annotation.writer.factorytype.ClosureFragmentWriter;

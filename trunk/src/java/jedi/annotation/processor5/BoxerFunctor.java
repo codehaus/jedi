@@ -1,4 +1,4 @@
-package jedi.annotation.util;
+package jedi.annotation.processor5;
 
 import java.util.HashMap;
 import java.util.Map;

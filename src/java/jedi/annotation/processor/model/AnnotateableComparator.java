@@ -1,12 +1,10 @@
-package jedi.annotation.writer.factory;
+package jedi.annotation.processor.model;
 
 import java.util.Comparator;
 import java.util.List;
 
-import jedi.annotation.processor.model.Annotateable;
-import jedi.annotation.processor.model.Attribute;
 
-final class AnnotateableComparator implements Comparator<Annotateable> {
+public final class AnnotateableComparator implements Comparator<Annotateable> {
 	public int compare(Annotateable annotateable1, Annotateable annotateable2) {
 		int comparison = annotateable1.getName(true).compareToIgnoreCase(annotateable2.getName(true));
 		if (comparison != 0) {

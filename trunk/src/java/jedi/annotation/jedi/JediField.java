@@ -4,7 +4,7 @@ import static jedi.functional.Coercions.list;
 
 import java.util.List;
 
-import jedi.annotation.jedi.attribute.Attribute;
+import jedi.annotation.processor.model.Attribute;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 

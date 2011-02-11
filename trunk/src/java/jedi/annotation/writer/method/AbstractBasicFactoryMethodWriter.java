@@ -6,9 +6,9 @@ import static jedi.functional.FunctionalPrimitives.append;
 import java.util.Collection;
 import java.util.List;
 
-import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.processor.ProcessorOptions;
 import jedi.annotation.processor.model.Annotateable;
+import jedi.annotation.processor.model.Attribute;
 
 public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMethodWriter {
 	public AbstractBasicFactoryMethodWriter(ProcessorOptions options) {

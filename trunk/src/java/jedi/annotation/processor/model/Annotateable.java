@@ -2,7 +2,6 @@ package jedi.annotation.processor.model;
 
 import java.util.List;
 
-import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.processor.Environment;
 import jedi.annotation.writer.JavaWriter;
 

@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import jedi.annotation.jedi.attribute.Attribute;
+import jedi.annotation.processor.model.Attribute;
 import jedi.annotation.util.BoxerFunctor;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.TypeDeclarationRenderer;

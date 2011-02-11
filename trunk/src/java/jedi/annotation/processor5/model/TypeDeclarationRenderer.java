@@ -1,4 +1,4 @@
-package jedi.annotation.writer;
+package jedi.annotation.processor5.model;
 
 import static jedi.functional.FunctionalPrimitives.collect;
 import static jedi.functional.FunctionalPrimitives.join;

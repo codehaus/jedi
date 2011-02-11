@@ -3,7 +3,7 @@ package jedi.annotation.jedi;
 import jedi.annotation.processor.Environment;
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor5.model.BoxerFunctor;
-import jedi.annotation.writer.TypeDeclarationRenderer;
+import jedi.annotation.processor5.model.TypeDeclarationRenderer;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 
 import com.sun.mirror.declaration.MemberDeclaration;

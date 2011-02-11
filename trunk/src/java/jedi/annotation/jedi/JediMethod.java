@@ -12,8 +12,8 @@ import java.util.Set;
 
 import jedi.annotation.processor.model.Attribute;
 import jedi.annotation.processor5.model.BoxerFunctor;
+import jedi.annotation.processor5.model.TypeDeclarationRenderer;
 import jedi.annotation.writer.JavaWriter;
-import jedi.annotation.writer.TypeDeclarationRenderer;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.functional.Filter;
 import jedi.functional.Functor;

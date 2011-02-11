@@ -14,7 +14,7 @@ import jedi.annotation.SithFilter;
 import jedi.annotation.SithFunctor;
 import jedi.annotation.SithMethods;
 import jedi.annotation.jedi.AbstractClosureAnnotationProcessor;
-import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.functional.Functor;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;

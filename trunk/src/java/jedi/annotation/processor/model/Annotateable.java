@@ -1,4 +1,4 @@
-package jedi.annotation.jedi;
+package jedi.annotation.processor.model;
 
 import java.util.List;
 

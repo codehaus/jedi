@@ -3,8 +3,8 @@ package jedi.annotation.writer.factory;
 import java.util.Comparator;
 import java.util.List;
 
-import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
+import jedi.annotation.processor.model.Annotateable;
 
 final class AnnotateableComparator implements Comparator<Annotateable> {
 	public int compare(Annotateable annotateable1, Annotateable annotateable2) {

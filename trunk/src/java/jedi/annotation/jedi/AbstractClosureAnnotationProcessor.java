@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import jedi.annotation.processor.ProcessorOptions;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor5.Environment5;
 import jedi.annotation.processor5.OptionAccessor5;
 import jedi.annotation.writer.factory.FactoryWriter;

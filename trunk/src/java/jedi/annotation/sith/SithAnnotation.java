@@ -7,8 +7,8 @@ import static jedi.functional.FunctionalPrimitives.select;
 import java.util.List;
 import java.util.Set;
 
-import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.JediMethod;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.filters.NotNullFilter;
 import jedi.functional.Functor;

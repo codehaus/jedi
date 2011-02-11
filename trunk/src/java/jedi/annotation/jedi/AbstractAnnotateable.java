@@ -1,6 +1,7 @@
 package jedi.annotation.jedi;
 
 import jedi.annotation.processor.Environment;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.util.BoxerFunctor;
 import jedi.annotation.writer.TypeDeclarationRenderer;
 import jedi.annotation.writer.method.FactoryMethodWriter;

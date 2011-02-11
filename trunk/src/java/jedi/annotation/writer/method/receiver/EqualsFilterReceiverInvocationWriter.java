@@ -1,6 +1,6 @@
 package jedi.annotation.writer.method.receiver;
 
-import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 
 public class EqualsFilterReceiverInvocationWriter extends ReceiverInvocationWriter {

@@ -8,8 +8,8 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
-import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.processor.Environment;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.method.FactoryMethodWriter;

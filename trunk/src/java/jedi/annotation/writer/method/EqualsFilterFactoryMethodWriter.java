@@ -4,9 +4,9 @@ import static jedi.functional.Coercions.list;
 
 import java.util.List;
 
-import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.processor.ProcessorOptions;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.writer.method.receiver.EqualsFilterReceiverInvocationWriter;
 import jedi.functional.Filter;
 

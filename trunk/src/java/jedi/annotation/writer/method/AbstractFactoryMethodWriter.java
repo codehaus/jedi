@@ -8,9 +8,9 @@ import static jedi.functional.FunctionalPrimitives.join;
 import java.util.Collection;
 import java.util.List;
 
-import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.processor.ProcessorOptions;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.util.BoxerFunctor;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factory.FactoryWriterException;

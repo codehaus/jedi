@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Set;
 
 import jedi.annotation.jedi.attribute.Attribute;
+import jedi.annotation.util.BoxerFunctor;
 import jedi.annotation.writer.JavaWriter;
+import jedi.annotation.writer.TypeDeclarationRenderer;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.functional.Filter;
 import jedi.functional.Functor;
@@ -22,10 +24,10 @@ import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
 public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
-	private Set<String> cutParameterNames;
+	private final Set<String> cutParameterNames;
 
 	public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter) {
-		this(declaration, factoryMethodWriter, null, null);
+		this(declaration, factoryMethodWriter, null);
 	}
 
 	public JediMethod(MethodDeclaration declaration, FactoryMethodWriter factoryMethodWriter, String factoryMethodPrefix) {
@@ -37,14 +39,15 @@ public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
 		this.cutParameterNames = (cutParameterNames == null ? new HashSet<String>() : cutParameterNames);
 	}
 
-	public TypeMirror getType() {
+	@Override
+	protected TypeMirror getType() {
 		return declaration.getReturnType();
 	}
 
 	private Collection<Attribute> getParameters() {
 		return collect(declaration.getParameters(), new Functor<ParameterDeclaration, Attribute>() {
 			public Attribute execute(ParameterDeclaration value) {
-				return new Attribute(value);
+				return new Attribute(value.getType().toString(), new BoxerFunctor().execute(value.getType()), declaration.getSimpleName());
 			}
 		});
 	}
@@ -107,6 +110,6 @@ public class JediMethod extends AbstractAnnotateable<MethodDeclaration> {
 	}
 
 	public void writeGenericTypeParameters(JavaWriter writer) {
-		writer.printGenericTypeParameters(getGenericTypeParameters());
+		writer.print(TypeDeclarationRenderer.render(getGenericTypeParameters()));
 	}
 }

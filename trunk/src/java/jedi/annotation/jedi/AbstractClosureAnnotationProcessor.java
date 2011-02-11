@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.Set;
 
 import jedi.annotation.processor.ProcessorOptions;
-import jedi.annotation.processor5.OptionAccessor;
+import jedi.annotation.processor5.Environment5;
+import jedi.annotation.processor5.OptionAccessor5;
 import jedi.annotation.writer.factory.FactoryWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.factorytype.InstanceFactoryType;
@@ -45,7 +46,7 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 		this.environment = environment;
 
 		annotationTypeToFactoryMethodWriterMap = new HashMap<AnnotationTypeDeclaration, FactoryMethodWriter>();
-		final ProcessorOptions options = new ProcessorOptions(new OptionAccessor(environment));
+		final ProcessorOptions options = new ProcessorOptions(new OptionAccessor5(environment));
 		putAnnotationClassToWriterMapping(commandAnnotationClass,
 				new CompositeFactoryMethodWriter(
 						new CommandFactoryMethodWriter(options), new ProxyCommandFactoryMethodWriter(options)));
@@ -108,7 +109,7 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 
 	private void writeFactories(final Map<String, List<Annotateable>> methodsByType, final FactoryType factoryType) {
 		for (final List<Annotateable> annotateables : methodsByType.values()) {
-			new FactoryWriter(environment, factoryType, annotationTypeToFactoryMethodWriterMap).write(annotateables);
+			new FactoryWriter(new Environment5(environment), factoryType, annotationTypeToFactoryMethodWriterMap).write(annotateables);
 		}
 	}
 }

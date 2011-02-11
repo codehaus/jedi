@@ -4,10 +4,10 @@ import jedi.annotation.processor.ProcessorOptionAccessor;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 
-public class OptionAccessor implements ProcessorOptionAccessor {
+public class OptionAccessor5 implements ProcessorOptionAccessor {
 	private final AnnotationProcessorEnvironment environment;
 
-	public OptionAccessor(AnnotationProcessorEnvironment environment) {
+	public OptionAccessor5(AnnotationProcessorEnvironment environment) {
 		this.environment = environment;
 	}
 

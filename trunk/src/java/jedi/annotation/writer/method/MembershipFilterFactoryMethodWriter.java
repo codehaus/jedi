@@ -25,8 +25,7 @@ public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMet
 
 	@Override
 	protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
-		return list(new Attribute("java.util.Collection<? extends " + getBoxedQualifiedTypeName(getDelegateMethodReturnType()) + ">",
-				TEST_VALUE_PARAMETER_NAME));
+		return list(new Attribute("java.util.Collection<? extends " + getDelegateMethodReturnType() + ">", TEST_VALUE_PARAMETER_NAME));
 	}
 
 	@Override

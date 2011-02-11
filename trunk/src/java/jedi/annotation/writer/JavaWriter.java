@@ -11,12 +11,7 @@ import java.util.List;
 import jedi.annotation.jedi.attribute.Attribute;
 import jedi.annotation.jedi.attribute.AttributeBoxedTypeFunctor;
 import jedi.annotation.jedi.attribute.AttributeNameFunctor;
-import jedi.annotation.util.BoxerFunctor;
 import jedi.functional.Command;
-
-import com.sun.mirror.declaration.TypeDeclaration;
-import com.sun.mirror.declaration.TypeParameterDeclaration;
-import com.sun.mirror.type.TypeMirror;
 
 public class JavaWriter extends PrintWriter {
 	public JavaWriter(Writer delegate) {
@@ -47,28 +42,8 @@ public class JavaWriter extends PrintWriter {
 		print(name);
 	}
 
-	public void printFormalParameter(TypeDeclaration type, String parameterName) {
-		printFormalParameter(type.getQualifiedName(), parameterName);
-	}
-
-	public void printFormalParameter(TypeMirror type, String name) {
-		printFormalParameter(type.toString(), name);
-	}
-
 	public void printFormalParameter(Attribute v) {
 		printFormalParameter(v.getType(), v.getName());
-	}
-
-	public void printQualifiedTypeName(TypeDeclaration type) {
-		print(type.getQualifiedName());
-	}
-
-	public void printBoxedQualifiedTypeName(TypeMirror type) {
-		print(getBoxedQualifiedTypeName(type));
-	}
-
-	private String getBoxedQualifiedTypeName(TypeMirror type) {
-		return new BoxerFunctor().execute(type);
 	}
 
 	public void printBoxedFormalParameter(Attribute v) {
@@ -104,9 +79,5 @@ public class JavaWriter extends PrintWriter {
 
 	public void printBoxedCommaSeparatedList(List<Attribute> vs) {
 		printCommaSeparatedList(collect(vs, new AttributeBoxedTypeFunctor()));
-	}
-
-	public void printGenericTypeParameters(Collection<TypeParameterDeclaration> parameters) {
-		print(TypeDeclarationRenderer.render(parameters));
 	}
 }

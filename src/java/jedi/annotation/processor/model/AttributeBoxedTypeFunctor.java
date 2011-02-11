@@ -1,4 +1,4 @@
-package jedi.annotation.jedi.attribute;
+package jedi.annotation.processor.model;
 
 import jedi.functional.Functor;
 

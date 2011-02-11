@@ -8,9 +8,9 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
 
-import jedi.annotation.jedi.attribute.Attribute;
-import jedi.annotation.jedi.attribute.AttributeBoxedTypeFunctor;
-import jedi.annotation.jedi.attribute.AttributeNameFunctor;
+import jedi.annotation.processor.model.Attribute;
+import jedi.annotation.processor.model.AttributeBoxedTypeFunctor;
+import jedi.annotation.processor.model.AttributeNameFunctor;
 import jedi.functional.Command;
 
 public class JavaWriter extends PrintWriter {

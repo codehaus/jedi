@@ -5,7 +5,7 @@ import static jedi.functional.FunctionalPrimitives.*;
 import java.util.Collections;
 import java.util.List;
 
-import jedi.annotation.processor5.AnnotationValueValueFunctor;
+import jedi.annotation.processor5.model.AnnotationValueValueFunctor;
 import jedi.functional.Functor;
 
 import com.sun.mirror.apt.Messager;

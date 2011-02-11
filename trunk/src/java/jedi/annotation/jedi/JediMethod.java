@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import jedi.annotation.processor.model.Attribute;
-import jedi.annotation.processor5.BoxerFunctor;
+import jedi.annotation.processor5.model.BoxerFunctor;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.TypeDeclarationRenderer;
 import jedi.annotation.writer.method.FactoryMethodWriter;

@@ -1,6 +1,6 @@
 package jedi.annotation.writer.factorytype;
 
-import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 
 public abstract class ConcreteFactoryType extends FactoryType {

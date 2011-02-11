@@ -5,7 +5,7 @@ import static jedi.functional.FunctionalPrimitives.select;
 
 import java.util.List;
 
-import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.functional.Coercions;

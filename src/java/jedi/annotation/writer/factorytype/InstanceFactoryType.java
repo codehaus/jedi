@@ -2,7 +2,7 @@ package jedi.annotation.writer.factorytype;
 
 import java.io.PrintWriter;
 
-import jedi.annotation.jedi.Annotateable;
+import jedi.annotation.processor.model.Annotateable;
 
 public class InstanceFactoryType extends ConcreteFactoryType {
 	@Override

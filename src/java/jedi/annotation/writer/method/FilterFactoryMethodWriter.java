@@ -1,7 +1,7 @@
 package jedi.annotation.writer.method;
 
-import jedi.annotation.jedi.Annotateable;
 import jedi.annotation.processor.ProcessorOptions;
+import jedi.annotation.processor.model.Annotateable;
 import jedi.functional.Filter;
 
 public class FilterFactoryMethodWriter extends AbstractBasicFactoryMethodWriter {

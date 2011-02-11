@@ -18,8 +18,8 @@ import jedi.annotation.JediCommand;
 import jedi.annotation.JediFilter;
 import jedi.annotation.JediFunctor;
 import jedi.annotation.processor.model.Annotateable;
+import jedi.annotation.processor5.AnnotationValueValueFunctor;
 import jedi.annotation.sith.AnnotationMirrorInterpreter;
-import jedi.annotation.util.AnnotationValueValueFunctor;
 import jedi.filters.NotNullFilter;
 import jedi.functional.Functor;
 

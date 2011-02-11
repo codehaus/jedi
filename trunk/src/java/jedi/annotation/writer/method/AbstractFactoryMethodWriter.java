@@ -11,7 +11,6 @@ import java.util.List;
 import jedi.annotation.processor.ProcessorOptions;
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor.model.Attribute;
-import jedi.annotation.processor5.model.BoxerFunctor;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factory.FactoryWriterException;
 import jedi.annotation.writer.factorytype.ClosureFragmentWriter;
@@ -19,8 +18,6 @@ import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.method.receiver.ReceiverInvocationWriter;
 import jedi.functional.Functor;
 import jedi.functional.Functor2;
-
-import com.sun.mirror.type.TypeMirror;
 
 public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWriter, FactoryMethodWriter {
 	public static final String RECEIVER_PARAMETER_NAME = "$receiver";
@@ -72,10 +69,6 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		factoryType.writeMethodBody(this, writer);
 
 		this.method = null;
-	}
-
-	protected final String getBoxedQualifiedTypeName(final TypeMirror type) {
-		return new BoxerFunctor().execute(type);
 	}
 
 	private String getCorrespondingFieldName(final Attribute attribute) {

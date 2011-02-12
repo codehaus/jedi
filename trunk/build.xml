@@ -9,7 +9,7 @@
 	<property name="meta-inf.dir" location="src/META-INF" />
 
 	<property name="build.dir" value="build" />
-	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="build.classes.dir" value="${build.dir}/classes/prod" />
 
 	<property name="build.test.dir" value="${build.dir}/classes/test" />
 	<property name="report.dir" location="${build.dir}/report" />

@@ -12,7 +12,7 @@ import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.ReferenceType;
 
-public class TypeDeclarationRenderer {
+class TypeDeclarationRenderer {
 	public static String render(TypeDeclaration declaration) {
 		return declaration.getQualifiedName() + render(declaration.getFormalTypeParameters());
 	}

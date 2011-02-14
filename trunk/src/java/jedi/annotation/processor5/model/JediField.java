@@ -1,4 +1,4 @@
-package jedi.annotation.jedi;
+package jedi.annotation.processor5.model;
 
 import static jedi.functional.Coercions.list;
 

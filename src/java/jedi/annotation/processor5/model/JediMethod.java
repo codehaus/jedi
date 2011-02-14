@@ -1,4 +1,4 @@
-package jedi.annotation.jedi;
+package jedi.annotation.processor5.model;
 
 import static jedi.functional.FirstOrderLogic.invert;
 import static jedi.functional.FunctionalPrimitives.append;
@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 import jedi.annotation.processor.model.Attribute;
-import jedi.annotation.processor5.model.BoxerFunctor;
-import jedi.annotation.processor5.model.TypeDeclarationRenderer;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.functional.Filter;

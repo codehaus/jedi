@@ -9,7 +9,7 @@ import com.sun.mirror.type.PrimitiveType;
 import com.sun.mirror.type.TypeMirror;
 import com.sun.mirror.util.SimpleTypeVisitor;
 
-public class BoxerFunctor implements Functor<TypeMirror, String> {
+class BoxerFunctor implements Functor<TypeMirror, String> {
 	private static final Map<PrimitiveType.Kind, Class<?>> BOXER = new HashMap<PrimitiveType.Kind, Class<?>>();
 
 	static {

@@ -1,9 +1,7 @@
-package jedi.annotation.jedi;
+package jedi.annotation.processor5.model;
 
 import jedi.annotation.processor.Environment;
 import jedi.annotation.processor.model.Annotateable;
-import jedi.annotation.processor5.model.BoxerFunctor;
-import jedi.annotation.processor5.model.TypeDeclarationRenderer;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 
 import com.sun.mirror.declaration.MemberDeclaration;
@@ -24,10 +22,6 @@ abstract class AbstractAnnotateable<T extends MemberDeclaration> implements Anno
 		this.declaration = declaration;
 		factoryMethodWriter = writer;
 		this.name = (name == null || name.length() == 0 ? declaration.getSimpleName() : name);
-	}
-
-	public void writeFactoryMethod() {
-		factoryMethodWriter.execute(this);
 	}
 
 	@Override
@@ -125,5 +119,9 @@ abstract class AbstractAnnotateable<T extends MemberDeclaration> implements Anno
 	@Override
 	public void showProcessingError(Environment environment, String message) {
 		environment.printError(getPosition().file(), getPosition().line(), getPosition().column(), message);
+	}
+
+	public void writeFactoryMethod() {
+		factoryMethodWriter.execute(this);
 	}
 }

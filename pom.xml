@@ -48,5 +48,22 @@
         <developerConnection>scm:svn:https://svn.codehaus.org/jedi/trunk</developerConnection>
         <url>http://svn.jedi.codehaus.org/browse/jedi/trunk</url>
     </scm>
-
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jmock</groupId>
+            <artifactId>jmock</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jmock</groupId>
+            <artifactId>jmock-cglib</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -4,9 +4,9 @@
 	<property name="project.name" value="jedi" />
 
 	<property name="lib" location="lib" />
-	<property name="java.src.dir" location="src/java" />
-	<property name="test.src.dir" location="src/test" />
-	<property name="meta-inf.dir" location="src/META-INF" />
+	<property name="java.src.dir" location="src/main/java" />
+	<property name="test.src.dir" location="src/test/java" />
+	<property name="meta-inf.dir" location="src/main/resources/META-INF" />
 
 	<property name="build.dir" value="build" />
 	<property name="build.classes.dir" value="${build.dir}/classes/prod" />
@@ -81,7 +81,7 @@
 			<fileset dir="docs" includes="*" />
 		</copy>
 		<javadoc destdir="${dist}/docs/javadoc" defaultexcludes="yes" link="http://java.sun.com/j2se/1.4.2/docs/api/">
-			<packageset dir="src/java" includes="**/*" excludes="jedi/annotation/**" />
+			<packageset dir="${java.src.dir}" includes="**/*" excludes="jedi/annotation/**" />
 		</javadoc>
 	</target>
 

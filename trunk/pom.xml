@@ -1,14 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <parent>
+        <groupId>org.codehaus</groupId>
+        <artifactId>codehaus-parent</artifactId>
+        <version>3</version>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.jedi</groupId>
     <artifactId>jedi</artifactId>
     <name>Jedi</name>
     <version>2.20.0</version>
-    <description>A library bringing some functional sense to Java</description>
     <url>http://jedi.codehaus.org/</url>
-
     <licenses>
         <license>
             <name>MIT License</name>
@@ -38,4 +43,10 @@
             <organization>Casual Miracles Ltd</organization>
         </developer>
     </developers>
+    <scm>
+        <connection>scm:svn:http://svn.codehaus.org/jedi/trunk</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/jedi/trunk</developerConnection>
+        <url>http://svn.jedi.codehaus.org/browse/jedi/trunk</url>
+    </scm>
+
 </project>

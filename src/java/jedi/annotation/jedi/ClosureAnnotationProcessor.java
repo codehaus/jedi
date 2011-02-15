@@ -86,7 +86,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		if (factoryPrefix == null) {
 			factoryPrefix = field.getSimpleName();
 		}
-		return set(new JediField(field, annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
+		return set(new JediField(new jedi.annotation.processor5.model.FieldDeclaration(field), annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -98,7 +98,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		}
 
 		List<AnnotationValue> value = (List<AnnotationValue>) interpreter.getValue("cut");
-		return value != null ? getCuts(annotationTypeDeclaration, method, value, factoryPrefix) : set(new JediMethod(method,
+		return value != null ? getCuts(annotationTypeDeclaration, method, value, factoryPrefix) : set(new JediMethod(new jedi.annotation.processor5.model.MethodDeclaration(method),
 				annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
 	}
 
@@ -121,7 +121,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		}
 		List<String> parameterNames = getCutParameterNames((List<AnnotationValue>) interpreter.getValue("parameters"));
 
-		return validateCutParameters(method, parameterNames) ? new JediMethod(method, annotationTypeToFactoryMethodWriterMap
+		return validateCutParameters(method, parameterNames) ? new JediMethod(new jedi.annotation.processor5.model.MethodDeclaration(method), annotationTypeToFactoryMethodWriterMap
 				.get(annotationTypeDeclaration), name, asSet(parameterNames)) : null;
 
 	}

@@ -1,9 +1,41 @@
-<project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus</groupId>
-  <artifactId>jedi</artifactId>
-  <name>Jedi</name>
-  <version>2.20.0</version>
-  <description>A library bringing some functional sense to Java</description>
-  <url>http://jedi.codehaus.org/</url>
+<?xml version='1.0' encoding='UTF-8'?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.codehaus.jedi</groupId>
+    <artifactId>jedi</artifactId>
+    <name>Jedi</name>
+    <version>2.20.0</version>
+    <description>A library bringing some functional sense to Java</description>
+    <url>http://jedi.codehaus.org/</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <description>Java's syntactic and library support for these components tends to cause the above concerns to be mixed
+        with each other, with other concerns, and with low-level implementation details. This means that the code is
+        cluttered, verbose and does not express intent very well.
+
+        Jedi aims to repair this by providing a library of routines for filtering, iteration, conversion from
+        one collection type to another, first order logic functions, etc. It makes extensive use of higher order
+        functions and closures (also known as 'blocks' or 'lambdas' that can be implemented manually or by annotations.
+    </description>
+    <developers>
+        <developer>
+            <id>lance.walton</id>
+            <name>Lance Walton</name>
+            <email>lance [dot] walton [at] casualmiracles [dot] com</email>
+            <organization>Casual Miracles Ltd</organization>
+        </developer>
+        <developer>
+            <id>channing.walton</id>
+            <name>Channing Walton</name>
+            <email>channing [dot] walton [at] casualmiracles [dot] com</email>
+            <organization>Casual Miracles Ltd</organization>
+        </developer>
+    </developers>
 </project>

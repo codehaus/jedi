@@ -1,16 +1,14 @@
-package jedi.annotation.processor5.model;
+package jedi.annotation.processor.model;
 
 import jedi.annotation.processor.Environment;
-import jedi.annotation.processor.model.Annotateable;
-import jedi.annotation.processor.model.MemberDeclaration;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 
-abstract class AbstractAnnotateable<T extends MemberDeclaration> implements Annotateable {
+abstract class AbstractAnnotateable implements Annotateable {
 	private final FactoryMethodWriter factoryMethodWriter;
 	protected String name;
-	protected final T declaration;
+	protected final MemberDeclaration declaration;
 
-	public AbstractAnnotateable(T declaration, FactoryMethodWriter writer, String name) {
+	public AbstractAnnotateable(MemberDeclaration declaration, FactoryMethodWriter writer, String name) {
 		this.declaration = declaration;
 		factoryMethodWriter = writer;
 	}
@@ -30,7 +28,7 @@ abstract class AbstractAnnotateable<T extends MemberDeclaration> implements Anno
 			return false;
 		}
 
-		AbstractAnnotateable<?> that = (AbstractAnnotateable<?>) obj;
+		AbstractAnnotateable that = (AbstractAnnotateable) obj;
 		return declaration.equals(that.declaration) && factoryMethodWriter.equals(that.factoryMethodWriter) && name.equals(that.name);
 	}
 

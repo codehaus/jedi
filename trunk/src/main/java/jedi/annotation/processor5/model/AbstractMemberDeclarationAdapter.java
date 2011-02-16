@@ -12,10 +12,10 @@ import com.sun.mirror.type.VoidType;
 import com.sun.mirror.util.SimpleTypeVisitor;
 import com.sun.mirror.util.SourcePosition;
 
-public abstract class AbstractMemberDeclaration<T extends com.sun.mirror.declaration.MemberDeclaration> implements MemberDeclaration {
+abstract class AbstractMemberDeclarationAdapter<T extends com.sun.mirror.declaration.MemberDeclaration> implements MemberDeclaration {
 	protected final T declaration;
 
-	public AbstractMemberDeclaration(T declaration) {
+	public AbstractMemberDeclarationAdapter(T declaration) {
 		this.declaration = declaration;
 	}
 
@@ -34,7 +34,7 @@ public abstract class AbstractMemberDeclaration<T extends com.sun.mirror.declara
 			return false;
 		}
 
-		AbstractMemberDeclaration that = (AbstractMemberDeclaration) obj;
+		AbstractMemberDeclarationAdapter<?> that = (AbstractMemberDeclarationAdapter<?>) obj;
 		return declaration.equals(that.declaration);
 	}
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import jedi.annotation.processor.model.Annotateable;
-import jedi.annotation.processor5.model.JediMethod;
+import jedi.annotation.processor.model.JediMethod;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.filters.NotNullFilter;
 import jedi.functional.Functor;
@@ -37,7 +37,7 @@ class SithAnnotation extends AnnotationMirrorInterpreter {
 		return asSet(collect(select(getRequiredMethods(), new NotNullFilter<MethodDeclaration>()),
 				new Functor<MethodDeclaration, Annotateable>() {
 			public Annotateable execute(MethodDeclaration value) {
-				return new JediMethod(new jedi.annotation.processor5.model.MethodDeclaration(value), factoryMethodWriter);
+				return new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(value), factoryMethodWriter);
 			}
 		}));
 	}

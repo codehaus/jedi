@@ -1,15 +1,14 @@
-package jedi.annotation.processor5.model;
+package jedi.annotation.processor.model;
 
 import static jedi.functional.Coercions.list;
 
 import java.util.List;
 
-import jedi.annotation.processor.model.Attribute;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.method.FactoryMethodWriter;
 
-public class JediField extends AbstractAnnotateable<FieldDeclaration> {
-	public JediField(FieldDeclaration declaration, FactoryMethodWriter writer, String name) {
+public class JediField extends AbstractAnnotateable {
+	public JediField(MemberDeclaration declaration, FactoryMethodWriter writer, String name) {
 		super(declaration, writer, name);
 	}
 
@@ -20,7 +19,7 @@ public class JediField extends AbstractAnnotateable<FieldDeclaration> {
 
 	@Override
 	public String getName(boolean simplified) {
-		return declaration.getSimpleName();
+		return name;
 	}
 
 	@Override

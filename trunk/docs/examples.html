@@ -213,11 +213,13 @@ get(map, "key").match(someCommand, noneCommand);
 Option&lt;String&gt; foo = ...
 foo.forEach(commandTakingString);
 </pre>
-<p>Finally, tired of testing for null in equals methods?</p>
+<p>Finally, tired of testing for null fields in equals methods?</p>
 <pre class="brush: java">
+    import static jedi.option.Options.*
+
     public boolean equals(Object other) {
-        // usual stuff
-        
+        // usual type checking stuff - pseudo code follows
+        return option(a).equals(option(other.a)) && option(b).equals(option(other.b)) ...; 
     }
 </pre>
 <p>To learn more about Optional values, read:</p>

@@ -15,6 +15,7 @@ import jedi.annotation.SithFunctor;
 import jedi.annotation.SithMethods;
 import jedi.annotation.jedi.AbstractClosureAnnotationProcessor;
 import jedi.annotation.processor.model.Annotateable;
+import jedi.annotation.processor5.OptionAccessor5;
 import jedi.functional.Functor;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -25,7 +26,7 @@ import com.sun.mirror.declaration.Declaration;
 
 class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
 	public ClosureAnnotationProcessor(final AnnotationProcessorEnvironment environment) {
-		super(environment, SithCommand.class, SithFilter.class, SithFunctor.class);
+		super(environment, SithCommand.class, SithFilter.class, SithFunctor.class, new OptionAccessor5(environment));
 	}
 
 	@Override
@@ -79,7 +80,7 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
 		return asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() {
 			public Collection<Annotateable> execute(final AnnotationMirror value) {
 				return new SithAnnotation(annotationTypeDeclaration, value, environment)
-				.getMethodDeclarations(annotationTypeToFactoryMethodWriterMap.get(annotationTypeDeclaration));
+				.getMethodDeclarations(annotationClassToFactoryMethodWriterMap.get(annotationTypeDeclaration));
 			}
 		}));
 	}

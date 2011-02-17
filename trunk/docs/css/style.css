@@ -1,0 +1,255 @@
+body {
+	font-family: 'Lucida Grande', Times New Roman, Verdana, serif;
+	text-align: justify;
+	font-size: 11pt;
+}
+
+div.main {
+    clear: left;
+    margin: 1em 2em 1em 2em;
+    padding: 1em 1em 1em 1em;
+    background: #FFFFFF;
+}
+
+.footer {
+    font-size: smaller;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+.copyright {
+    text-align: left;
+    font-size: smaller;
+    color: #999999;
+    text-align: center;
+}
+
+div.indented {
+    margin: 1em 2em;
+}
+
+ul.codeBlock, div.main, td.codeBlock {
+/* mozilla only but very cool */
+    -moz-border-radius-topleft: 1em;
+    -moz-border-radius-bottomright: 1em;
+    -moz-border-radius-bottomleft: 1em;
+    -moz-border-radius-topright: 1em;
+}
+
+p {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    border: 0;
+}
+
+td {
+    text-align: justify;
+}
+
+.dropCap {
+    float: left;
+    font-size: 80px;
+    line-height: 60px;
+    padding-top: 2px;
+}
+
+.applet, .picture {
+    margin: 0;
+    border: 5px;
+    border-color: silver;
+    border-style: ridge;
+    padding: 1px;
+    background: black;
+}
+
+div.spaced {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.caption {
+    font-size: large;
+}
+
+.title {
+    font-size: large;
+    font-variant: small-caps;
+}
+
+#menu {
+    margin: 10px auto;
+    font-variant: small-caps;
+    margin-bottom: 1em;
+}
+
+#menu ul {
+    margin-left: 0;
+    padding-left: 0;
+    display: inline;
+}
+
+#menu ul li {
+    margin-left: 0;
+    padding: 3px 12px;
+    list-style: none;
+    display: inline;
+}
+
+.latin {
+    font-style: italic;
+}
+
+.code, ul.codeBlock li, table.equation, td.codeBlock {
+    font-family: Courier New, Serif;
+    font-size: 10pt;
+}
+
+ul.codeBlock, table.equation, td.codeBlock {
+    border: solid;
+    border-width: thin;
+    border-color: black;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5em;
+}
+
+ul.codeBlock li, td.codeBlock {
+    text-align: left;
+    list-style: none;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+span.keyword {
+    color: gray;
+}
+
+span.string {
+    color: green;
+}
+
+span.variable {
+    color: purple;
+}
+
+span.comment {
+    color: red;
+}
+
+span.annotation {
+    color: magenta;
+}
+
+div.contents {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+div.contents div.contentsTitle {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1.5em;
+}
+
+div.contents ul {
+    padding-left: 0;
+}
+
+div.contents ul li {
+    list-style: none;
+}
+
+div.pageTitle {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1em;
+    font-size: 2em;
+}
+
+div.sectionHeading {
+    text-align: left;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1.5em;
+    border-top-color: rgb(51, 102, 204);
+    border-top-style: solid;
+    border-top-width: 1px;
+    background-color: rgb(213, 221, 243);
+}
+
+.subSectionHeading {
+    text-align: left;
+    margin-top: 1em;
+    margin-bottom: 0.25em;
+}
+
+div.pageTitle, div.sectionHeading, .subSectionHeading, div.contentsTitle {
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+div.takeHome, div.definition {
+    font-size: 14pt;
+    font-weight: bold;
+    font-variant: small-caps;
+    margin-top: 6pt;
+    margin-bottom: 6pt;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+table.booklist {
+    width: 100%;
+}
+
+table.booklist td {
+    vertical-align: top;
+}
+
+td.bookTitle {
+    font-style: italic;
+}
+
+td.author, td.bookTitle {
+    padding-right: 10px;
+}
+
+td.author {
+    width: 150px;
+    text-align: left;
+    color: #222;
+}
+
+td.flag {
+    width: 20px;
+}
+
+table.rowOriented td {
+    padding-top: 4px;
+}
+
+table.rowOriented tr > :first-child {
+    text-align: center;
+    white-space: nowrap;
+    padding-right: 10px;
+    vertical-align: top;
+    color: #222;
+}
+
+table.equation tr > :first-child {
+    text-align: right;
+    white-space: nowrap;
+}
+
+div.badges {
+    display: none;
+}

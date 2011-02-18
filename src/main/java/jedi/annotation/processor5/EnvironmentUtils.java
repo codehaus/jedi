@@ -1,4 +1,4 @@
-package jedi.annotation.jedi;
+package jedi.annotation.processor5;
 
 import static jedi.functional.FunctionalPrimitives.select;
 

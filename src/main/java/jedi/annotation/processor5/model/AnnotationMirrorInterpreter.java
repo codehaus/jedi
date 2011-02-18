@@ -1,4 +1,4 @@
-package jedi.annotation.sith;
+package jedi.annotation.processor5.model;
 
 import java.util.Map;
 

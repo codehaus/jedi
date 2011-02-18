@@ -1,4 +1,4 @@
-package jedi.annotation.jedi;
+package jedi.annotation.processor5;
 
 import static jedi.functional.Coercions.asList;
 import static jedi.functional.Coercions.asSet;
@@ -17,13 +17,12 @@ import java.util.Set;
 import jedi.annotation.JediCommand;
 import jedi.annotation.JediFilter;
 import jedi.annotation.JediFunctor;
+import jedi.annotation.processor.AnnotatedMemberDeclarationProcessor;
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor.model.JediField;
 import jedi.annotation.processor.model.JediMethod;
-import jedi.annotation.processor5.Environment5;
-import jedi.annotation.processor5.OptionAccessor5;
+import jedi.annotation.processor5.model.AnnotationMirrorInterpreter;
 import jedi.annotation.processor5.model.AnnotationValueValueFunctor;
-import jedi.annotation.sith.AnnotationMirrorInterpreter;
 import jedi.filters.NotNullFilter;
 import jedi.functional.Functor;
 
@@ -37,7 +36,7 @@ import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.util.DeclarationFilter;
 
-public class ClosureAnnotationProcessor implements AnnotationProcessor {
+public class JediAnnotationProcessor implements AnnotationProcessor {
 	private static final DeclarationFilter MEMBER_VISIBILITY_FILTER = //
 		DeclarationFilter.FILTER_PUBLIC //
 		.or(DeclarationFilter.FILTER_PACKAGE) //
@@ -59,13 +58,13 @@ public class ClosureAnnotationProcessor implements AnnotationProcessor {
 
 	private final AnnotationProcessorEnvironment environment;
 
-	public ClosureAnnotationProcessor(AnnotationProcessorEnvironment environment) {
+	public JediAnnotationProcessor(AnnotationProcessorEnvironment environment) {
 		this.environment = environment;
 	}
 
 	@Override
 	public void process() {
-		new AbstractClosureAnnotationProcessor(JediCommand.class, JediFilter.class, JediFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
+		new AnnotatedMemberDeclarationProcessor(JediCommand.class, JediFilter.class, JediFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
 		.process(asSet(append(
 				getInterestingNonCompositeDeclarations(JediCommand.class),
 				getInterestingNonCompositeDeclarations(JediFilter.class),

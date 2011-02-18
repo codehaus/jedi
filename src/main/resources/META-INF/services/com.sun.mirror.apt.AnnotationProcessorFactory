@@ -1,2 +1,2 @@
-jedi.annotation.jedi.ProcessorFactory
-jedi.annotation.sith.ProcessorFactory
+jedi.annotation.processor5.JediProcessorFactory
+jedi.annotation.processor5.SithProcessorFactory

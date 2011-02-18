@@ -1,4 +1,4 @@
-package jedi.annotation.sith;
+package jedi.annotation.processor5;
 
 import static jedi.functional.Coercions.set;
 
@@ -18,9 +18,9 @@ import com.sun.mirror.apt.AnnotationProcessorFactory;
 import com.sun.mirror.apt.AnnotationProcessors;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 
-public class ProcessorFactory implements AnnotationProcessorFactory {
+public class SithProcessorFactory implements AnnotationProcessorFactory {
 	public AnnotationProcessor getProcessorFor(final Set<AnnotationTypeDeclaration> typeDeclarations, final AnnotationProcessorEnvironment environment) {
-		return typeDeclarations.isEmpty() ? AnnotationProcessors.NO_OP : new ClosureAnnotationProcessor(environment);
+		return typeDeclarations.isEmpty() ? AnnotationProcessors.NO_OP : new SithAnnotationProcessor(environment);
 	}
 
 	public Collection<String> supportedAnnotationTypes() {

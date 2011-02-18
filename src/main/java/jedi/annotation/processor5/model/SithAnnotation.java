@@ -1,4 +1,4 @@
-package jedi.annotation.sith;
+package jedi.annotation.processor5.model;
 
 import static jedi.functional.Coercions.asSet;
 import static jedi.functional.FunctionalPrimitives.collect;
@@ -21,7 +21,7 @@ import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.DeclaredType;
 import com.sun.mirror.util.SourcePosition;
 
-class SithAnnotation extends AnnotationMirrorInterpreter {
+public class SithAnnotation extends AnnotationMirrorInterpreter {
 	private final AnnotationTypeDeclaration typeDeclaration;
 	private final AnnotationProcessorEnvironment environment;
 

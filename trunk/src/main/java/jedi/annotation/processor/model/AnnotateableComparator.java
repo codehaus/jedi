@@ -13,7 +13,7 @@ public class AnnotateableComparator implements Comparator<Annotateable> {
 	}
 
 	private int compareUncutParameters(List<Attribute> attributes1, List<Attribute> attributes2) {
-		for (int i = 0 ; i < attributes1.size() ; i++) {
+		for (int i = 0; i < attributes1.size(); i++) {
 			if (i >= attributes2.size()) {
 				return -1;
 			}

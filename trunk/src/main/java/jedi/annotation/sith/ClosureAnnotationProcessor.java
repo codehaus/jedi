@@ -45,12 +45,13 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
 
 	private Set<Annotateable> getMethods(final Set<AnnotationMirror> mirrors, final String property, final Class<?> propertyClass) {
 		return mirrors == null ? //
-				Collections.<Annotateable> emptySet() ://
+				Collections.<Annotateable> emptySet()
+				: //
 					asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() { //
 						@SuppressWarnings("unchecked")
 						public Collection<Annotateable> execute(final AnnotationMirror value) {
-							return getNonComposites(propertyClass,
-									getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(value).getValue(property)));
+							return getNonComposites(propertyClass, getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(
+									value).getValue(property)));
 						}
 					}));
 	}
@@ -73,12 +74,10 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
 		});
 	}
 
-	private Set<Annotateable> getNonComposites(final Class<?> annotationClass,
-			final Collection<AnnotationMirror> mirrors) {
+	private Set<Annotateable> getNonComposites(final Class<?> annotationClass, final Collection<AnnotationMirror> mirrors) {
 		return asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() {
 			public Collection<Annotateable> execute(final AnnotationMirror value) {
-				return new SithAnnotation(getTypeDeclaration(annotationClass), value, environment)
-				.getMethodDeclarations(annotationClassToFactoryMethodWriterMap.get(annotationClass));
+				return new SithAnnotation(getTypeDeclaration(annotationClass), value, environment).getMethodDeclarations(annotationClassToFactoryMethodWriterMap.get(annotationClass));
 			}
 		}));
 	}

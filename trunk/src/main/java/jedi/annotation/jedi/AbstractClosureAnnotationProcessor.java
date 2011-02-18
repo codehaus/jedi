@@ -48,12 +48,9 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 
 		annotationClassToFactoryMethodWriterMap = new HashMap<Class<?>, FactoryMethodWriter>();
 		final ProcessorOptions options = new ProcessorOptions(optionAccessor);
-		annotationClassToFactoryMethodWriterMap.put(commandAnnotationClass,
-				new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(options), new ProxyCommandFactoryMethodWriter(options)));
-		annotationClassToFactoryMethodWriterMap.put(filterAnnotationClass,
-				new CompositeFactoryMethodWriter(new FilterFactoryMethodWriter(options), new EqualsFilterFactoryMethodWriter(options), new MembershipFilterFactoryMethodWriter(options), new ProxyFilterFactoryMethodWriter(options)));
-		annotationClassToFactoryMethodWriterMap.put(functorAnnotationClass,
-				new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(options), new ProxyFunctorFactoryMethodWriter(options)));
+		annotationClassToFactoryMethodWriterMap.put(commandAnnotationClass, new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(options), new ProxyCommandFactoryMethodWriter(options)));
+		annotationClassToFactoryMethodWriterMap.put(filterAnnotationClass, new CompositeFactoryMethodWriter(new FilterFactoryMethodWriter(options), new EqualsFilterFactoryMethodWriter(options), new MembershipFilterFactoryMethodWriter(options), new ProxyFilterFactoryMethodWriter(options)));
+		annotationClassToFactoryMethodWriterMap.put(functorAnnotationClass, new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(options), new ProxyFunctorFactoryMethodWriter(options)));
 
 		factoryWriter = new FactoryWriter(new Environment5(environment), annotationClassToFactoryMethodWriterMap.values());
 	}

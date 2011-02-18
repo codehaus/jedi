@@ -1,6 +1,5 @@
 package jedi.annotation.processor.model;
 
-
 public class Attribute {
 	private final String type;
 	private final String boxedType;

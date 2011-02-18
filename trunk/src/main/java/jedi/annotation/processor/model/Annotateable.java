@@ -7,14 +7,21 @@ import jedi.annotation.writer.JavaWriter;
 
 public interface Annotateable {
 	String getPackage();
+
 	String getDeclaringTypeWithUnboundedGenerics();
+
 	String getQualifiedNameOfDeclaringType();
+
 	String getSimpleNameOfDeclaringType();
 
 	String getName(boolean simplified);
+
 	String getDeclaredType();
+
 	String getBoxedDeclaredType();
+
 	boolean isVoid();
+
 	boolean isBoolean();
 
 	List<Attribute> getUncutParameters();
@@ -22,7 +29,9 @@ public interface Annotateable {
 	List<Attribute> getCutParameters();
 
 	void writeFactoryMethod();
+
 	void writeInvocation(JavaWriter printWriter, String receiverName);
+
 	void writeGenericTypeParameters(JavaWriter writer);
 
 	void showProcessingError(Environment environment, String message);

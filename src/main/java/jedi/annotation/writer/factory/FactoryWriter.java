@@ -25,7 +25,7 @@ public class FactoryWriter {
 	public FactoryWriter(final Environment environment, final FactoryType type, final Collection<FactoryMethodWriter> factoryMethodWriters) {
 		this.environment = environment;
 		this.factoryType = type;
-		initialiseWriters(factoryType, factoryMethodWriters);
+		initialiseWriters(factoryMethodWriters);
 	}
 
 	private void endFactory(Annotateable annotateable) throws IOException {
@@ -46,7 +46,7 @@ public class FactoryWriter {
 		return packageName.startsWith("java.") ? ("sith" + packageName.substring(4)) : packageName;
 	}
 
-	private void initialiseWriters(final FactoryType factoryType, final Collection<FactoryMethodWriter> factoryMethodWriters) {
+	private void initialiseWriters(final Collection<FactoryMethodWriter> factoryMethodWriters) {
 		for (final FactoryMethodWriter factoryMethodWriter : factoryMethodWriters) {
 			factoryMethodWriter.initialise(writer, factoryType);
 		}

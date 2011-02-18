@@ -28,7 +28,6 @@ import jedi.functional.Functor;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationMirror;
-import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.FieldDeclaration;
@@ -62,16 +61,16 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Set<Annotateable> getInterestingNonCompositeDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
-		final Collection<Declaration> annotatedDeclarations = environment.getDeclarationsAnnotatedWith(annotationTypeDeclaration);
+	protected Set<Annotateable> getInterestingNonCompositeDeclarations(final Class<?> annotationClass) {
+		final Collection<Declaration> annotatedDeclarations = environment.getDeclarationsAnnotatedWith(getTypeDeclaration(annotationClass));
 		return asSet(append(flatten(INTERESTING_METHOD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
 			public Set<? extends Annotateable> execute(Declaration value) {
-				return getRequiredMethods(annotationTypeDeclaration, (MethodDeclaration) value);
+				return getRequiredMethods(annotationClass, (MethodDeclaration) value);
 			}
 		}), flatten(
 				INTERESTING_FIELD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
 					public Set<? extends Annotateable> execute(Declaration value) {
-						return getRequiredMethods(annotationTypeDeclaration, (FieldDeclaration) value);
+						return getRequiredMethods(annotationClass, (FieldDeclaration) value);
 					}
 				})));
 	}
@@ -81,39 +80,39 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		return Collections.<Annotateable>emptySet();
 	}
 
-	private Set<? extends Annotateable> getRequiredMethods(AnnotationTypeDeclaration annotationTypeDeclaration, FieldDeclaration field) {
-		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(field, annotationTypeDeclaration)));
+	private Set<? extends Annotateable> getRequiredMethods(Class<?> annotationClass, FieldDeclaration field) {
+		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(field, annotationClass)));
 		String factoryPrefix = (String) interpreter.getValue("name");
 		if (factoryPrefix == null) {
 			factoryPrefix = field.getSimpleName();
 		}
-		return set(new JediField(new jedi.annotation.processor5.model.FieldDeclarationAdapter(field), annotationClassToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
+		return set(new JediField(new jedi.annotation.processor5.model.FieldDeclarationAdapter(field), annotationClassToFactoryMethodWriterMap.get(annotationClass), factoryPrefix));
 	}
 
 	@SuppressWarnings("unchecked")
-	private Set<? extends Annotateable> getRequiredMethods(final AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method) {
-		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(method, annotationTypeDeclaration)));
+	private Set<? extends Annotateable> getRequiredMethods(final Class<?> annotationClass, MethodDeclaration method) {
+		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(method, annotationClass)));
 		String factoryPrefix = (String) interpreter.getValue("name");
 		if (factoryPrefix == null) {
 			factoryPrefix = method.getSimpleName();
 		}
 
 		List<AnnotationValue> value = (List<AnnotationValue>) interpreter.getValue("cut");
-		return value != null ? getCuts(annotationTypeDeclaration, method, value, factoryPrefix) : set(new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method),
-				annotationClassToFactoryMethodWriterMap.get(annotationTypeDeclaration), factoryPrefix));
+		return value != null ? getCuts(annotationClass, method, value, factoryPrefix) : set(new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method),
+				annotationClassToFactoryMethodWriterMap.get(annotationClass), factoryPrefix));
 	}
 
-	private Set<Annotateable> getCuts(final AnnotationTypeDeclaration annotationTypeDeclaration, final MethodDeclaration method,
+	private Set<Annotateable> getCuts(final Class<?> annotationClass, final MethodDeclaration method,
 			List<AnnotationValue> cuts, final String factoryPrefix) {
 		return asSet(select(collect(cuts, new Functor<AnnotationValue, Annotateable>() {
 			public Annotateable execute(AnnotationValue value) {
-				return createCutMethod(annotationTypeDeclaration, method, ((AnnotationMirror) value.getValue()), factoryPrefix);
+				return createCutMethod(annotationClass, method, ((AnnotationMirror) value.getValue()), factoryPrefix);
 			}
 		}), new NotNullFilter<Annotateable>()));
 	}
 
 	@SuppressWarnings("unchecked")
-	private Annotateable createCutMethod(AnnotationTypeDeclaration annotationTypeDeclaration, MethodDeclaration method, AnnotationMirror cut, String factoryPrefix) {
+	private Annotateable createCutMethod(Class<?> annotationClass, MethodDeclaration method, AnnotationMirror cut, String factoryPrefix) {
 		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(cut);
 
 		String name = (String) interpreter.getValue("name");
@@ -123,7 +122,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		List<String> parameterNames = getCutParameterNames((List<AnnotationValue>) interpreter.getValue("parameters"));
 
 		return validateCutParameters(method, parameterNames) ? new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClassToFactoryMethodWriterMap
-				.get(annotationTypeDeclaration), name, asSet(parameterNames)) : null;
+				.get(annotationClass), name, asSet(parameterNames)) : null;
 
 	}
 

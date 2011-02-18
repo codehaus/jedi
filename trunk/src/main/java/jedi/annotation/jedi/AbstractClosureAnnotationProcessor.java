@@ -57,8 +57,8 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 
 	private Set<Annotateable> getInterestingDeclarations() {
 		final Set<Annotateable> interestingMethodDeclarations = new HashSet<Annotateable>();
-		for (final Class<?> annotationTypeDeclaration : annotationClassToFactoryMethodWriterMap.keySet()) {
-			interestingMethodDeclarations.addAll(getInterestingNonCompositeDeclarations(getTypeDeclaration(annotationTypeDeclaration)));
+		for (final Class<?> annotationClass : annotationClassToFactoryMethodWriterMap.keySet()) {
+			interestingMethodDeclarations.addAll(getInterestingNonCompositeDeclarations(annotationClass));
 		}
 		interestingMethodDeclarations.addAll(getInterestingCompositeDeclarations());
 		return interestingMethodDeclarations;
@@ -66,7 +66,7 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 
 	abstract protected Collection<Annotateable> getInterestingCompositeDeclarations();
 
-	abstract protected Set<Annotateable> getInterestingNonCompositeDeclarations(AnnotationTypeDeclaration annotationTypeDeclaration);
+	abstract protected Set<Annotateable> getInterestingNonCompositeDeclarations(Class<?> annotationClass);
 
 	private Map<String, List<Annotateable>> getMethodsByQualifiedTypeName() {
 		return group(getInterestingDeclarations(), new Functor<Annotateable, String>() {
@@ -76,10 +76,10 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 		});
 	}
 
-	final protected Collection<AnnotationMirror> getMirrors(final Declaration declaration, final AnnotationTypeDeclaration annotationTypeDeclaration) {
+	final protected Collection<AnnotationMirror> getMirrors(final Declaration declaration, final Class<?> annotationClass) {
 		return select(declaration.getAnnotationMirrors(), new Filter<AnnotationMirror>() {
 			public Boolean execute(final AnnotationMirror mirror) {
-				return mirror.getAnnotationType().getDeclaration().equals(annotationTypeDeclaration);
+				return mirror.getAnnotationType().getDeclaration().equals(getTypeDeclaration(annotationClass));
 			}
 		});
 	}

@@ -11,6 +11,7 @@ abstract class AbstractAnnotateable implements Annotateable {
 	public AbstractAnnotateable(MemberDeclaration declaration, FactoryMethodWriter writer, String name) {
 		this.declaration = declaration;
 		factoryMethodWriter = writer;
+		this.name = (name == null || name.length() == 0 ? declaration.getSimpleName() : name);
 	}
 
 	@Override

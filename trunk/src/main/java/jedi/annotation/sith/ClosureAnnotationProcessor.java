@@ -20,7 +20,6 @@ import jedi.functional.Functor;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationMirror;
-import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.Declaration;
 
@@ -30,14 +29,14 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
 	}
 
 	@Override
-	protected Set<Annotateable> getInterestingNonCompositeDeclarations(final AnnotationTypeDeclaration annotationTypeDeclaration) {
-		final Set<AnnotationMirror> mirrors = getMirrors(annotationTypeDeclaration);
-		return getNonComposites(annotationTypeDeclaration, mirrors);
+	protected Set<Annotateable> getInterestingNonCompositeDeclarations(final Class<?> annotationClass) {
+		final Set<AnnotationMirror> mirrors = getMirrors(annotationClass);
+		return getNonComposites(annotationClass, mirrors);
 	}
 
 	@Override
 	protected Collection<Annotateable> getInterestingCompositeDeclarations() {
-		Set<AnnotationMirror> sithMethodsMirrors = getMirrors(getTypeDeclaration(SithMethods.class));
+		Set<AnnotationMirror> sithMethodsMirrors = getMirrors(SithMethods.class);
 		final Set<Annotateable> methods = getMethods(sithMethodsMirrors, "commands", SithCommand.class);
 		methods.addAll(getMethods(sithMethodsMirrors, "functors", SithFunctor.class));
 		methods.addAll(getMethods(sithMethodsMirrors, "filters", SithFilter.class));
@@ -45,23 +44,22 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
 	}
 
 	private Set<Annotateable> getMethods(final Set<AnnotationMirror> mirrors, final String property, final Class<?> propertyClass) {
-		final AnnotationTypeDeclaration propertyClassTypeDeclaration = getTypeDeclaration(propertyClass);
 		return mirrors == null ? //
 				Collections.<Annotateable> emptySet() ://
 					asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() { //
 						@SuppressWarnings("unchecked")
 						public Collection<Annotateable> execute(final AnnotationMirror value) {
-							return getNonComposites(propertyClassTypeDeclaration,
+							return getNonComposites(propertyClass,
 									getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(value).getValue(property)));
 						}
 					}));
 	}
 
-	private Set<AnnotationMirror> getMirrors(final AnnotationTypeDeclaration annotationTypeDeclaration) {
-		return asSet(flatten(environment.getDeclarationsAnnotatedWith(annotationTypeDeclaration),
+	private Set<AnnotationMirror> getMirrors(final Class<?> annotationClass) {
+		return asSet(flatten(environment.getDeclarationsAnnotatedWith(getTypeDeclaration(annotationClass)),
 				new Functor<Declaration, Collection<AnnotationMirror>>() {
 			public Collection<AnnotationMirror> execute(final Declaration value) {
-				return getMirrors(value, annotationTypeDeclaration);
+				return getMirrors(value, annotationClass);
 			}
 		}));
 	}
@@ -75,12 +73,12 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
 		});
 	}
 
-	private Set<Annotateable> getNonComposites(final AnnotationTypeDeclaration annotationTypeDeclaration,
+	private Set<Annotateable> getNonComposites(final Class<?> annotationClass,
 			final Collection<AnnotationMirror> mirrors) {
 		return asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() {
 			public Collection<Annotateable> execute(final AnnotationMirror value) {
-				return new SithAnnotation(annotationTypeDeclaration, value, environment)
-				.getMethodDeclarations(annotationClassToFactoryMethodWriterMap.get(annotationTypeDeclaration));
+				return new SithAnnotation(getTypeDeclaration(annotationClass), value, environment)
+				.getMethodDeclarations(annotationClassToFactoryMethodWriterMap.get(annotationClass));
 			}
 		}));
 	}

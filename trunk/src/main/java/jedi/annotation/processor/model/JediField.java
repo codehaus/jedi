@@ -5,11 +5,10 @@ import static jedi.functional.Coercions.list;
 import java.util.List;
 
 import jedi.annotation.writer.JavaWriter;
-import jedi.annotation.writer.method.FactoryMethodWriter;
 
 public class JediField extends AbstractAnnotateable {
-	public JediField(MemberDeclaration declaration, FactoryMethodWriter writer, String name) {
-		super(declaration, writer, name);
+	public JediField(MemberDeclaration declaration, Class<?> annotationClass, String name) {
+		super(declaration, annotationClass, name);
 	}
 
 	@Override

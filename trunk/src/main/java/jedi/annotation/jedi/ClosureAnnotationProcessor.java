@@ -87,7 +87,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		if (factoryPrefix == null) {
 			factoryPrefix = field.getSimpleName();
 		}
-		return set(new JediField(new jedi.annotation.processor5.model.FieldDeclarationAdapter(field), annotationClassToFactoryMethodWriterMap.get(annotationClass), factoryPrefix));
+		return set(new JediField(new jedi.annotation.processor5.model.FieldDeclarationAdapter(field), annotationClass, factoryPrefix));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -99,7 +99,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		}
 
 		List<AnnotationValue> value = (List<AnnotationValue>) interpreter.getValue("cut");
-		return value != null ? getCuts(annotationClass, method, value, factoryPrefix) : set(new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClassToFactoryMethodWriterMap.get(annotationClass), factoryPrefix));
+		return value != null ? getCuts(annotationClass, method, value, factoryPrefix) : set(new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClass, factoryPrefix));
 	}
 
 	private Set<Annotateable> getCuts(final Class<?> annotationClass, final MethodDeclaration method, List<AnnotationValue> cuts,
@@ -121,7 +121,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		}
 		List<String> parameterNames = getCutParameterNames((List<AnnotationValue>) interpreter.getValue("parameters"));
 
-		return validateCutParameters(method, parameterNames) ? new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClassToFactoryMethodWriterMap.get(annotationClass), name, asSet(parameterNames)) : null;
+		return validateCutParameters(method, parameterNames) ? new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClass, name, asSet(parameterNames)) : null;
 	}
 
 	private boolean validateCutParameters(MethodDeclaration method, List<String> parameterNames) {

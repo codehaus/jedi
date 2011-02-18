@@ -8,22 +8,21 @@ import java.util.List;
 import java.util.Set;
 
 import jedi.annotation.writer.JavaWriter;
-import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.functional.Filter;
 
 public class JediMethod extends AbstractAnnotateable {
 	private final Set<String> cutParameterNames;
 
-	public JediMethod(MemberDeclaration declaration, FactoryMethodWriter factoryMethodWriter) {
-		this(declaration, factoryMethodWriter, null);
+	public JediMethod(MemberDeclaration declaration, Class<?> annotationClass) {
+		this(declaration, annotationClass, null);
 	}
 
-	public JediMethod(MemberDeclaration declaration, FactoryMethodWriter factoryMethodWriter, String factoryMethodPrefix) {
-		this(declaration, factoryMethodWriter, factoryMethodPrefix, null);
+	public JediMethod(MemberDeclaration declaration, Class<?> annotationClass, String factoryMethodPrefix) {
+		this(declaration, annotationClass, factoryMethodPrefix, null);
 	}
 
-	public JediMethod(MemberDeclaration declaration, FactoryMethodWriter factoryMethodWriter, String cutName, Set<String> cutParameterNames) {
-		super(declaration, factoryMethodWriter, cutName);
+	public JediMethod(MemberDeclaration declaration, Class<?> annotationClass, String cutName, Set<String> cutParameterNames) {
+		super(declaration, annotationClass, cutName);
 		this.cutParameterNames = (cutParameterNames == null ? new HashSet<String>() : cutParameterNames);
 	}
 

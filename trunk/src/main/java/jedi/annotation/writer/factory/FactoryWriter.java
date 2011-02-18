@@ -5,8 +5,8 @@ import static jedi.functional.FunctionalPrimitives.head;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import jedi.annotation.processor.Environment;
 import jedi.annotation.processor.model.Annotateable;
@@ -20,11 +20,11 @@ public class FactoryWriter {
 	private StringWriter stringWriter;
 	private JavaWriter writer;
 	private final Environment environment;
-	private final Collection<FactoryMethodWriter> factoryMethodWriters;
+	private final Map<Class<?>, FactoryMethodWriter> factoryMethodWritersByAnnotationClass;
 
-	public FactoryWriter(final Environment environment, final Collection<FactoryMethodWriter> factoryMethodWriters) {
+	public FactoryWriter(final Environment environment, final Map<Class<?>, FactoryMethodWriter> factoryMethodWritersByAnnotationClass) {
 		this.environment = environment;
-		this.factoryMethodWriters = factoryMethodWriters;
+		this.factoryMethodWritersByAnnotationClass = factoryMethodWritersByAnnotationClass;
 	}
 
 	private void endFactory(Annotateable annotateable, FactoryType factoryType) throws IOException {
@@ -48,7 +48,7 @@ public class FactoryWriter {
 	private void initialiseWriters(FactoryType factoryType) {
 		stringWriter = new StringWriter();
 		writer = new JavaWriter(stringWriter);
-		for (final FactoryMethodWriter factoryMethodWriter : factoryMethodWriters) {
+		for (final FactoryMethodWriter factoryMethodWriter : factoryMethodWritersByAnnotationClass.values()) {
 			factoryMethodWriter.initialise(writer, factoryType);
 		}
 	}
@@ -78,7 +78,7 @@ public class FactoryWriter {
 
 	private void writeMethods(final List<Annotateable> methods) {
 		for (final Annotateable method : sort(methods)) {
-			method.writeFactoryMethod();
+			factoryMethodWritersByAnnotationClass.get(method.getAnnotationClass()).execute(method);
 		}
 	}
 

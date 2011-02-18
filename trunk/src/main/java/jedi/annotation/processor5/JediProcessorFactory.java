@@ -1,4 +1,4 @@
-package jedi.annotation.jedi;
+package jedi.annotation.processor5;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +16,7 @@ import com.sun.mirror.apt.AnnotationProcessorFactory;
 import com.sun.mirror.apt.AnnotationProcessors;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 
-public class ProcessorFactory implements AnnotationProcessorFactory {
+public class JediProcessorFactory implements AnnotationProcessorFactory {
 	public Collection<String> supportedOptions() {
 		return Collections.emptySet();
 	}
@@ -26,6 +26,6 @@ public class ProcessorFactory implements AnnotationProcessorFactory {
 	}
 
 	public AnnotationProcessor getProcessorFor(Set<AnnotationTypeDeclaration> typeDeclarations, AnnotationProcessorEnvironment environment) {
-		return typeDeclarations.isEmpty() ? AnnotationProcessors.NO_OP : new ClosureAnnotationProcessor(environment);
+		return typeDeclarations.isEmpty() ? AnnotationProcessors.NO_OP : new JediAnnotationProcessor(environment);
 	}
 }

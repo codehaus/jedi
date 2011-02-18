@@ -1,4 +1,4 @@
-package jedi.annotation.sith;
+package jedi.annotation.processor5;
 
 import static jedi.functional.Coercions.asSet;
 import static jedi.functional.FunctionalPrimitives.append;
@@ -14,11 +14,10 @@ import jedi.annotation.SithCommand;
 import jedi.annotation.SithFilter;
 import jedi.annotation.SithFunctor;
 import jedi.annotation.SithMethods;
-import jedi.annotation.jedi.AbstractClosureAnnotationProcessor;
-import jedi.annotation.jedi.EnvironmentUtils;
+import jedi.annotation.processor.AnnotatedMemberDeclarationProcessor;
 import jedi.annotation.processor.model.Annotateable;
-import jedi.annotation.processor5.Environment5;
-import jedi.annotation.processor5.OptionAccessor5;
+import jedi.annotation.processor5.model.AnnotationMirrorInterpreter;
+import jedi.annotation.processor5.model.SithAnnotation;
 import jedi.functional.Functor;
 
 import com.sun.mirror.apt.AnnotationProcessor;
@@ -27,10 +26,10 @@ import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationValue;
 import com.sun.mirror.declaration.Declaration;
 
-class ClosureAnnotationProcessor implements AnnotationProcessor {
+class SithAnnotationProcessor implements AnnotationProcessor {
 	private final AnnotationProcessorEnvironment environment;
 
-	public ClosureAnnotationProcessor(final AnnotationProcessorEnvironment environment) {
+	public SithAnnotationProcessor(final AnnotationProcessorEnvironment environment) {
 		this.environment = environment;
 	}
 
@@ -38,7 +37,7 @@ class ClosureAnnotationProcessor implements AnnotationProcessor {
 	@Override
 	public void process() {
 		Set<AnnotationMirror> sithMethodsMirrors = getMirrors(SithMethods.class);
-		new AbstractClosureAnnotationProcessor(SithCommand.class, SithFilter.class, SithFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
+		new AnnotatedMemberDeclarationProcessor(SithCommand.class, SithFilter.class, SithFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
 		.process(asSet(append(
 				getNonComposites(SithCommand.class, getMirrors(SithCommand.class)),
 				getNonComposites(SithFilter.class, getMirrors(SithFilter.class)),

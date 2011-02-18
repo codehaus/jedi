@@ -18,7 +18,8 @@ public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMe
 	@SuppressWarnings("unchecked")
 	@Override
 	protected final List<Attribute> getExecuteMethodParameters(Annotateable method) {
-		return append(list(new Attribute(method.getDeclaringTypeWithUnboundedGenerics(), RECEIVER_PARAMETER_NAME)), method.getCutParameters());
+		return append(list(new Attribute(method.getDeclaringTypeWithUnboundedGenerics(), RECEIVER_PARAMETER_NAME)),
+				method.getCutParameters());
 	}
 
 	@Override

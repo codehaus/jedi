@@ -63,12 +63,13 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 	@Override
 	protected Set<Annotateable> getInterestingNonCompositeDeclarations(final Class<?> annotationClass) {
 		final Collection<Declaration> annotatedDeclarations = environment.getDeclarationsAnnotatedWith(getTypeDeclaration(annotationClass));
-		return asSet(append(flatten(INTERESTING_METHOD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
-			public Set<? extends Annotateable> execute(Declaration value) {
-				return getRequiredMethods(annotationClass, (MethodDeclaration) value);
-			}
-		}), flatten(
-				INTERESTING_FIELD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
+		return asSet(append(
+				flatten(INTERESTING_METHOD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
+					public Set<? extends Annotateable> execute(Declaration value) {
+						return getRequiredMethods(annotationClass, (MethodDeclaration) value);
+					}
+				}),
+				flatten(INTERESTING_FIELD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
 					public Set<? extends Annotateable> execute(Declaration value) {
 						return getRequiredMethods(annotationClass, (FieldDeclaration) value);
 					}
@@ -77,7 +78,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 
 	@Override
 	protected Collection<Annotateable> getInterestingCompositeDeclarations() {
-		return Collections.<Annotateable>emptySet();
+		return Collections.<Annotateable> emptySet();
 	}
 
 	private Set<? extends Annotateable> getRequiredMethods(Class<?> annotationClass, FieldDeclaration field) {
@@ -98,12 +99,11 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		}
 
 		List<AnnotationValue> value = (List<AnnotationValue>) interpreter.getValue("cut");
-		return value != null ? getCuts(annotationClass, method, value, factoryPrefix) : set(new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method),
-				annotationClassToFactoryMethodWriterMap.get(annotationClass), factoryPrefix));
+		return value != null ? getCuts(annotationClass, method, value, factoryPrefix) : set(new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClassToFactoryMethodWriterMap.get(annotationClass), factoryPrefix));
 	}
 
-	private Set<Annotateable> getCuts(final Class<?> annotationClass, final MethodDeclaration method,
-			List<AnnotationValue> cuts, final String factoryPrefix) {
+	private Set<Annotateable> getCuts(final Class<?> annotationClass, final MethodDeclaration method, List<AnnotationValue> cuts,
+			final String factoryPrefix) {
 		return asSet(select(collect(cuts, new Functor<AnnotationValue, Annotateable>() {
 			public Annotateable execute(AnnotationValue value) {
 				return createCutMethod(annotationClass, method, ((AnnotationMirror) value.getValue()), factoryPrefix);
@@ -121,9 +121,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		}
 		List<String> parameterNames = getCutParameterNames((List<AnnotationValue>) interpreter.getValue("parameters"));
 
-		return validateCutParameters(method, parameterNames) ? new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClassToFactoryMethodWriterMap
-				.get(annotationClass), name, asSet(parameterNames)) : null;
-
+		return validateCutParameters(method, parameterNames) ? new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClassToFactoryMethodWriterMap.get(annotationClass), name, asSet(parameterNames)) : null;
 	}
 
 	private boolean validateCutParameters(MethodDeclaration method, List<String> parameterNames) {
@@ -139,6 +137,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 
 	private List<String> getNames(Collection<ParameterDeclaration> parameters) {
 		return collect(parameters, new Functor<ParameterDeclaration, String>() {
+			@Override
 			public String execute(ParameterDeclaration value) {
 				return value.getSimpleName();
 			}

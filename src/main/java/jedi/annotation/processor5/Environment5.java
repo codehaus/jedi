@@ -28,10 +28,12 @@ public class Environment5 implements Environment {
 			public File file() {
 				return file;
 			}
+
 			@Override
 			public int line() {
 				return line;
 			}
+
 			@Override
 			public int column() {
 				return column;

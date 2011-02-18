@@ -17,18 +17,17 @@ import jedi.annotation.writer.method.FactoryMethodWriter;
 import jedi.functional.Comparables;
 
 public class FactoryWriter {
-	private final StringWriter stringWriter = new StringWriter();
-	private final JavaWriter writer = new JavaWriter(stringWriter);
+	private StringWriter stringWriter;
+	private JavaWriter writer;
 	private final Environment environment;
-	private final FactoryType factoryType;
+	private final Collection<FactoryMethodWriter> factoryMethodWriters;
 
-	public FactoryWriter(final Environment environment, final FactoryType type, final Collection<FactoryMethodWriter> factoryMethodWriters) {
+	public FactoryWriter(final Environment environment, final Collection<FactoryMethodWriter> factoryMethodWriters) {
 		this.environment = environment;
-		this.factoryType = type;
-		initialiseWriters(factoryMethodWriters);
+		this.factoryMethodWriters = factoryMethodWriters;
 	}
 
-	private void endFactory(Annotateable annotateable) throws IOException {
+	private void endFactory(Annotateable annotateable, FactoryType factoryType) throws IOException {
 		writer.println("}");
 		writer.close();
 
@@ -37,7 +36,7 @@ public class FactoryWriter {
 		realWriter.close();
 	}
 
-	private String getFactoryClassName(Annotateable annotateable) {
+	private String getFactoryClassName(Annotateable annotateable, FactoryType factoryType) {
 		return factoryType.getTypeDeclaration(annotateable);
 	}
 
@@ -46,27 +45,30 @@ public class FactoryWriter {
 		return packageName.startsWith("java.") ? ("sith" + packageName.substring(4)) : packageName;
 	}
 
-	private void initialiseWriters(final Collection<FactoryMethodWriter> factoryMethodWriters) {
+	private void initialiseWriters(FactoryType factoryType) {
+		stringWriter = new StringWriter();
+		writer = new JavaWriter(stringWriter);
 		for (final FactoryMethodWriter factoryMethodWriter : factoryMethodWriters) {
 			factoryMethodWriter.initialise(writer, factoryType);
 		}
 	}
 
-	private void startFactory(Annotateable annotateable) {
+	private void startFactory(Annotateable annotateable, FactoryType factoryType) {
 		String packageName = getPackageName(annotateable);
 		if (packageName.length() > 0) {
 			writer.println("package " + packageName + ";");
 			writer.println();
 		}
-		writer.println("public " + getFactoryClassName(annotateable) + " {");
+		writer.println("public " + getFactoryClassName(annotateable, factoryType) + " {");
 		factoryType.writeClassHeader(writer, annotateable);
 	}
 
-	public void write(final List<Annotateable> methods) {
+	public void write(final List<Annotateable> methods, FactoryType factoryType) {
+		initialiseWriters(factoryType);
 		try {
-			startFactory(head(methods));
+			startFactory(head(methods), factoryType);
 			writeMethods(methods);
-			endFactory(head(methods));
+			endFactory(head(methods), factoryType);
 		} catch (final IOException e) {
 			environment.printError(e.getMessage());
 		} catch (final FactoryWriterException fwex) {

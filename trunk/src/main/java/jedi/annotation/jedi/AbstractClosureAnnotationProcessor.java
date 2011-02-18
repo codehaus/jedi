@@ -41,6 +41,7 @@ import com.sun.mirror.declaration.Declaration;
 public abstract class AbstractClosureAnnotationProcessor implements AnnotationProcessor {
 	protected final AnnotationProcessorEnvironment environment;
 	protected final Map<Class<?>, FactoryMethodWriter> annotationClassToFactoryMethodWriterMap;
+	private final FactoryWriter factoryWriter;
 
 	public AbstractClosureAnnotationProcessor(final AnnotationProcessorEnvironment environment, final Class<?> commandAnnotationClass, final Class<?> filterAnnotationClass, final Class<?> functorAnnotationClass, OptionAccessor5 optionAccessor) {
 		this.environment = environment;
@@ -53,6 +54,8 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 				new CompositeFactoryMethodWriter(new FilterFactoryMethodWriter(options), new EqualsFilterFactoryMethodWriter(options), new MembershipFilterFactoryMethodWriter(options), new ProxyFilterFactoryMethodWriter(options)));
 		annotationClassToFactoryMethodWriterMap.put(functorAnnotationClass,
 				new CompositeFactoryMethodWriter(new FunctorFactoryMethodWriter(options), new ProxyFunctorFactoryMethodWriter(options)));
+
+		factoryWriter = new FactoryWriter(new Environment5(environment), annotationClassToFactoryMethodWriterMap.values());
 	}
 
 	private Set<Annotateable> getInterestingDeclarations() {
@@ -101,7 +104,7 @@ public abstract class AbstractClosureAnnotationProcessor implements AnnotationPr
 
 	private void writeFactories(final Map<String, List<Annotateable>> methodsByType, final FactoryType factoryType) {
 		for (final List<Annotateable> annotateables : methodsByType.values()) {
-			new FactoryWriter(new Environment5(environment), factoryType, annotationClassToFactoryMethodWriterMap.values()).write(annotateables);
+			factoryWriter.write(annotateables, factoryType);
 		}
 	}
 }

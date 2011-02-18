@@ -1,16 +1,15 @@
 package jedi.annotation.processor.model;
 
 import jedi.annotation.processor.Environment;
-import jedi.annotation.writer.method.FactoryMethodWriter;
 
 abstract class AbstractAnnotateable implements Annotateable {
-	private final FactoryMethodWriter factoryMethodWriter;
+	private final Class<?> annotationClass;
 	protected String name;
 	protected final MemberDeclaration declaration;
 
-	public AbstractAnnotateable(MemberDeclaration declaration, FactoryMethodWriter writer, String name) {
+	public AbstractAnnotateable(MemberDeclaration declaration, Class<?> annotationClass, String name) {
 		this.declaration = declaration;
-		factoryMethodWriter = writer;
+		this.annotationClass = annotationClass;
 		this.name = (name == null || name.length() == 0 ? declaration.getSimpleName() : name);
 	}
 
@@ -30,7 +29,7 @@ abstract class AbstractAnnotateable implements Annotateable {
 		}
 
 		AbstractAnnotateable that = (AbstractAnnotateable) obj;
-		return declaration.equals(that.declaration) && factoryMethodWriter.equals(that.factoryMethodWriter) && name.equals(that.name);
+		return declaration.equals(that.declaration) && annotationClass.equals(that.annotationClass) && name.equals(that.name);
 	}
 
 	protected String getOriginalName() {
@@ -79,7 +78,7 @@ abstract class AbstractAnnotateable implements Annotateable {
 		environment.printError(declaration.getFile(), declaration.getLine(), declaration.getColumn(), message);
 	}
 
-	public void writeFactoryMethod() {
-		factoryMethodWriter.execute(this);
+	public Class<?> getAnnotationClass() {
+		return annotationClass;
 	}
 }

@@ -28,11 +28,11 @@ public interface Annotateable {
 
 	List<Attribute> getCutParameters();
 
-	void writeFactoryMethod();
-
 	void writeInvocation(JavaWriter printWriter, String receiverName);
 
 	void writeGenericTypeParameters(JavaWriter writer);
 
 	void showProcessingError(Environment environment, String message);
+
+	Class<?> getAnnotationClass();
 }

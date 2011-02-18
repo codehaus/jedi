@@ -77,7 +77,7 @@ class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
 	private Set<Annotateable> getNonComposites(final Class<?> annotationClass, final Collection<AnnotationMirror> mirrors) {
 		return asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() {
 			public Collection<Annotateable> execute(final AnnotationMirror value) {
-				return new SithAnnotation(getTypeDeclaration(annotationClass), value, environment).getMethodDeclarations(annotationClassToFactoryMethodWriterMap.get(annotationClass));
+				return new SithAnnotation(getTypeDeclaration(annotationClass), value, environment).getMethodDeclarations(annotationClass);
 			}
 		}));
 	}

@@ -20,12 +20,14 @@ import jedi.annotation.JediFunctor;
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor.model.JediField;
 import jedi.annotation.processor.model.JediMethod;
+import jedi.annotation.processor5.Environment5;
 import jedi.annotation.processor5.OptionAccessor5;
 import jedi.annotation.processor5.model.AnnotationValueValueFunctor;
 import jedi.annotation.sith.AnnotationMirrorInterpreter;
 import jedi.filters.NotNullFilter;
 import jedi.functional.Functor;
 
+import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationMirror;
 import com.sun.mirror.declaration.AnnotationValue;
@@ -35,7 +37,7 @@ import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.util.DeclarationFilter;
 
-public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcessor {
+public class ClosureAnnotationProcessor implements AnnotationProcessor {
 	private static final DeclarationFilter MEMBER_VISIBILITY_FILTER = //
 		DeclarationFilter.FILTER_PUBLIC //
 		.or(DeclarationFilter.FILTER_PACKAGE) //
@@ -55,14 +57,24 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 		}
 	}.and(MEMBER_VISIBILITY_FILTER);
 
+	private final AnnotationProcessorEnvironment environment;
+
 	public ClosureAnnotationProcessor(AnnotationProcessorEnvironment environment) {
-		super(environment, JediCommand.class, JediFilter.class, JediFunctor.class, new OptionAccessor5(environment));
+		this.environment = environment;
+	}
+
+	@Override
+	public void process() {
+		new AbstractClosureAnnotationProcessor(JediCommand.class, JediFilter.class, JediFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
+		.process(asSet(append(
+				getInterestingNonCompositeDeclarations(JediCommand.class),
+				getInterestingNonCompositeDeclarations(JediFilter.class),
+				getInterestingNonCompositeDeclarations(JediFunctor.class))));
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	protected Set<Annotateable> getInterestingNonCompositeDeclarations(final Class<?> annotationClass) {
-		final Collection<Declaration> annotatedDeclarations = environment.getDeclarationsAnnotatedWith(getTypeDeclaration(annotationClass));
+	private Set<Annotateable> getInterestingNonCompositeDeclarations(final Class<?> annotationClass) {
+		final Collection<Declaration> annotatedDeclarations = environment.getDeclarationsAnnotatedWith(EnvironmentUtils.getTypeDeclaration(environment, annotationClass));
 		return asSet(append(
 				flatten(INTERESTING_METHOD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
 					public Set<? extends Annotateable> execute(Declaration value) {
@@ -76,13 +88,8 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 				})));
 	}
 
-	@Override
-	protected Collection<Annotateable> getInterestingCompositeDeclarations() {
-		return Collections.<Annotateable> emptySet();
-	}
-
 	private Set<? extends Annotateable> getRequiredMethods(Class<?> annotationClass, FieldDeclaration field) {
-		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(field, annotationClass)));
+		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(EnvironmentUtils.getMirrors(environment, field, annotationClass)));
 		String factoryPrefix = (String) interpreter.getValue("name");
 		if (factoryPrefix == null) {
 			factoryPrefix = field.getSimpleName();
@@ -92,7 +99,7 @@ public class ClosureAnnotationProcessor extends AbstractClosureAnnotationProcess
 
 	@SuppressWarnings("unchecked")
 	private Set<? extends Annotateable> getRequiredMethods(final Class<?> annotationClass, MethodDeclaration method) {
-		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(getMirrors(method, annotationClass)));
+		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(EnvironmentUtils.getMirrors(environment, method, annotationClass)));
 		String factoryPrefix = (String) interpreter.getValue("name");
 		if (factoryPrefix == null) {
 			factoryPrefix = method.getSimpleName();

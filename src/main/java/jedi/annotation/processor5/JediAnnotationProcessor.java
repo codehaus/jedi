@@ -66,13 +66,13 @@ public class JediAnnotationProcessor implements AnnotationProcessor {
 	public void process() {
 		new AnnotatedMemberDeclarationProcessor(JediCommand.class, JediFilter.class, JediFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
 		.process(asSet(append(
-				getInterestingNonCompositeDeclarations(JediCommand.class),
-				getInterestingNonCompositeDeclarations(JediFilter.class),
-				getInterestingNonCompositeDeclarations(JediFunctor.class))));
+				getAnnotateMemberDeclarations(JediCommand.class),
+				getAnnotateMemberDeclarations(JediFilter.class),
+				getAnnotateMemberDeclarations(JediFunctor.class))));
 	}
 
 	@SuppressWarnings("unchecked")
-	private Set<Annotateable> getInterestingNonCompositeDeclarations(final Class<?> annotationClass) {
+	private Set<Annotateable> getAnnotateMemberDeclarations(final Class<?> annotationClass) {
 		final Collection<Declaration> annotatedDeclarations = environment.getDeclarationsAnnotatedWith(EnvironmentUtils.getTypeDeclaration(environment, annotationClass));
 		return asSet(append(
 				flatten(INTERESTING_METHOD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {

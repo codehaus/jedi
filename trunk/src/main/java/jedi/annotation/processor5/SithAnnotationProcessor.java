@@ -36,18 +36,18 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void process() {
-		Set<AnnotationMirror> sithMethodsMirrors = getMirrors(SithMethods.class);
+		Set<AnnotationMirror> mirrors = getMirrors(SithMethods.class);
 		new AnnotatedMemberDeclarationProcessor(SithCommand.class, SithFilter.class, SithFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
 		.process(asSet(append(
-				getNonComposites(SithCommand.class, getMirrors(SithCommand.class)),
-				getNonComposites(SithFilter.class, getMirrors(SithFilter.class)),
-				getNonComposites(SithFunctor.class, getMirrors(SithFunctor.class)),
-				getMethods(sithMethodsMirrors, "commands", SithCommand.class),
-				getMethods(sithMethodsMirrors, "functors", SithFunctor.class),
-				getMethods(sithMethodsMirrors, "filters", SithFilter.class))));
+				getSimpleAnnotatedMethods(SithCommand.class, getMirrors(SithCommand.class)),
+				getSimpleAnnotatedMethods(SithFilter.class, getMirrors(SithFilter.class)),
+				getSimpleAnnotatedMethods(SithFunctor.class, getMirrors(SithFunctor.class)),
+				getSimplifiedCompositeAnnotatedMethods(mirrors, "commands", SithCommand.class),
+				getSimplifiedCompositeAnnotatedMethods(mirrors, "functors", SithFunctor.class),
+				getSimplifiedCompositeAnnotatedMethods(mirrors, "filters", SithFilter.class))));
 	}
 
-	private Set<Annotateable> getMethods(final Set<AnnotationMirror> mirrors, final String property, final Class<?> propertyClass) {
+	private Set<Annotateable> getSimplifiedCompositeAnnotatedMethods(final Set<AnnotationMirror> mirrors, final String property, final Class<?> propertyClass) {
 		return mirrors == null ? //
 				Collections.<Annotateable> emptySet()
 				: //
@@ -55,7 +55,7 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 						@Override
 						@SuppressWarnings("unchecked")
 						public Collection<Annotateable> execute(final AnnotationMirror value) {
-							return getNonComposites(propertyClass, getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(
+							return getSimpleAnnotatedMethods(propertyClass, getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(
 									value).getValue(property)));
 						}
 					}));
@@ -81,7 +81,7 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 		});
 	}
 
-	private Set<Annotateable> getNonComposites(final Class<?> annotationClass, final Collection<AnnotationMirror> mirrors) {
+	private Set<Annotateable> getSimpleAnnotatedMethods(final Class<?> annotationClass, final Collection<AnnotationMirror> mirrors) {
 		return asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() {
 			@Override
 			public Collection<Annotateable> execute(final AnnotationMirror value) {

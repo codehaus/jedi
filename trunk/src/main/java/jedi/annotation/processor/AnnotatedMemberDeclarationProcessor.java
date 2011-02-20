@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import jedi.annotation.processor.model.Annotateable;
-import jedi.annotation.processor5.OptionAccessor5;
 import jedi.annotation.writer.factory.FactoryWriter;
 import jedi.annotation.writer.factorytype.FactoryType;
 import jedi.annotation.writer.factorytype.InstanceFactoryType;
@@ -31,7 +30,7 @@ public class AnnotatedMemberDeclarationProcessor {
 	private final Map<Class<?>, FactoryMethodWriter> annotationClassToFactoryMethodWriterMap;
 	private final FactoryWriter factoryWriter;
 
-	public AnnotatedMemberDeclarationProcessor(final Class<?> commandAnnotationClass, final Class<?> filterAnnotationClass, final Class<?> functorAnnotationClass, OptionAccessor5 optionAccessor, Environment environment) {
+	public AnnotatedMemberDeclarationProcessor(final Class<?> commandAnnotationClass, final Class<?> filterAnnotationClass, final Class<?> functorAnnotationClass, ProcessorOptionAccessor optionAccessor, Environment environment) {
 		annotationClassToFactoryMethodWriterMap = new HashMap<Class<?>, FactoryMethodWriter>();
 		final ProcessorOptions options = new ProcessorOptions(optionAccessor);
 		annotationClassToFactoryMethodWriterMap.put(commandAnnotationClass, new CompositeFactoryMethodWriter(new CommandFactoryMethodWriter(options), new ProxyCommandFactoryMethodWriter(options)));

@@ -13,15 +13,8 @@ import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
 
 public class MethodDeclarationAdapter extends AbstractMemberDeclarationAdapter<com.sun.mirror.declaration.MethodDeclaration> {
-	private final String name;
-
 	public MethodDeclarationAdapter(com.sun.mirror.declaration.MethodDeclaration declaration) {
-		this(declaration, null);
-	}
-
-	public MethodDeclarationAdapter(com.sun.mirror.declaration.MethodDeclaration declaration, String name) {
 		super(declaration);
-		this.name = (name == null || name.length() == 0 ? declaration.getSimpleName() : name);
 	}
 
 	@Override

@@ -13,10 +13,6 @@ import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.ReferenceType;
 
 class TypeDeclarationRenderer {
-	public static String render(TypeDeclaration declaration) {
-		return declaration.getQualifiedName() + render(declaration.getFormalTypeParameters());
-	}
-
 	public static String render(Collection<TypeParameterDeclaration> typeParameters) {
 		return typeParameters.isEmpty() ? "" : "<" + join(collect(typeParameters, createTypeParameterDeclarationRenderer()), ", ") + ">";
 	}

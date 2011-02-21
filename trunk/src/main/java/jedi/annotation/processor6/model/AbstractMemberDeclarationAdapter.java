@@ -17,8 +17,10 @@ import jedi.annotation.processor.model.MemberDeclaration;
 public abstract class AbstractMemberDeclarationAdapter<T extends Element> implements MemberDeclaration {
 
 	protected final T element;
+	protected final BoxerFunctor boxer;
 
-	public AbstractMemberDeclarationAdapter(T element) {
+	public AbstractMemberDeclarationAdapter(BoxerFunctor boxer, T element) {
+		this.boxer = boxer;
 		this.element = element;
 	}
 
@@ -73,7 +75,7 @@ public abstract class AbstractMemberDeclarationAdapter<T extends Element> implem
 
 	@Override
 	public String getBoxedDeclaredType() {
-		return getType().getKind().isPrimitive() ? new BoxerFunctor().execute(getType()) : getDeclaredType();
+		return boxer.execute(getType());
 	}
 
 	@Override

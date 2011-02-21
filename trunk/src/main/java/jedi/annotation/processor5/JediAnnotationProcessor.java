@@ -80,20 +80,20 @@ public class JediAnnotationProcessor implements AnnotationProcessor {
 						return getRequiredMethods(annotationClass, (MethodDeclaration) value);
 					}
 				}),
-				flatten(INTERESTING_FIELD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Set<? extends Annotateable>>() {
-					public Set<? extends Annotateable> execute(Declaration value) {
+				collect(INTERESTING_FIELD_FILTER.filter(annotatedDeclarations), new Functor<Declaration, Annotateable>() {
+					public Annotateable execute(Declaration value) {
 						return getRequiredMethods(annotationClass, (FieldDeclaration) value);
 					}
 				})));
 	}
 
-	private Set<? extends Annotateable> getRequiredMethods(Class<?> annotationClass, FieldDeclaration field) {
+	private Annotateable getRequiredMethods(Class<?> annotationClass, FieldDeclaration field) {
 		AnnotationMirrorInterpreter interpreter = new AnnotationMirrorInterpreter(head(EnvironmentUtils.getMirrors(environment, field, annotationClass)));
 		String factoryPrefix = (String) interpreter.getValue("name");
 		if (factoryPrefix == null) {
 			factoryPrefix = field.getSimpleName();
 		}
-		return set(new JediField(new jedi.annotation.processor5.model.FieldDeclarationAdapter(field), annotationClass, factoryPrefix));
+		return new JediField(new jedi.annotation.processor5.model.FieldDeclarationAdapter(field), annotationClass, factoryPrefix);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -108,8 +108,7 @@ public class JediAnnotationProcessor implements AnnotationProcessor {
 		return value != null ? getCuts(annotationClass, method, value, factoryPrefix) : set(new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(method), annotationClass, factoryPrefix));
 	}
 
-	private Set<Annotateable> getCuts(final Class<?> annotationClass, final MethodDeclaration method, List<AnnotationValue> cuts,
-			final String factoryPrefix) {
+	private Set<Annotateable> getCuts(final Class<?> annotationClass, final MethodDeclaration method, List<AnnotationValue> cuts, final String factoryPrefix) {
 		return asSet(select(collect(cuts, new Functor<AnnotationValue, Annotateable>() {
 			public Annotateable execute(AnnotationValue value) {
 				return createCutMethod(annotationClass, method, ((AnnotationMirror) value.getValue()), factoryPrefix);

@@ -14,8 +14,8 @@ import jedi.annotation.processor.model.Attribute;
 import jedi.functional.Functor;
 
 public class MethodDeclarationAdapter extends AbstractMemberDeclarationAdapter<ExecutableElement> {
-	public MethodDeclarationAdapter(ExecutableElement element) {
-		super(element);
+	public MethodDeclarationAdapter(BoxerFunctor boxer, ExecutableElement element) {
+		super(boxer, element);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class MethodDeclarationAdapter extends AbstractMemberDeclarationAdapter<E
 		return collect(element.getParameters(), new Functor<VariableElement, Attribute>() {
 			@Override
 			public Attribute execute(VariableElement value) {
-				return new Attribute(value.asType().toString(), new BoxerFunctor().execute(value.asType()), element.getSimpleName().toString());
+				return new Attribute(value.asType().toString(), boxer.execute(value.asType()), value.getSimpleName().toString());
 			}
 		});
 	}

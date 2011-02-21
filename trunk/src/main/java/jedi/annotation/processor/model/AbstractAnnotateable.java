@@ -32,7 +32,7 @@ abstract class AbstractAnnotateable implements Annotateable {
 		return declaration.equals(that.declaration) && annotationClass.equals(that.annotationClass) && name.equals(that.name);
 	}
 
-	protected String getOriginalName() {
+	public String getOriginalName() {
 		return declaration.getOriginalName();
 	}
 

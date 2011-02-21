@@ -10,8 +10,8 @@ import javax.lang.model.type.TypeMirror;
 import jedi.annotation.processor.model.Attribute;
 
 public class FieldDeclarationAdapter extends AbstractMemberDeclarationAdapter<VariableElement> {
-	public FieldDeclarationAdapter(VariableElement element) {
-		super(element);
+	public FieldDeclarationAdapter(BoxerFunctor boxer, VariableElement element) {
+		super(boxer, element);
 	}
 
 	@Override

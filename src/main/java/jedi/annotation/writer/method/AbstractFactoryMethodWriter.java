@@ -170,7 +170,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 
 	private void writeJavadoc() {
 		println("\t/**");
-		println("\t * @see " + method.getQualifiedNameOfDeclaringType() + "#" + method.getName(false));
+		println("\t * @see " + method.getQualifiedNameOfDeclaringType() + "#" + method.getOriginalName());
 		println("\t */");
 	}
 

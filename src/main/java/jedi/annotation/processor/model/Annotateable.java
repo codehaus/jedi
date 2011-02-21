@@ -16,6 +16,8 @@ public interface Annotateable {
 
 	String getName(boolean simplified);
 
+	String getOriginalName();
+
 	String getDeclaredType();
 
 	String getBoxedDeclaredType();

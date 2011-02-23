@@ -85,7 +85,7 @@ public abstract class AbstractMemberDeclarationAdapter<T extends Element> implem
 
 	@Override
 	public boolean isBoolean() {
-		return element.asType().getKind() == TypeKind.BOOLEAN;
+		return getBoxedDeclaredType().equals(Boolean.class.getName());
 	}
 
 	@Override

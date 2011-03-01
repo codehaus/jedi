@@ -52,3 +52,4 @@ Version Change
 2.18.4 Made Option and Either serializable and fixed the generics for Either
 2.19.0 Added Either.cond taking functors to generate the right and left values
 2.20.0 Added FunctionalPrimitives.flatmap
+2.21.0 Added the ComposeableFunctor

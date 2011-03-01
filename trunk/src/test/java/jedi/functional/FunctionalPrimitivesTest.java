@@ -770,7 +770,6 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
                 return list(value, value);
             }
         };
-
     }
 
     private Filter<Integer> greaterThan(final Integer boundary) {

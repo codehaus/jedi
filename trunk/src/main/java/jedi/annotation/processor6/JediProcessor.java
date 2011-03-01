@@ -40,7 +40,7 @@ import jedi.functional.Functor;
 @SupportedAnnotationTypes(value = { "jedi.annotation.JediFunctor", "jedi.annotation.JediFilter", "jedi.annotation.JediCommand" })
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JediProcessor extends AbstractProcessor {
-	@SuppressWarnings("unchecked")
+    
 	@Override
 	public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment environment) {
 		new AnnotatedMemberDeclarationProcessor(JediCommand.class, JediFilter.class, JediFunctor.class, new OptionAccessor6(processingEnv), new Environment6(processingEnv))

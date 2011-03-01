@@ -14,26 +14,22 @@ import java.util.List;
  * <br/>DynamicFunctor%lt;String, Integer&gt; stringLength = new DynamicFunctor(String.class, "length");
  * <br/>stringLength.execute("hello") returns 5
  * <br/>
- * <br/>DynamicFunctor&lt;String, Character&gt; stringCharAt= new DynamicFunctor(String.class, "charAt");
+ * <br/>DynamicFunctor&lt;String, Character&gt; stringCharAt= new DynamicFunctor(String.class, "charAt", Integer.TYPE);
  * <br/>stringCharAt.execute("hello", list(3)) returns 'l'
  * @param <T>
  * @param <R>
  */
 public class DynamicFunctor<T, R> implements Functor2<T, List<?>, R>, Functor<T, R> {
 
-    private Method method;
+    private final Method method;
 
-    public DynamicFunctor(Class<T> clazz, String methodName) {
-        findMethod(clazz, methodName);
-    }
-
-    private void findMethod(Class<T> clazz, String methodName) {
-        for (Method m : clazz.getMethods()) {
-            if (m.getName().equals(methodName)) {
-                method = m;
-            }
+    public DynamicFunctor(Class<T> clazz, String methodName, Class<?>... argTypes) {
+        try {
+            method = clazz.getMethod(methodName, argTypes);
+            if (method == null) throw new IllegalArgumentException("Method not found");
+        } catch (NoSuchMethodException e) {
+            throw new JediException(e);
         }
-        if (method == null) throw new IllegalArgumentException("Method not found");
     }
 
     public R execute(T t) {

@@ -15,7 +15,7 @@ public class DynamicFunctorTest {
 
     @Test
     public void testMethodWithArgs() {
-        DynamicFunctor<String, Character> stringCharAt= new DynamicFunctor(String.class, "charAt");
+        DynamicFunctor<String, Character> stringCharAt = new DynamicFunctor(String.class, "charAt", Integer.TYPE);
         assertTrue('l' == stringCharAt.execute("hello", list(3)));
     }
 }

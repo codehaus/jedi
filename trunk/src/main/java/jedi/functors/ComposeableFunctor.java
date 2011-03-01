@@ -7,11 +7,12 @@ import jedi.functional.Functor;
  * For example, given:
  * <br/>Functor f that takes T and returns R
  * <br/>Functor g that takes R and returns NEW_R
- * new ComposeableFunctor(f).andThen(g).execute(x) == g(f(x))
+ * <br/>new ComposeableFunctor(f).andThen(g).execute(x) == g(f(x))
  * <br/>or
  * <br/>composeable(f).andThen(g)
  * <br/>or
  * <br/>composeable(f).o(g)
+ * <br/>c(f).o(g)
  * @param <T>
  * @param <R>
  */

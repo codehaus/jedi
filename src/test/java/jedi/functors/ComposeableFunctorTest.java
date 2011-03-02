@@ -25,6 +25,23 @@ public class ComposeableFunctorTest extends MockObjectTestCase {
         assertEquals("f result", c(f).o(g).execute("x"));
     }
 
+    @Test
+    public void testTypesCompile() {
+        class A {}
+        class B {}
+        class C extends B {}
+
+        Functor<A, B> fab = (Functor<A, B>) mock(Functor.class).proxy();
+        Functor<B, C> fbc = (Functor<B, C>) mock(Functor.class).proxy();
+        Functor<A, C> fac = (Functor<A, C>) mock(Functor.class).proxy();
+
+        Functor<A, C> simpleCase = c(fab).andThen(fbc);
+        Functor<A, C> secondFunctorTakesSuperTypeOfFirstFunctorsReturnType = c(fac).andThen(fbc);
+        
+        Functor<A, C> simpleCase2 = c(fbc).o(fac);
+        Functor<A, C> firstFunctorReturnsSubtypeOfSecondFunctorsInputType = c(fbc).o(fac);
+    }
+
     private Functor mockFunctor(Object expectedArgument, Object result) {
         Mock mock = mock(Functor.class);
         mock.expects(once()).method("execute").with(eq(expectedArgument)).will(returnValue(result));

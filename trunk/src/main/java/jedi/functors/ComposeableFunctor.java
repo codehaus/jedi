@@ -12,6 +12,7 @@ import jedi.functional.Functor;
  * <br/>composeable(f).andThen(g)
  * <br/>or
  * <br/>composeable(f).o(g)
+ * <br/>or
  * <br/>c(f).o(g)
  * @param <T>
  * @param <R>

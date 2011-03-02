@@ -11,13 +11,11 @@ import java.util.List;
 /**
  * This Functor reflectively executes a method on a type with zero or more arguments.
  * Examples
- * <br/>DynamicFunctor%lt;String, Integer&gt; stringLength = new DynamicFunctor(String.class, "length");
+ * <br/>DynamicFunctor&lt;String, Integer&gt; stringLength = new DynamicFunctor(String.class, "length");
  * <br/>stringLength.execute("hello") returns 5
  * <br/>
- * <br/>DynamicFunctor&lt;String, Character&gt; stringCharAt= new DynamicFunctor(String.class, "charAt", Integer.TYPE);
+ * <br/>DynamicFunctor&lt;String, Character&gt; stringCharAt = new DynamicFunctor(String.class, "charAt", Integer.TYPE);
  * <br/>stringCharAt.execute("hello", list(3)) returns 'l'
- * @param <T>
- * @param <R>
  */
 public class DynamicFunctor<T, R> implements Functor2<T, List<?>, R>, Functor<T, R> {
 

@@ -31,9 +31,9 @@ public class ComposeableFunctor<T, R> implements Functor<T, R> {
     }
 
     /**
-     * Function composition: g.andThen(f) applied to x == f(g(x))
+     * Function composition: this.andThen(g) applied to x == g(this.execute(x))
      */
-    public <NEW_R> ComposeableFunctor<T, NEW_R> andThen(final Functor<R, NEW_R> g) {
+    public <NEW_R> ComposeableFunctor<T, NEW_R> andThen(final Functor<? super R, NEW_R> g) {
         return new ComposeableFunctor<T, NEW_R>(new Functor<T, NEW_R>() {
             @Override
             public NEW_R execute(T value) {
@@ -43,9 +43,9 @@ public class ComposeableFunctor<T, R> implements Functor<T, R> {
     }
 
     /**
-     * Like the Haskell . operator, f o g = f(g(x))
+     * Like the Haskell dot operator, this.o(g).execute(x) = this.execute(g.execute(x))
      */
-    public <GT> ComposeableFunctor<GT, R> o(Functor<GT, T> g) {
+    public <GT> ComposeableFunctor<GT, R> o(Functor<GT, ? extends T> g) {
         return composeable(g).andThen(functor);
     }
 

@@ -1,6 +1,7 @@
 package jedi.functors;
 
 import jedi.functional.Functor;
+import jedi.functional.Functor0;
 
 /**
  * A functor that can be composed with other Functors.
@@ -49,11 +50,23 @@ public class ComposeableFunctor<T, R> implements Functor<T, R> {
         return composeable(g).andThen(functor);
     }
 
+    public ComposeableFunctor0<R> o(Functor0<? extends T> g) {
+        return composeable(g).andThen(functor);
+    }
+
     public static <T, R> ComposeableFunctor<T, R> composeable(Functor<T, R> functor) {
         return new ComposeableFunctor<T, R>(functor);
     }
 
     public static <T, R> ComposeableFunctor<T, R> c(Functor<T, R> functor) {
         return composeable(functor);
+    }
+
+    public static <R> ComposeableFunctor0<R> composeable(Functor0<R> functor) {
+        return new ComposeableFunctor0<R>(functor);
+    }
+
+    public static <R> ComposeableFunctor0<R> c(Functor0<R> functor) {
+        return new ComposeableFunctor0<R>(functor);
     }
 }

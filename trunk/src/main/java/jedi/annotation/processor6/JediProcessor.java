@@ -40,7 +40,7 @@ import jedi.functional.Functor;
 @SupportedAnnotationTypes(value = { "jedi.annotation.JediFunctor", "jedi.annotation.JediFilter", "jedi.annotation.JediCommand" })
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JediProcessor extends AbstractProcessor {
-    
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment environment) {
 		new AnnotatedMemberDeclarationProcessor(JediCommand.class, JediFilter.class, JediFunctor.class, new OptionAccessor6(processingEnv), new Environment6(processingEnv))
@@ -54,7 +54,7 @@ public class JediProcessor extends AbstractProcessor {
 
 	@SuppressWarnings("unchecked")
 	private Set<Annotateable> getAnnotatedMemberDeclarations(RoundEnvironment environment, final Class<? extends Annotation> annotationClass) {
-		final Set<? extends Element> annotatedElements = getAnnotatedElements(environment, annotationClass);
+		final Set<? extends Element> annotatedElements = environment.getElementsAnnotatedWith(annotationClass);
 		return asSet(append(
 				createJediMethods(selectAndCast(annotatedElements, ExecutableElement.class), annotationClass),
 				createJediFields(selectAndCast(annotatedElements, VariableElement.class), annotationClass)));
@@ -153,9 +153,5 @@ public class JediProcessor extends AbstractProcessor {
 				return value != null && r.isAssignableFrom(value.getClass());
 			}
 		});
-	}
-
-	private Set<? extends Element> getAnnotatedElements(RoundEnvironment roundEnvironment, Class<? extends Annotation> annotationClass) {
-		return roundEnvironment.getElementsAnnotatedWith(annotationClass);
 	}
 }

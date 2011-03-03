@@ -15,13 +15,31 @@ import javax.lang.model.type.TypeMirror;
 import jedi.annotation.processor.model.MemberDeclaration;
 
 public abstract class AbstractMemberDeclarationAdapter<T extends Element> implements MemberDeclaration {
-
 	protected final T element;
 	protected final BoxerFunctor boxer;
 
 	public AbstractMemberDeclarationAdapter(BoxerFunctor boxer, T element) {
 		this.boxer = boxer;
 		this.element = element;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+
+		if (obj == null || !obj.getClass().equals(getClass())) {
+			return false;
+		}
+
+		AbstractMemberDeclarationAdapter<?> that = (AbstractMemberDeclarationAdapter<?>) obj;
+		return element.equals(that.element);
+	}
+
+	@Override
+	public int hashCode() {
+		return element.hashCode();
 	}
 
 	protected Element getEnclosingElement(ElementKind... kind) {

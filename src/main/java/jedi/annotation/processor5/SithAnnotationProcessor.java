@@ -55,8 +55,7 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 						@Override
 						@SuppressWarnings("unchecked")
 						public Collection<Annotateable> execute(final AnnotationMirror value) {
-							return getSimpleAnnotatedMethods(propertyClass, getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(
-									value).getValue(property)));
+							return getSimpleAnnotatedMethods(propertyClass, getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(value).getValue(property)));
 						}
 					}));
 	}

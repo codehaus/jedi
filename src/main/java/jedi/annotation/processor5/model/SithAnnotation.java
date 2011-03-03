@@ -33,8 +33,7 @@ public class SithAnnotation extends AnnotationMirrorInterpreter {
 	}
 
 	public Set<Annotateable> getMethodDeclarations(final Class<?> annotationClass) {
-		return asSet(collect(select(getRequiredMethods(), new NotNullFilter<MethodDeclaration>()),
-				new Functor<MethodDeclaration, Annotateable>() {
+		return asSet(collect(select(getRequiredMethods(), new NotNullFilter<MethodDeclaration>()), new Functor<MethodDeclaration, Annotateable>() {
 			public Annotateable execute(MethodDeclaration value) {
 				return new JediMethod(new jedi.annotation.processor5.model.MethodDeclarationAdapter(value), annotationClass);
 			}

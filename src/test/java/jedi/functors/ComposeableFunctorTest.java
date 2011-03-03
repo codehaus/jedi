@@ -1,13 +1,16 @@
 package jedi.functors;
 
+import jedi.JediTestCase;
 import jedi.functional.Functor;
+import jedi.functional.Functor0;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.junit.Test;
 
 import static jedi.functors.ComposeableFunctor.c;
+import static jedi.functors.ComposeableFunctor.composeable;
 
-public class ComposeableFunctorTest extends MockObjectTestCase {
+public class ComposeableFunctorTest extends JediTestCase {
 
     @Test
     public void testCompose() {
@@ -23,6 +26,14 @@ public class ComposeableFunctorTest extends MockObjectTestCase {
         Functor f = mockFunctor("g result", "f result");
 
         assertEquals("f result", c(f).o(g).execute("x"));
+    }
+
+    @Test
+    public void testCompositionWithFunctor0() {
+        Functor0 f0 = mockFunctor0("constant");
+        Functor f = mockFunctor("constant", "f result");
+
+        assertEquals("f result", composeable(f).o(f0).execute());
     }
 
     @Test
@@ -42,9 +53,4 @@ public class ComposeableFunctorTest extends MockObjectTestCase {
         Functor<A, C> firstFunctorReturnsSubtypeOfSecondFunctorsInputType = c(fbc).o(fac);
     }
 
-    private Functor mockFunctor(Object expectedArgument, Object result) {
-        Mock mock = mock(Functor.class);
-        mock.expects(once()).method("execute").with(eq(expectedArgument)).will(returnValue(result));
-        return (Functor) mock.proxy();
-    }
 }

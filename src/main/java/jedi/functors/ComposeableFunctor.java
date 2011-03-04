@@ -2,6 +2,7 @@ package jedi.functors;
 
 import jedi.functional.Functor;
 import jedi.functional.Functor0;
+import jedi.functional.Functor2;
 
 /**
  * A functor that can be composed with other Functors.
@@ -32,7 +33,7 @@ public class ComposeableFunctor<T, R> implements Functor<T, R> {
     }
 
     /**
-     * Function composition: this.andThen(g) applied to x == g(this.execute(x))
+     * Function composition: this.andThen(g) applied to x == g(this.execute(value))
      */
     public <NEW_R> ComposeableFunctor<T, NEW_R> andThen(final Functor<? super R, NEW_R> g) {
         return new ComposeableFunctor<T, NEW_R>(new Functor<T, NEW_R>() {
@@ -67,6 +68,14 @@ public class ComposeableFunctor<T, R> implements Functor<T, R> {
     }
 
     public static <R> ComposeableFunctor0<R> c(Functor0<R> functor) {
-        return new ComposeableFunctor0<R>(functor);
+        return composeable(functor);
+    }
+
+    public static <T, U, R> ComposeableFunctor2<T, U, R> composeable(Functor2<T, U, R> functor) {
+        return new ComposeableFunctor2<T, U, R>(functor);
+    }
+
+    public static <T, U, R> ComposeableFunctor2<T, U, R> c(Functor2<T, U, R> functor) {
+        return composeable(functor);
     }
 }

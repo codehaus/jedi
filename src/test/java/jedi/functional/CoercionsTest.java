@@ -19,10 +19,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import jedi.JediTestCase;
 import org.jmock.Mock;
 import org.junit.Test;
 
-public class CoercionsTest extends ClosureTestCase {
+public class CoercionsTest extends JediTestCase {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testArrayWithMultipleClasses() {

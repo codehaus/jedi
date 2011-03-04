@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jedi.JediTestCase;
 import jedi.assertion.AssertionError;
 import jedi.filters.AllPassFilter;
 import jedi.tuple.Tuple2;
@@ -28,7 +29,7 @@ import org.jmock.util.Dummy;
 import org.junit.Test;
 
 @SuppressWarnings("unchecked")
-public class FunctionalPrimitivesTest extends ClosureTestCase {
+public class FunctionalPrimitivesTest extends JediTestCase {
 
 	@Test
 	public void testAppend() {
@@ -761,6 +762,15 @@ public class FunctionalPrimitivesTest extends ClosureTestCase {
     @Test
     public void testFlatMapOption() {
         assertEquals(list(3, 3), flatMap(some(3), doubler()));
+    }
+
+    @Test
+    public void testCurry() {
+        Functor2 f2 = mockFunctor2("a", "b", "r");
+        Functor0 f0 = mockFunctor0("a");
+
+        Functor curried = FunctionalPrimitives.curry(f2, f0);
+        assertEquals("r", curried.execute("b"));
     }
 
     private Functor<Integer, List<Integer>> doubler() {

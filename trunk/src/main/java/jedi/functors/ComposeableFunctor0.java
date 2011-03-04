@@ -11,6 +11,9 @@ public class ComposeableFunctor0<R> implements Functor0<R> {
         this.functor = functor;
     }
 
+    /**
+     * Function composition: this.andThen(g) == g(this.execute())
+     */
     public <T, NEW_R> ComposeableFunctor0<NEW_R> andThen(final Functor<? super R, NEW_R> g) {
         return new ComposeableFunctor0<NEW_R>(new Functor0<NEW_R>() {
             @Override

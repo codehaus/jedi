@@ -980,4 +980,21 @@ public class FunctionalPrimitives {
             }
         });
     }
+
+    /**
+     * Curries f2 with f0 returning a functor taking a single argument.
+     * For example, given a Functor2, f2, that sums its integer arguments, and a Functor0, f0, that returns 3,
+     * curry(f2, f0) gives a Functor that accepts a single integer, v, and returns 3 + v.
+     * <p/>f0 needn't be a constant, it could be any function that returns an appropriate result for f2's consumption.
+     * @param f2
+     * @param f0
+     */
+    public static <T, U, R> Functor<U, R> curry(final Functor2<T, U, R> f2, final Functor0<? extends T> f0) {
+        return new Functor<U, R>() {
+            @Override
+            public R execute(U value) {
+                return f2.execute(f0.execute(), value);
+            }
+        };
+    }
 }

@@ -6,9 +6,10 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
+import jedi.JediTestCase;
 import org.junit.Test;
 
-public class ComparablesTest extends ClosureTestCase {
+public class ComparablesTest extends JediTestCase {
 
 	@Test
 	public void testEqual() {

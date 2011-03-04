@@ -54,3 +54,4 @@ Version Change
 2.20.0 Added FunctionalPrimitives.flatmap
 2.21.0 Added the ComposeableFunctor
 2.22.0 Made the ComposeableFunctor accept more general types
+       Added FunctionalPrimitives.curry

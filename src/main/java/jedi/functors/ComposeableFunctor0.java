@@ -5,9 +5,9 @@ import jedi.functional.Functor0;
 
 public class ComposeableFunctor0<R> implements Functor0<R> {
 
-    private Functor0<R> functor;
+    private final Functor0<R> functor;
 
-    public ComposeableFunctor0(Functor0 functor) {
+    public ComposeableFunctor0(final Functor0 functor) {
         this.functor = functor;
     }
 

@@ -970,8 +970,7 @@ public class FunctionalPrimitives {
      * @return a flattened List
      */
     public static <T, R> List<R> flatMap(Iterable<T> iter, final Functor<? super T, ? extends Iterable<R>> functor) {
-        List<R> initialValue = new ArrayList<R>();
-        return fold(initialValue, iter, new Functor2<List<R>, T, List<R>>() {
+        return fold(new ArrayList<R>(), iter, new Functor2<List<R>, T, List<R>>() {
             @Override
             public List<R> execute(List<R> acc, T t) {
                 Iterable<R> iterable = functor.execute(t);

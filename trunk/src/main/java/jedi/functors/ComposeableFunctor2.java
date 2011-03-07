@@ -4,14 +4,14 @@ import jedi.functional.Functor;
 import jedi.functional.Functor2;
 
 public class ComposeableFunctor2<T, U, R> implements Functor2<T, U, R> {
-    private Functor2<T, U, R> functor;
+    private final Functor2<T, U, R> functor;
 
-    public ComposeableFunctor2(Functor2<T, U, R> functor) {
+    public ComposeableFunctor2(final Functor2<T, U, R> functor) {
         this.functor = functor;
     }
 
     @Override
-    public R execute(T t, U u) {
+    public R execute(final T t, final U u) {
         return functor.execute(t, u);
     }
 

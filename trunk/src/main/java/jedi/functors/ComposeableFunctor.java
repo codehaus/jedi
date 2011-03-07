@@ -21,14 +21,14 @@ import jedi.functional.Functor2;
  */
 public class ComposeableFunctor<T, R> implements Functor<T, R> {
 
-    private Functor<T, R> functor;
+    private final Functor<T, R> functor;
 
-    public ComposeableFunctor(Functor<T, R> functor) {
+    public ComposeableFunctor(final Functor<T, R> functor) {
         this.functor = functor;
     }
 
     @Override
-    public R execute(T value) {
+    public R execute(final T value) {
         return functor.execute(value);
     }
 

@@ -11,26 +11,21 @@ public class JediField extends AbstractAnnotateable {
 		super(declaration, annotationClass, name);
 	}
 
-	@Override
 	public List<Attribute> getCutParameters() {
 		return list();
 	}
 
-	@Override
 	public String getName(boolean simplified) {
 		return name;
 	}
 
-	@Override
 	public List<Attribute> getUncutParameters() {
 		return list();
 	}
 
-	@Override
 	public void writeGenericTypeParameters(JavaWriter writer) {
 	}
 
-	@Override
 	public void writeInvocation(JavaWriter writer, String receiverName) {
 		writer.print(receiverName + "." + getOriginalName());
 	}

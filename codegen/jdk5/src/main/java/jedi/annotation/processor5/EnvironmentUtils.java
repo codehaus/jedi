@@ -14,7 +14,6 @@ import com.sun.mirror.declaration.Declaration;
 public class EnvironmentUtils {
 	public static Collection<AnnotationMirror> getMirrors(final AnnotationProcessorEnvironment environment, final Declaration declaration, final Class<?> annotationClass) {
 		return select(declaration.getAnnotationMirrors(), new Filter<AnnotationMirror>() {
-			@Override
 			public Boolean execute(final AnnotationMirror mirror) {
 				return mirror.getAnnotationType().getDeclaration().equals(getTypeDeclaration(environment, annotationClass));
 			}

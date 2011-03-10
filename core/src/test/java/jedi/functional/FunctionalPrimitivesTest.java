@@ -775,7 +775,6 @@ public class FunctionalPrimitivesTest extends JediTestCase {
 
     private Functor<Integer, List<Integer>> doubler() {
         return new Functor<Integer, List<Integer>>() {
-            @Override
             public List<Integer> execute(Integer value) {
                 return list(value, value);
             }

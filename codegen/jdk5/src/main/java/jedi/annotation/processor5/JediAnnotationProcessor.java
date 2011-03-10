@@ -62,7 +62,6 @@ public class JediAnnotationProcessor implements AnnotationProcessor {
 		this.environment = environment;
 	}
 
-	@Override
 	public void process() {
 		new AnnotatedMemberDeclarationProcessor(JediCommand.class, JediFilter.class, JediFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
 		.process(asSet(append(
@@ -142,7 +141,6 @@ public class JediAnnotationProcessor implements AnnotationProcessor {
 
 	private List<String> getNames(Collection<ParameterDeclaration> parameters) {
 		return collect(parameters, new Functor<ParameterDeclaration, String>() {
-			@Override
 			public String execute(ParameterDeclaration value) {
 				return value.getSimpleName();
 			}

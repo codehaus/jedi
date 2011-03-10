@@ -11,7 +11,6 @@ public class OptionAccessor5 implements ProcessorOptionAccessor {
 		this.environment = environment;
 	}
 
-	@Override
 	public boolean isOption(String key) {
 		return environment.getOptions().containsKey(key);
 	}

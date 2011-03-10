@@ -40,7 +40,6 @@ abstract class AbstractMemberDeclarationAdapter<T extends com.sun.mirror.declara
 
 	protected abstract TypeMirror getType();
 
-	@Override
 	public String getSimpleName() {
 		return declaration.getSimpleName();
 	}
@@ -49,37 +48,30 @@ abstract class AbstractMemberDeclarationAdapter<T extends com.sun.mirror.declara
 		return declaration.getDeclaringType();
 	}
 
-	@Override
 	public String getPackage() {
 		return getDeclaringType().getPackage().getQualifiedName();
 	}
 
-	@Override
 	public String getDeclaringTypeWithUnboundedGenerics() {
 		return TypeDeclarationRenderer.renderWithoutBounds(getDeclaringType());
 	}
 
-	@Override
 	public String getQualifiedNameOfDeclaringType() {
 		return getDeclaringType().getQualifiedName();
 	}
 
-	@Override
 	public String getSimpleNameOfDeclaringType() {
 		return getDeclaringType().getSimpleName();
 	}
 
-	@Override
 	public String getOriginalName() {
 		return declaration.getSimpleName();
 	}
 
-	@Override
 	public String getDeclaredType() {
 		return getType().toString();
 	}
 
-	@Override
 	public String getBoxedDeclaredType() {
 		return new BoxerFunctor().execute(getType());
 	}
@@ -87,7 +79,6 @@ abstract class AbstractMemberDeclarationAdapter<T extends com.sun.mirror.declara
 	public boolean isVoid() {
 		final boolean[] result = { false };
 		getType().accept(new SimpleTypeVisitor() {
-			@Override
 			public void visitVoidType(VoidType arg0) {
 				result[0] = true;
 			}
@@ -114,17 +105,14 @@ abstract class AbstractMemberDeclarationAdapter<T extends com.sun.mirror.declara
 		return result[0];
 	}
 
-	@Override
 	public File getFile() {
 		return getPosition().file();
 	}
 
-	@Override
 	public int getLine() {
 		return getPosition().line();
 	}
 
-	@Override
 	public int getColumn() {
 		return getPosition().column();
 	}

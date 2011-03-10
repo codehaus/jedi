@@ -34,7 +34,6 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void process() {
 		Set<AnnotationMirror> mirrors = getMirrors(SithMethods.class);
 		new AnnotatedMemberDeclarationProcessor(SithCommand.class, SithFilter.class, SithFunctor.class, new OptionAccessor5(environment), new Environment5(environment))
@@ -52,7 +51,6 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 				Collections.<Annotateable> emptySet()
 				: //
 					asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() { //
-						@Override
 						@SuppressWarnings("unchecked")
 						public Collection<Annotateable> execute(final AnnotationMirror value) {
 							return getSimpleAnnotatedMethods(propertyClass, getMirrors((List<AnnotationValue>) new AnnotationMirrorInterpreter(value).getValue(property)));
@@ -63,7 +61,6 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 	private Set<AnnotationMirror> getMirrors(final Class<?> annotationClass) {
 		return asSet(flatten(environment.getDeclarationsAnnotatedWith(EnvironmentUtils.getTypeDeclaration(environment, annotationClass)),
 				new Functor<Declaration, Collection<AnnotationMirror>>() {
-			@Override
 			public Collection<AnnotationMirror> execute(final Declaration value) {
 				return EnvironmentUtils.getMirrors(environment, value, annotationClass);
 			}
@@ -73,7 +70,6 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 	protected List<AnnotationMirror> getMirrors(final List<AnnotationValue> values) {
 		return values == null ? Collections.<AnnotationMirror> emptyList() : collect(values,
 				new Functor<AnnotationValue, AnnotationMirror>() {
-			@Override
 			public AnnotationMirror execute(final AnnotationValue value) {
 				return (AnnotationMirror) value.getValue();
 			}
@@ -82,7 +78,6 @@ class SithAnnotationProcessor implements AnnotationProcessor {
 
 	private Set<Annotateable> getSimpleAnnotatedMethods(final Class<?> annotationClass, final Collection<AnnotationMirror> mirrors) {
 		return asSet(flatten(mirrors, new Functor<AnnotationMirror, Collection<Annotateable>>() {
-			@Override
 			public Collection<Annotateable> execute(final AnnotationMirror value) {
 				return new SithAnnotation(EnvironmentUtils.getTypeDeclaration(environment, annotationClass), value, environment).getMethodDeclarations(annotationClass);
 			}

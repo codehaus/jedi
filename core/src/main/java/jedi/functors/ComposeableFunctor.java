@@ -27,7 +27,6 @@ public class ComposeableFunctor<T, R> implements Functor<T, R> {
         this.functor = functor;
     }
 
-    @Override
     public R execute(final T value) {
         return functor.execute(value);
     }
@@ -37,7 +36,6 @@ public class ComposeableFunctor<T, R> implements Functor<T, R> {
      */
     public <NEW_R> ComposeableFunctor<T, NEW_R> andThen(final Functor<? super R, NEW_R> g) {
         return new ComposeableFunctor<T, NEW_R>(new Functor<T, NEW_R>() {
-            @Override
             public NEW_R execute(T value) {
                 return g.execute(functor.execute(value));
             }

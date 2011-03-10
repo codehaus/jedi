@@ -48,32 +48,26 @@ abstract class AbstractAnnotateable implements Annotateable {
 		return declaration.getDeclaringTypeWithUnboundedGenerics();
 	}
 
-	@Override
 	public String getQualifiedNameOfDeclaringType() {
 		return declaration.getQualifiedNameOfDeclaringType();
 	}
 
-	@Override
 	public String getSimpleNameOfDeclaringType() {
 		return declaration.getSimpleNameOfDeclaringType();
 	}
 
-	@Override
 	public String getPackage() {
 		return declaration.getPackage();
 	}
 
-	@Override
 	public String getDeclaredType() {
 		return declaration.getDeclaredType();
 	}
 
-	@Override
 	public String getBoxedDeclaredType() {
 		return declaration.getBoxedDeclaredType();
 	}
 
-	@Override
 	public void showProcessingError(Environment environment, String message) {
 		environment.printError(declaration.getFile(), declaration.getLine(), declaration.getColumn(), message);
 	}

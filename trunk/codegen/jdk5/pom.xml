@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <parent>
+        <groupId>org.codehaus.jedi</groupId>
+        <artifactId>codegen</artifactId>
+        <version>2.22.0</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.codehaus.jedi</groupId>
+    <artifactId>jdk5</artifactId>
+    <name>Jedi-JDK5-CodeGen</name>
+    
+    <dependencies>
+    	<dependency>
+    		<groupId>org.codehaus.jedi</groupId>
+    		<artifactId>core</artifactId>
+    		<version>2.22.0</version>
+    	</dependency>
+    	
+    	<dependency>
+    		<groupId>org.codehaus.jedi</groupId>
+    		<artifactId>annotations</artifactId>
+    		<version>2.22.0</version>
+    	</dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

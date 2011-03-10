@@ -971,7 +971,6 @@ public class FunctionalPrimitives {
      */
     public static <T, R> List<R> flatMap(Iterable<T> iter, final Functor<? super T, ? extends Iterable<R>> functor) {
         return fold(new ArrayList<R>(), iter, new Functor2<List<R>, T, List<R>>() {
-            @Override
             public List<R> execute(List<R> acc, T t) {
                 Iterable<R> iterable = functor.execute(t);
                 for(R i : iterable) acc.add(i);
@@ -990,7 +989,6 @@ public class FunctionalPrimitives {
      */
     public static <T, U, R> Functor<U, R> curry(final Functor2<T, U, R> f2, final Functor0<? extends T> f0) {
         return new Functor<U, R>() {
-            @Override
             public R execute(U value) {
                 return f2.execute(f0.execute(), value);
             }

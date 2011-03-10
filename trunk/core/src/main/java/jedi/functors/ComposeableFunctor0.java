@@ -16,14 +16,12 @@ public class ComposeableFunctor0<R> implements Functor0<R> {
      */
     public <T, NEW_R> ComposeableFunctor0<NEW_R> andThen(final Functor<? super R, NEW_R> g) {
         return new ComposeableFunctor0<NEW_R>(new Functor0<NEW_R>() {
-            @Override
             public NEW_R execute() {
                 return g.execute(functor.execute());
             }
         });
     }
 
-    @Override
     public R execute() {
         return functor.execute();
     }

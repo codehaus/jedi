@@ -22,7 +22,6 @@ public class MethodDeclarationAdapter extends AbstractMemberDeclarationAdapter<c
 		return declaration.getReturnType();
 	}
 
-	@Override
 	public Collection<Attribute> getParameters() {
 		return collect(declaration.getParameters(), new Functor<ParameterDeclaration, Attribute>() {
 			public Attribute execute(ParameterDeclaration value) {
@@ -36,7 +35,6 @@ public class MethodDeclarationAdapter extends AbstractMemberDeclarationAdapter<c
 		return append(declaration.getFormalTypeParameters(), declaration.getDeclaringType().getFormalTypeParameters());
 	}
 
-	@Override
 	public String renderGenericTypeParameters() {
 		return TypeDeclarationRenderer.render(getGenericTypeParameters());
 	}

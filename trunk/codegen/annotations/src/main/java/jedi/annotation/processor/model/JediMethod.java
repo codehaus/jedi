@@ -59,13 +59,11 @@ public class JediMethod extends AbstractAnnotateable {
 		return name.startsWith(prefix) && name.length() > prefix.length() && Character.isUpperCase(name.charAt(prefix.length()));
 	}
 
-	@Override
 	public void writeInvocation(JavaWriter writer, String receiverName) {
 		writer.print(receiverName + "." + getOriginalName());
 		writer.printSimpleNamesAsActualParameterList(declaration.getParameters());
 	}
 
-	@Override
 	public String getName(boolean simplified) {
 		return simplified ? getSimplifiedName() : name;
 	}
@@ -80,7 +78,6 @@ public class JediMethod extends AbstractAnnotateable {
 		return name;
 	}
 
-	@Override
 	public void writeGenericTypeParameters(JavaWriter writer) {
 		writer.print(declaration.renderGenericTypeParameters());
 	}

@@ -34,7 +34,6 @@ public class DynamicFunctor<T, R> implements Functor2<T, List<?>, R>, Functor<T,
         return execute(t, Collections.<Object>emptyList());
     }
 
-    @Override
     public R execute(T t, List<?> u) {
         try {
             if (method.getParameterTypes() == null || method.getParameterTypes().length == 0) {

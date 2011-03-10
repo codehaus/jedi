@@ -18,12 +18,10 @@ public class FieldDeclarationAdapter extends AbstractMemberDeclarationAdapter<co
 		return declaration.getType();
 	}
 
-	@Override
 	public Collection<Attribute> getParameters() {
 		return list();
 	}
 
-	@Override
 	public String renderGenericTypeParameters() {
 		return "";
 	}

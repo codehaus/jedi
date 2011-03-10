@@ -10,7 +10,6 @@ public class ComposeableFunctor2<T, U, R> implements Functor2<T, U, R> {
         this.functor = functor;
     }
 
-    @Override
     public R execute(final T t, final U u) {
         return functor.execute(t, u);
     }
@@ -20,7 +19,6 @@ public class ComposeableFunctor2<T, U, R> implements Functor2<T, U, R> {
      */
     public <NEW_R> ComposeableFunctor2<T,U, NEW_R> andThen(final Functor<? super R, NEW_R> g) {
         return new ComposeableFunctor2<T, U, NEW_R>(new Functor2<T, U, NEW_R>() {
-            @Override
             public NEW_R execute(T t, U u) {
                 return g.execute(functor.execute(t, u));
             }

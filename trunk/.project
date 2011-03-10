@@ -1,19 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-  <name>jedi</name>
-  <comment>Java&apos;s syntactic and library support for these components tends to cause the above concerns to be mixed
+	<name>jedi</name>
+	<comment>Java&apos;s syntactic and library support for these components tends to cause the above concerns to be mixed
         with each other, with other concerns, and with low-level implementation details. This means that the code is
         cluttered, verbose and does not express intent very well.
 
         Jedi aims to repair this by providing a library of routines for filtering, iteration, conversion from
         one collection type to another, first order logic functions, etc. It makes extensive use of higher order
         functions and closures (also known as &apos;blocks&apos; or &apos;lambdas&apos; that can be implemented manually or by annotations. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
-  <projects/>
-  <buildSpec>
-    <buildCommand>
-      <name>org.eclipse.jdt.core.javabuilder</name>
-    </buildCommand>
-  </buildSpec>
-  <natures>
-    <nature>org.eclipse.jdt.core.javanature</nature>
-  </natures>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.maven.ide.eclipse.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.maven.ide.eclipse.maven2Nature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
 </projectDescription>

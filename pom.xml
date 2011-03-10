@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.jedi</groupId>
     <artifactId>jedi</artifactId>
+    <packaging>pom</packaging>
     <name>Jedi</name>
     <version>2.22.0</version>
     <url>http://jedi.codehaus.org/</url>
@@ -48,51 +49,9 @@
         <developerConnection>scm:svn:https://svn.codehaus.org/jedi/trunk</developerConnection>
         <url>http://svn.jedi.codehaus.org/browse/jedi/trunk</url>
     </scm>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>jmock</groupId>
-            <artifactId>jmock</artifactId>
-            <version>1.2.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>jmock</groupId>
-            <artifactId>jmock-cglib</artifactId>
-            <version>1.2.0</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <compilerArgument>-proc:none</compilerArgument>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+
+	<modules>
+		<module>core</module>
+		<module>codegen</module>
+	</modules>
 </project>

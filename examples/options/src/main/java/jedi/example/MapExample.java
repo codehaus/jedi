@@ -3,7 +3,6 @@ package jedi.example;
 import java.util.HashMap;
 import java.util.Map;
 
-import jedi.option.None;
 import jedi.option.OptionMatcher;
 import jedi.option.Options;
 

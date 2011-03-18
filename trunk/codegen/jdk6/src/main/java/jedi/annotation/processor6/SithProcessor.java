@@ -99,6 +99,7 @@ public class SithProcessor extends AbstractProcessor {
 
 	private List<Annotateable> getMethods(final Element element, final Class<? extends Annotation> annotationClass, AnnotationMirror annotation) {
 		final TypeMirror type = (TypeMirror) getValue(annotation, "type");
+		@SuppressWarnings("unchecked")
 		final List<AnnotationMirror> methods = getAnnotationMirrors((List<AnnotationValue>) getValue(annotation, "methods"));
 		return getMethods(element, type, methods, annotationClass);
 	}
@@ -126,6 +127,7 @@ public class SithProcessor extends AbstractProcessor {
 	protected JediMethod getMethod(Element element, TypeMirror type, AnnotationMirror sithMethod, Class<?> annotationClass) {
 		final String factoryName = (String) getValue(sithMethod, "factoryName");
 		final String name = (String) getValue(sithMethod, "name");
+		@SuppressWarnings("unchecked")
 		final List<TypeMirror> parameterTypes = collect((List<AnnotationValue>) getValue(sithMethod, "parameterTypes"), new Functor<AnnotationValue, TypeMirror>() {
 			@Override
 			public TypeMirror execute(AnnotationValue value) {

@@ -11,9 +11,9 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.jedi</groupId>
-    <artifactId>codegen</artifactId>
+    <artifactId>examples</artifactId>
     <packaging>pom</packaging>
-    <name>codegen</name>
+    <name>Jedi-Examples</name>
     <version>2.22.0</version>
     <url>http://jedi.codehaus.org/</url>
     <licenses>
@@ -24,10 +24,30 @@
         </license>
     </licenses>
     
-
+    <dependencyManagement>
+    	<dependencies>
+	    	<dependency>
+	    		<groupId>org.codehaus.jedi</groupId>
+	    		<artifactId>jedi-core</artifactId>
+	    		<version>2.22.0</version>
+	    	</dependency>
+	    	<dependency>
+	    		<groupId>org.codehaus.jedi</groupId>
+	    		<artifactId>jedi-annotations</artifactId>
+	    		<version>2.22.0</version>
+	    	</dependency>
+	    	<dependency>
+	    		<groupId>org.codehaus.jedi</groupId>
+	    		<artifactId>jedi-jdk6</artifactId>
+	    		<version>2.22.0</version>
+	    	</dependency>
+    	</dependencies>
+    </dependencyManagement>
+    
 	<modules>
-		<module>annotations</module>
-		<module>jdk5</module>
-		<module>jdk6</module>
+		<module>empire</module>
+		<module>options</module>
+		<module>project_euler</module>
+		<module>quicksort</module>
 	</modules>
 </project>

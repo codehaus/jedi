@@ -38,7 +38,7 @@ public class Box {
 		return unboxed;
 	}
 
-	public static boolean[] unbox(Collection<Boolean> boxed) {
+	public static boolean[] unboxBooleans(Collection<Boolean> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
 		return unbox(Coercions.asArray(boxed));
 	}
@@ -65,7 +65,7 @@ public class Box {
 		return unboxed;
 	}
 
-	public static byte[] unbox(Collection<Byte> boxed) {
+	public static byte[] unboxBytes(Collection<Byte> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
 		return unbox(Coercions.asArray(boxed));
 	}
@@ -92,7 +92,7 @@ public class Box {
 		return unboxed;
 	}
 
-	public static char[] unbox(Collection<Character> boxed) {
+	public static char[] unboxCharacters(Collection<Character> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
 		return unbox(Coercions.asArray(boxed));
 	}
@@ -123,7 +123,7 @@ public class Box {
 		return unboxed;
 	}
 
-	public static short[] unbox(Collection<Short> boxed) {
+	public static short[] unboxShorts(Collection<Short> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
 		return unbox(Coercions.asArray(boxed));
 	}
@@ -154,7 +154,7 @@ public class Box {
 		return unboxed;
 	}
 
-	public static int[] unbox(Collection<Integer> boxed) {
+	public static int[] unboxIntegers(Collection<Integer> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
 		return unbox(Coercions.asArray(boxed));
 	}
@@ -185,7 +185,7 @@ public class Box {
 		return unboxed;
 	}
 
-	public static long[] unbox(Collection<Long> boxed) {
+	public static long[] unboxLongs(Collection<Long> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
 		return unbox(Coercions.asArray(boxed));
 	}
@@ -216,7 +216,7 @@ public class Box {
 		return unboxed;
 	}
 
-	public static float[] unbox(Collection<Float> boxed) {
+	public static float[] unboxFloats(Collection<Float> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
 		return unbox(Coercions.asArray(boxed));
 	}
@@ -247,7 +247,7 @@ public class Box {
 		return unboxed;
 	}
 
-	public static double[] unbox(Collection<Double> boxed) {
+	public static double[] unboxDoubles(Collection<Double> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
 		return unbox(Coercions.asArray(boxed));
 	}

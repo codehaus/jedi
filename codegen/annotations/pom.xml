@@ -11,17 +11,17 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.jedi</groupId>
-    <artifactId>annotations</artifactId>
-    <name>Jedi-Annotations</name>
+    <artifactId>jedi-annotations</artifactId>
     
     <dependencies>
     	<dependency>
     		<groupId>org.codehaus.jedi</groupId>
-    		<artifactId>core</artifactId>
+    		<artifactId>jedi-core</artifactId>
     		<version>2.22.0</version>
     	</dependency>
     </dependencies>
     
+    <name>annotations</name>
     <build>
         <plugins>
             <plugin>

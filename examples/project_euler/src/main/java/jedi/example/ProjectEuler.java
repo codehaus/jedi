@@ -2,10 +2,10 @@ package jedi.example;
 
 import static jedi.assertion.Assert.assertEqual;
 import static jedi.assertion.Assert.assertTrue;
-import static jedi.example.ProjectEulerStaticClosureFactory.divFilter;
-import static jedi.example.ProjectEulerStaticClosureFactory.isPalindromeFilter;
-import static jedi.example.ProjectEulerStaticClosureFactory.multiplyFunctor2;
-import static jedi.example.ProjectEulerStaticClosureFactory.sumFunctor2;
+import static jedi.example.ProjectEulerStaticClosureFactory.divProxyFilter;
+import static jedi.example.ProjectEulerStaticClosureFactory.isPalindromeProxyFilter;
+import static jedi.example.ProjectEulerStaticClosureFactory.multiplyProxyFunctor2;
+import static jedi.example.ProjectEulerStaticClosureFactory.sumProxyFunctor2;
 import static jedi.functional.Coercions.list;
 import static jedi.functional.Comparables.sort;
 import static jedi.functional.FirstOrderLogic.or;
@@ -34,9 +34,9 @@ public class ProjectEuler {
 					select(								//
 						range(1,1000), 					//
 						or(								//
-							divFilter(this, 3),			//
-							divFilter(this, 5))),		//
-						sumFunctor2(this)),				//
+							divProxyFilter(this, 3),			//
+							divProxyFilter(this, 5))),		//
+						sumProxyFunctor2(this)),				//
 					"Problem one: Find the sum of all the multiples of 3 or 5 below 1000.");
 	}
 	
@@ -48,8 +48,8 @@ public class ProjectEuler {
 				fold(0, 						//
 					select(						//
 						fib(4000000), 			//
-						divFilter(this, 2)), 	//
-					sumFunctor2(this)),			//
+						divProxyFilter(this, 2)), 	//
+					sumProxyFunctor2(this)),			//
 					"Problem two: The sum of the even Fibonacci numbers which are at most 4,000,000");
 	}
 	
@@ -72,8 +72,8 @@ public class ProjectEuler {
 								produce(								//
 									range(100,1000), 					//
 									range(100,1000), 					//
-									multiplyFunctor2(this)), 			//
-								isPalindromeFilter(this))))),			//
+									multiplyProxyFunctor2(this)), 			//
+								isPalindromeProxyFilter(this))))),			//
 					"Problem four: Find the largest palindrome made from the product of two 3-digit numbers.");
 	}
 	

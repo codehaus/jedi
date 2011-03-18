@@ -1,14 +1,13 @@
 package jedi.example;
 
-import static jedi.option.Options.Some;
-import jedi.option.None;
+import static jedi.option.Options.some;
 import jedi.option.Option;
 import jedi.option.OptionMatcher;
 
 public class OptionExample {
 
 	public static void main(String[] args) {
-		Option<String> x = Some("foo");
+		Option<String> x = some("foo");
 		
 		x.match(new OptionMatcher<String>() {
 			public void caseNone() {

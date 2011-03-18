@@ -11,23 +11,23 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.jedi</groupId>
-    <artifactId>jdk5</artifactId>
-    <name>Jedi-JDK5-CodeGen</name>
+    <artifactId>jedi-jdk5</artifactId>
     
     <dependencies>
     	<dependency>
     		<groupId>org.codehaus.jedi</groupId>
-    		<artifactId>core</artifactId>
+    		<artifactId>jedi-core</artifactId>
     		<version>2.22.0</version>
     	</dependency>
     	
     	<dependency>
     		<groupId>org.codehaus.jedi</groupId>
-    		<artifactId>annotations</artifactId>
+    		<artifactId>jedi-annotations</artifactId>
     		<version>2.22.0</version>
     	</dependency>
     </dependencies>
     
+    <name>jdk5</name>
     <build>
         <plugins>
             <plugin>

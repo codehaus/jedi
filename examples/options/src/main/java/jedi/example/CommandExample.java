@@ -1,6 +1,6 @@
 package jedi.example;
 
-import static jedi.option.Options.Some;
+import static jedi.option.Options.some;
 import jedi.annotation.JediCommand;
 import jedi.option.Option;
 
@@ -19,7 +19,7 @@ public class CommandExample {
 	public static void main(String[] args) {
 		CommandExample example = new CommandExample();
 		
-		Option<String> thing = Some("thing");
+		Option<String> thing = some("thing");
 		thing.match(CommandExampleStaticClosureFactory.doXProxyCommand(example), CommandExampleStaticClosureFactory.doYProxyCommand0(example));
 	}
 }

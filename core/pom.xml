@@ -11,8 +11,8 @@
     
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.jedi</groupId>
-    <artifactId>core</artifactId>
-    <name>Jedi-Core</name>
+    <artifactId>jedi-core</artifactId>
+    <name>jedi-core</name>
 
     <dependencies>
         <dependency>

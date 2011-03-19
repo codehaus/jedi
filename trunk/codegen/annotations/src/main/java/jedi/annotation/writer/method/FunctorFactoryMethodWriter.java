@@ -22,8 +22,9 @@ public class FunctorFactoryMethodWriter extends AbstractBasicFactoryMethodWriter
 	@Override
 	protected void writeClosureTypes() {
 		super.writeClosureTypes();
-		getWriter().print(", ");
-		getWriter().print(getDelegateMethodReturnType());
+		getWriter()
+			.print(", ")
+			.print(getDelegateMethodReturnType());
 	}
 
 	@Override

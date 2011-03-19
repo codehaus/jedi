@@ -105,20 +105,22 @@ public class JavaWriter {
 		printFormalParameter(v.getBoxedType(), v.getName());
 	}
 
-	public void printBoxedFormalParameters(Collection<Attribute> parameters, boolean requiresLeadingComma) {
+	public JavaWriter printBoxedFormalParameters(Collection<Attribute> parameters, boolean requiresLeadingComma) {
 		printFormalParameters(parameters, requiresLeadingComma, new Command<Attribute>() {
 			public void execute(Attribute v) {
 				printBoxedFormalParameter(v);
 			}
 		});
+		return this;
 	}
 
-	public void printFormalParameters(Collection<Attribute> parameters, boolean requiresLeadingComma) {
+	public JavaWriter printFormalParameters(Collection<Attribute> parameters, boolean requiresLeadingComma) {
 		printFormalParameters(parameters, requiresLeadingComma, new Command<Attribute>() {
 			public void execute(Attribute v) {
 				printFormalParameter(v);
 			}
 		});
+		return this;
 	}
 
 	private void printFormalParameters(Collection<Attribute> parameters, boolean requiresLeadingComma, Command<Attribute> command) {

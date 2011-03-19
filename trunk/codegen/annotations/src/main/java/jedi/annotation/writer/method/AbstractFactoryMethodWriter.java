@@ -11,6 +11,7 @@ import java.util.List;
 import jedi.annotation.processor.ProcessorOptions;
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor.model.Attribute;
+import jedi.annotation.processor.model.AttributeNameFunctor;
 import jedi.annotation.writer.JavaWriter;
 import jedi.annotation.writer.factory.FactoryWriterException;
 import jedi.annotation.writer.factorytype.ClosureFragmentWriter;
@@ -43,11 +44,19 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		}
 	}
 
-	private Functor<Attribute, String> createFieldEqualityFunctor() {
+	private Functor<Attribute, String> createFactoryMethodParameterEqualityFunctor(final String prefix) {
 		return new Functor<Attribute, String>() {
 			public String execute(final Attribute attribute) {
 				final String field = getCorrespondingFieldName(attribute);
-				return "(" + field + " == null ? that." + field + " == null : " + field + ".equals(that." + field + "))";
+				return "(" + prefix + field + " == null ? " + field + " == null : " + prefix + field + ".equals(" + field + "))";
+			}
+		};
+	}
+	
+	private Functor<Attribute, Attribute> createAttributeNamePrefixingFunctor(final String prefix) {
+		return new Functor<Attribute, Attribute>() {
+			public Attribute execute(Attribute value) {
+				return new Attribute(value.getBoxedType(), prefix + value.getName());
 			}
 		};
 	}
@@ -76,7 +85,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	}
 
 	protected String getCorrespondingFieldName(final String parameterName) {
-		return "$" + parameterName;
+		return parameterName;
 	}
 
 	protected final String getDelegateMethodDeclaringTypeWithoutBounds() {
@@ -195,24 +204,21 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		}
 	}
 
-	private void writeClosureField(final Attribute attribute) {
-		print("\tprivate final ");
-		print(attribute.getBoxedType());
-		print(" ");
-		print(getCorrespondingFieldName(attribute));
-		print(" = ");
-		print(attribute.getName());
-		println(";");
-	}
-
-	private void writeClosureFields() {
-		for (final Attribute attribute : getFactoryMethodParameters()) {
-			writeClosureField(attribute);
-		}
-	}
-
 	protected void writeClosureTypes() {
 		getWriter().printBoxedCommaSeparatedList(getExecuteMethodParameters());
+	}
+	
+	private void writeEqualsClosureMethod() {
+		if (getFactoryMethodParameters().isEmpty()) {
+			return;
+		}
+		print("\tprivate boolean equalsParameters(");
+		getWriter().printFormalParameters(collect(getFactoryMethodParameters(), createAttributeNamePrefixingFunctor("$")), false);
+		println(") {");
+		print("\t\t return ");
+		print(join(collect(getFactoryMethodParameters(), createFactoryMethodParameterEqualityFunctor("$")), " && "));
+		println(";");
+		println("\t}");
 	}
 
 	private void writeEqualsMethod() {
@@ -223,9 +229,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		if (getFactoryMethodParameters().isEmpty()) {
 			println("\t\treturn true;");
 		} else {
-			println("\t\tClosure that = (Closure) obj;");
-			print("\t\treturn ");
-			print(join(collect(getFactoryMethodParameters(), createFieldEqualityFunctor()), " && "));
+			print("\t\treturn ((Closure) obj).equalsParameters(" + join(collect(getFactoryMethodParameters(), new AttributeNameFunctor()), ", ") + ")");
 			println(";");
 		}
 
@@ -266,8 +270,8 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		getWriter().print("class " + name + " implements java.io.Serializable, ");
 		writeClosureDeclaration();
 		getWriter().println(" {");
-		writeClosureFields();
 		writeExecuteMethod();
+		writeEqualsClosureMethod();
 		writeEqualsMethod();
 		writeHashCodeMethod();
 		getWriter().println("}");

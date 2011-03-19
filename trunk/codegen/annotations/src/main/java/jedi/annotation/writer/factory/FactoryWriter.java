@@ -28,7 +28,7 @@ public class FactoryWriter {
 	}
 
 	private void endFactory(Annotateable annotateable, FactoryType factoryType) throws IOException {
-		writer.println("}");
+		writer.closeBlock();
 		writer.close();
 
 		final PrintWriter realWriter = environment.createSourceFile(factoryType.getQualifiedTypeName(annotateable));
@@ -59,7 +59,7 @@ public class FactoryWriter {
 			writer.println("package " + packageName + ";");
 			writer.println();
 		}
-		writer.println("public " + getFactoryClassName(annotateable, factoryType) + " {");
+		writer.print("public " + getFactoryClassName(annotateable, factoryType)).openBlock();
 		factoryType.writeClassHeader(writer, annotateable);
 	}
 

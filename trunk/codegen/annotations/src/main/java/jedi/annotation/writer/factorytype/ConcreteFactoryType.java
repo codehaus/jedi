@@ -11,9 +11,9 @@ public abstract class ConcreteFactoryType extends FactoryType {
 
 	@Override
 	public void writeMethodBody(ClosureFragmentWriter fragmentWriter, JavaWriter javaWriter) {
-		javaWriter.println(" {");
+		javaWriter.openBlock();
 		fragmentWriter.writeLocalClass("Closure");
-		javaWriter.println("\t\treturn new Closure();");
-		javaWriter.println("\t}");
+		javaWriter.println("return new Closure();");
+		javaWriter.closeBlock();
 	}
 }

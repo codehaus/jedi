@@ -3,6 +3,7 @@ package jedi.annotation.writer.factorytype;
 import java.io.PrintWriter;
 
 import jedi.annotation.processor.model.Annotateable;
+import jedi.annotation.writer.JavaWriter;
 
 public class InstanceFactoryType extends ConcreteFactoryType {
 	@Override
@@ -16,7 +17,7 @@ public class InstanceFactoryType extends ConcreteFactoryType {
 	}
 
 	@Override
-	public void writeMethodModifiers(PrintWriter writer) {
+	public void writeMethodModifiers(JavaWriter writer) {
 		writer.print("public");
 	}
 }

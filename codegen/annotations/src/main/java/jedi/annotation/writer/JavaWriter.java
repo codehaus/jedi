@@ -13,9 +13,64 @@ import jedi.annotation.processor.model.AttributeBoxedTypeFunctor;
 import jedi.annotation.processor.model.AttributeNameFunctor;
 import jedi.functional.Command;
 
-public class JavaWriter extends PrintWriter {
+public class JavaWriter {
+	private final PrintWriter writer;
+	private int indentation;
+	private boolean atStartOfLine = true;
+	
 	public JavaWriter(Writer delegate) {
-		super(delegate);
+		writer = new PrintWriter(delegate);
+	}
+	
+	public JavaWriter openBlock() {
+		return println(" {").indent();
+	}
+	
+	public JavaWriter closeBlock() {
+		return unindent().println('}');
+	}
+	
+	private JavaWriter indent() {
+		indentation++;
+		return this;
+	}
+	
+	private JavaWriter unindent() {
+		indentation--;
+		return this;
+	}
+	
+	public JavaWriter print(char c) {
+		print(Character.toString(c));
+		return this;
+	}
+	
+	public JavaWriter println(char c) {
+		print(c);
+		println();
+		return this;
+	}
+
+	public JavaWriter print(String s) {
+		doIndentation();
+		writer.print(s);
+		return this;
+	}
+
+	public JavaWriter println(String s) {
+		print(s);
+		println();
+		return this;
+	}
+	
+	public JavaWriter println() {
+		writer.println();
+		atStartOfLine = true;
+		return this;
+	}
+	
+	public void close() {
+		writer.close();
 	}
 
 	public void printSimpleNamesAsActualParameterList(Collection<Attribute> vs) {
@@ -79,5 +134,15 @@ public class JavaWriter extends PrintWriter {
 
 	public void printBoxedCommaSeparatedList(List<Attribute> vs) {
 		printCommaSeparatedList(collect(vs, new AttributeBoxedTypeFunctor()));
+	}
+
+	private void doIndentation() {
+		if (!atStartOfLine) {
+			return;
+		}
+		for (int i = 0 ; i < indentation ; i++) {
+			writer.print('\t');
+		}
+		atStartOfLine = false;
 	}
 }

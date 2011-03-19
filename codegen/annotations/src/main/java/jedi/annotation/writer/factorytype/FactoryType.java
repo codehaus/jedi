@@ -1,7 +1,5 @@
 package jedi.annotation.writer.factorytype;
 
-import java.io.PrintWriter;
-
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.writer.JavaWriter;
 
@@ -18,10 +16,10 @@ public abstract class FactoryType {
 
 	public abstract String getTypeDeclaration(Annotateable annotateable);
 
-	public void writeClassHeader(final PrintWriter writer, final Annotateable annotateable) {
+	public void writeClassHeader(final JavaWriter writer, final Annotateable annotateable) {
 	}
 
 	public abstract void writeMethodBody(ClosureFragmentWriter writer, JavaWriter javaWriter);
 
-	public abstract void writeMethodModifiers(PrintWriter writer);
+	public abstract void writeMethodModifiers(JavaWriter writer);
 }

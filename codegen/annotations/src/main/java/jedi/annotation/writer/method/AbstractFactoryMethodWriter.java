@@ -169,8 +169,9 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		getWriter().print(s);
 	}
 
-	private void println(final String s) {
+	private JavaWriter println(final String s) {
 		getWriter().println(s);
+		return getWriter();
 	}
 
 	protected final void setReceiverInvocationWriter(final ReceiverInvocationWriter receiverInvocationWriter) {
@@ -178,13 +179,12 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	}
 
 	private void writeJavadoc() {
-		println("\t/**");
-		println("\t * @see " + method.getQualifiedNameOfDeclaringType() + "#" + method.getOriginalName());
-		println("\t */");
+		println("/**");
+		println(" * @see " + method.getQualifiedNameOfDeclaringType() + "#" + method.getOriginalName());
+		println(" */");
 	}
 
 	private void startMethod() {
-		print("\t");
 		factoryType.writeMethodModifiers(writer);
 		print(" ");
 		method.writeGenericTypeParameters(writer);
@@ -212,28 +212,28 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		if (getFactoryMethodParameters().isEmpty()) {
 			return;
 		}
-		print("\tprivate boolean equalsParameters(");
+		print("private boolean equalsParameters(");
 		getWriter().printFormalParameters(collect(getFactoryMethodParameters(), createAttributeNamePrefixingFunctor("$")), false);
-		println(") {");
-		print("\t\t return ");
+		getWriter().print(")").openBlock();
+		print("return ");
 		print(join(collect(getFactoryMethodParameters(), createFactoryMethodParameterEqualityFunctor("$")), " && "));
 		println(";");
-		println("\t}");
+		getWriter().closeBlock();
 	}
 
 	private void writeEqualsMethod() {
-		println("\tpublic boolean equals(Object obj) {");
-		println("\t\tif (obj == this) { return true; }");
-		println("\t\tif (!(obj instanceof Closure)) { return false; }");
+		getWriter().print("public boolean equals(Object obj)").openBlock();
+		println("if (obj == this) { return true; }");
+		println("if (!(obj instanceof Closure)) { return false; }");
 
 		if (getFactoryMethodParameters().isEmpty()) {
-			println("\t\treturn true;");
+			println("return true;");
 		} else {
-			print("\t\treturn ((Closure) obj).equalsParameters(" + join(collect(getFactoryMethodParameters(), new AttributeNameFunctor()), ", ") + ")");
+			print("return ((Closure) obj).equalsParameters(" + join(collect(getFactoryMethodParameters(), new AttributeNameFunctor()), ", ") + ")");
 			println(";");
 		}
 
-		println("\t}");
+		getWriter().closeBlock();
 	}
 
 	private void writeExecuteMethod() {
@@ -241,9 +241,9 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		getWriter().print(isReturnRequired() ? getExecuteMethodReturnType() : "void");
 		getWriter().print(" execute(");
 		getWriter().printBoxedFormalParameters(getExecuteMethodParameters(method), false);
-		getWriter().println(") {");
+		getWriter().print(")").openBlock();
 		receiverInvocationWriter.write(method, writer, isReturnRequired());
-		getWriter().println("}");
+		getWriter().closeBlock();
 	}
 
 	public final void writeFactoryMethodActualParameters() {
@@ -259,21 +259,29 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	}
 
 	private void writeHashCodeMethod() {
-		println("\tpublic int hashCode() {");
-		print("\t\treturn ");
+		getWriter().print("public int hashCode()").openBlock();
+		print("return ");
 		print(fold("17", getFactoryMethodParameters(), createHashCodeFoldFunctor()));
 		println(";");
-		println("\t}");
+		getWriter().closeBlock();
 	}
 
 	public final void writeLocalClass(final String name) {
 		getWriter().print("class " + name + " implements java.io.Serializable, ");
 		writeClosureDeclaration();
-		getWriter().println(" {");
+		getWriter().openBlock();
+		
 		writeExecuteMethod();
-		writeEqualsClosureMethod();
-		writeEqualsMethod();
+		getWriter().println();
+		
 		writeHashCodeMethod();
-		getWriter().println("}");
+		getWriter().println();
+		
+		writeEqualsMethod();
+		getWriter().println();
+		
+		writeEqualsClosureMethod();
+
+		getWriter().closeBlock();
 	}
 }

@@ -22,6 +22,6 @@ public class InterfaceFactoryType extends FactoryType {
 	}
 
 	@Override
-	public void writeMethodModifiers(PrintWriter writer) {
+	public void writeMethodModifiers(JavaWriter writer) {
 	}
 }

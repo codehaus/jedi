@@ -6,24 +6,23 @@ import jedi.annotation.writer.method.AbstractFactoryMethodWriter;
 
 public class ReceiverInvocationWriter {
 	public final void write(Annotateable method, JavaWriter printWriter, boolean returnRequired) {
-		printWriter.println("try {");
+		printWriter.print("try").openBlock();
 		writeInvocationWithoutExceptionHandlers(method, printWriter, returnRequired);
-		printWriter.println("} catch (RuntimeException ex) {");
-		printWriter.println("\tthrow ex;");
-		printWriter.println("} catch (Exception ex) {");
-		printWriter.println("\tthrow new jedi.JediException(ex);");
-		printWriter.println("}");
+		printWriter.closeBlock().print("catch (RuntimeException ex)").openBlock();
+		printWriter.println("throw ex;");
+		printWriter.closeBlock().print("catch (Exception ex)").openBlock();
+		printWriter.println("throw new jedi.JediException(ex);");
+		printWriter.closeBlock();
 	}
 
-	private void writeInvocationWithoutExceptionHandlers(Annotateable method, JavaWriter printWriter, boolean returnRequired) {
-		printWriter.print('\t');
+	private void writeInvocationWithoutExceptionHandlers(Annotateable method, JavaWriter writer, boolean returnRequired) {
 		if (returnRequired) {
-			printWriter.print("return ");
+			writer.print("return ");
 		}
 
-		writeInvocation(method, printWriter);
+		writeInvocation(method, writer);
 
-		printWriter.println(';');
+		writer.println(';');
 	}
 
 	protected void writeInvocation(Annotateable method, JavaWriter printWriter) {

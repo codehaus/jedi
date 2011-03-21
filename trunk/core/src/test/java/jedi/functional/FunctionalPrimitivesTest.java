@@ -1,32 +1,25 @@
 package jedi.functional;
 
+import jedi.JediTestCase;
+import jedi.assertion.AssertionError;
+import jedi.filters.AllPassFilter;
+import jedi.functors.IdentityFunctor;
+import jedi.tuple.Tuple2;
+import org.jmock.Mock;
+import org.jmock.util.Dummy;
+import org.junit.Test;
+
+import java.util.*;
+
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
 import static jedi.functional.Box.boxInts;
-import static jedi.functional.Coercions.asList;
-import static jedi.functional.Coercions.list;
-import static jedi.functional.Coercions.set;
+import static jedi.functional.Coercions.*;
 import static jedi.functional.FunctionalPrimitives.*;
 import static jedi.functors.IdentityFunctor.identity;
 import static jedi.option.Options.none;
 import static jedi.option.Options.some;
 import static jedi.tuple.Tuples.pair;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import jedi.JediTestCase;
-import jedi.assertion.AssertionError;
-import jedi.filters.AllPassFilter;
-import jedi.tuple.Tuple2;
-
-import org.jmock.Mock;
-import org.jmock.util.Dummy;
-import org.junit.Test;
 
 @SuppressWarnings("unchecked")
 public class FunctionalPrimitivesTest extends JediTestCase {
@@ -85,6 +78,13 @@ public class FunctionalPrimitivesTest extends JediTestCase {
 		List flattened = flatten(in, functor);
 		assertTrue(flattened.isEmpty());
 		assertNotSame(in, flattened);
+	}
+
+    @Test
+	public void testFlattenIterables() {
+		List<List<Integer>> in = list(list(1, 2), list(3, 4));
+		assertEquals(list(1,2,3,4), flatten(in));
+		assertEquals(list(1, 2, 3, 4), flatMap(in, IdentityFunctor.<List<Integer>>identity()));
 	}
 
 	@Test

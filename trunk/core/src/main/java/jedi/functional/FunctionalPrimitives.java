@@ -1,38 +1,21 @@
 package jedi.functional;
 
-import static jedi.assertion.Assert.assertEqual;
-import static jedi.assertion.Assert.assertGreaterThanOrEqualTo;
-import static jedi.assertion.Assert.assertLessThanOrEqualTo;
-import static jedi.assertion.Assert.assertNotNull;
-import static jedi.assertion.Assert.assertNotNullOrEmpty;
-import static jedi.assertion.Assert.assertTrue;
-import static jedi.functional.Coercions.asList;
-import static jedi.functional.Coercions.list;
-import static jedi.functional.Coercions.set;
-import static jedi.functional.Comparables.sort;
-import static jedi.functional.Comparables.sortInPlace;
-import static jedi.functional.FirstOrderLogic.invert;
-import static jedi.option.Options.option;
-import static jedi.option.Options.some;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import jedi.assertion.AssertionError;
+import jedi.functors.IdentityFunctor;
 import jedi.option.None;
 import jedi.option.Option;
 import jedi.option.Options;
 import jedi.option.Some;
 import jedi.tuple.Tuple2;
 import jedi.tuple.Tuples;
+
+import static jedi.assertion.Assert.*;
+import static jedi.functional.Coercions.*;
+import static jedi.functional.Comparables.sort;
+import static jedi.functional.Comparables.sortInPlace;
+import static jedi.functional.FirstOrderLogic.invert;
+import static jedi.option.Options.option;
+import static jedi.option.Options.some;
 
 /**
  * I provide operations of the kind found in Functional Programming languages.
@@ -176,6 +159,7 @@ public class FunctionalPrimitives {
 	 * Suppose there is a collection of items (c1, c2, c3), each of which
 	 * contains a collection <i>i.e.</i> (c1 = (c1_1, c1_2, ...), c2=(c2_1,
 	 * c2_2, ...). I can produce a collection containing all of the 'leaf' items
+     * applied to <i>functor</i>
 	 * <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2)
 	 * 
 	 * @param items
@@ -196,6 +180,19 @@ public class FunctionalPrimitives {
 
 		return list;
 	}
+
+    /**
+	 * Given a collection of items (c1, c2, c3), each of which
+	 * contains a collection <i>i.e.</i> (c1 = (c1_1, c1_2, ...), c2=(c2_1,
+	 * c2_2, ...). I produce a collection containing all of the 'leaf' items
+	 * <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2)
+	 *
+	 * @param items
+	 *            The collection of items containing the collection of leaves
+	 */
+    public static <T> List<T> flatten(Iterable<? extends Iterable<T>> items) {
+        return flatMap(items, IdentityFunctor.<Iterable<T>>identity());
+    }
 
 	/**
 	 * Add all the elements of an iterable to a collection.
@@ -663,8 +660,7 @@ public class FunctionalPrimitives {
 	}
 
 	public static <T> boolean hasItems(final Iterable<T> iterable) {
-        Iterator<T> iterator = iterable.iterator();
-        return iterator.hasNext();
+        return iterable.iterator().hasNext();
 	}
 
 	public static <T> boolean isEmpty(final Iterable<T> iterable) {

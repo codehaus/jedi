@@ -9,6 +9,8 @@ import jedi.option.Some;
 import jedi.tuple.Tuple2;
 import jedi.tuple.Tuples;
 
+import java.util.*;
+
 import static jedi.assertion.Assert.*;
 import static jedi.functional.Coercions.*;
 import static jedi.functional.Comparables.sort;

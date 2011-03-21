@@ -302,6 +302,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -443,7 +444,17 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Jedi.iml" filepath="$PROJECT_DIR$/Jedi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codegen/codegen.iml" filepath="$PROJECT_DIR$/codegen/codegen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/empire/empire-example.iml" filepath="$PROJECT_DIR$/examples/empire/empire-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/examples.iml" filepath="$PROJECT_DIR$/examples/examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jedi.iml" filepath="$PROJECT_DIR$/jedi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codegen/annotations/jedi-annotations.iml" filepath="$PROJECT_DIR$/codegen/annotations/jedi-annotations.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/jedi-core.iml" filepath="$PROJECT_DIR$/core/jedi-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codegen/jdk5/jedi-jdk5.iml" filepath="$PROJECT_DIR$/codegen/jdk5/jedi-jdk5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codegen/jdk6/jedi-jdk6.iml" filepath="$PROJECT_DIR$/codegen/jdk6/jedi-jdk6.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/options/option-example.iml" filepath="$PROJECT_DIR$/examples/options/option-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/project_euler/project-euler-example.iml" filepath="$PROJECT_DIR$/examples/project_euler/project-euler-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/quicksort/quicksort-example.iml" filepath="$PROJECT_DIR$/examples/quicksort/quicksort-example.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
@@ -583,16 +594,6 @@
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.8.1/junit-4.8.1-sources.jar!/" />
       </SOURCES>
-    </library>
-    <library name="test">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jmock-cglib-20050628.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jmock-20050628.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/cglib-nodep-2.1_2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/junit-4.5.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
     </library>
   </component>
 </project>

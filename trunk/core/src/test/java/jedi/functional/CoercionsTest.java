@@ -9,8 +9,11 @@ import static jedi.functional.Coercions.asMap;
 import static jedi.functional.Coercions.asSet;
 import static jedi.functional.Coercions.cast;
 import static jedi.functional.Coercions.list;
+import static jedi.functional.Coercions.map;
 import static jedi.functional.Coercions.set;
 import static jedi.functional.FunctionalPrimitives.makeList;
+import static jedi.tuple.Tuples.pair;
+import static jedi.tuple.Tuples.tuple2;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,6 +23,8 @@ import java.util.Random;
 import java.util.Set;
 
 import jedi.JediTestCase;
+import jedi.tuple.Tuple2;
+
 import org.jmock.Mock;
 import org.junit.Test;
 
@@ -112,26 +117,37 @@ public class CoercionsTest extends JediTestCase {
 		assertEquals(expected, asList(collection));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testAsMapReturnsAMapOfItemsKeyedOnTheGivenKeysWithValuesOfTheGivenValues() {
 		final List<Object> keys = list(new Object(), new Object());
 		final List<Object> values = list(new Object(), new Object());
 
-		final Map expectedOut = new HashMap();
+		final Map<Object, Object> expectedOut = new HashMap<Object, Object>();
 		expectedOut.put(keys.get(0), values.get(0));
 		expectedOut.put(keys.get(1), values.get(1));
 
 		assertEquals(expectedOut, asMap(keys, values));
 	}
-
+	
 	@SuppressWarnings("unchecked")
+	@Test
+	public void testAsMapWithTuple2() {
+		Tuple2<Object, Object> t1 = tuple2(new Object(), new Object());
+		Tuple2<Object, Object> t2 = tuple2(new Object(), new Object());
+
+		final Map<Object, Object> expectedOut = new HashMap<Object, Object>();
+		expectedOut.put(t1.a(), t1.b());
+		expectedOut.put(t2.a(), t2.b());
+
+		assertEquals(expectedOut, asMap(array(t1, t2)));
+	}
+
 	@Test
 	public void testAsMapWithFunctorReturnsAMapOfItemsKeyedOnTheItemMappedByTheGivenFunctor() {
 		final List<Object> in = list(new Object(), new Object());
 		final List<Object> mappedIn = list(new Object(), new Object());
 
-		final Map expectedOut = new HashMap();
+		final Map<Object, Object> expectedOut = new HashMap<Object, Object>();
 		expectedOut.put(mappedIn.get(0), in.get(0));
 		expectedOut.put(mappedIn.get(1), in.get(1));
 
@@ -179,7 +195,7 @@ public class CoercionsTest extends JediTestCase {
 	}
 
 	@Test
-	public void testMakeList() throws Exception {
+	public void testList() throws Exception {
 		final List<Character> result = makeList(4, 'c');
 		assertEquals(4, result.size());
 		assertEquals(list('c', 'c', 'c', 'c'), result);
@@ -197,6 +213,26 @@ public class CoercionsTest extends JediTestCase {
 		assertEquals(2, set.size());
 		assertTrue(set.contains(FOO));
 		assertTrue(set.contains(BAR));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMapReturnsAnEmptyMapWhenNoItemsGiven() {
+		assertTrue(map().isEmpty());
+	}
+
+	@Test
+	public void testMapReturnsMapContainingExpectedItems() {
+		@SuppressWarnings("unchecked")
+		final Map<String, Integer> map = map(pair("Apples", 1), pair("Oranges", 2));
+
+		assertEquals(2, map.size());
+		
+		assertTrue(map.containsKey("Apples"));
+		assertEquals(new Integer(1), map.get("Apples"));
+
+		assertTrue(map.containsKey("Oranges"));
+		assertEquals(new Integer(2), map.get("Oranges"));
 	}
 
 	@Test

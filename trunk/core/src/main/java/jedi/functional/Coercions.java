@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import jedi.filters.NotNullFilter;
+import jedi.tuple.Tuple2;
 
 public class Coercions {
 
@@ -107,23 +108,53 @@ public class Coercions {
 		assertNotNull(items, "items");
 		return new ArrayList<T>(Arrays.asList(items));
 	}
+	
+	public static <K, V> Map<K, V> asMap(final Tuple2<K, V>[] tuples) {
+		assertNotNull(tuples, "tuples must not be null");
+		return asMap(asList(tuples));
+	}
+	
+	/**
+	 * Make a Map from the given tuples using the {@link Tuple2#a()} values as <code>keys</code> and
+	 * the {@link Tuple2#b()} values as <code>values</code>.
+	 */
+	public static <K, V> Map<K, V> map(final Tuple2<K, V>... tuples) {
+		return asMap(tuples);
+	}
+	
+	/**
+	 * Create a Map from the given tuples using the {@link Tuple2#a()} values as <code>keys</code> and
+	 * the {@link Tuple2#b()} values as <code>values</code>.
+	 */
+	public static <K, V> Map<K, V> asMap(final Iterable<Tuple2<K, V>> tuples) {
+		assertNotNull(tuples, "tuples must not be null");
+
+		final Map<K, V> map = new HashMap<K, V>();
+
+		for (Tuple2<K, V> tuple : tuples) {
+			map.put(tuple.a(), tuple.b());
+		}
+
+		return map;
+	}
 
 	/**
 	 * Create a Map from the given <code>keys</code> and the given
 	 * <code>values</code>.
 	 */
-	public static <K, V> Map<K, V> asMap(final Collection<K> keys, final Collection<V> values) {
+	public static <K, V> Map<K, V> asMap(final Iterable<K> keys, final Iterable<V> values) {
 		assertNotNull(keys, "keys must not be null");
 		assertNotNull(values, "values must not be null");
-		assertEqual(keys.size(), values.size(), "keys.size should be the same as values.size but is not");
 
 		final Map<K, V> map = new HashMap<K, V>();
 
 		final Iterator<V> valueIterator = values.iterator();
-		for (final K key : keys) {
-			map.put(key, valueIterator.next());
+		final Iterator<K> keyIterator = keys.iterator();
+		while (keyIterator.hasNext() && valueIterator.hasNext()) {
+			map.put(keyIterator.next(), valueIterator.next());
 		}
-
+		
+		assertTrue(!keyIterator.hasNext() && !valueIterator.hasNext(), "keys and vaues must be the same size");
 		return map;
 	}
 
@@ -132,17 +163,19 @@ public class Coercions {
 	 * is keyed on the result of applying the given <code>keyFunctor</code> to
 	 * the item.
 	 */
-	public static <K, T> Map<K, T> asMap(final Collection<T> items, final Functor<? super T, K> keyFunctor) {
+	public static <K, T> Map<K, T> asMap(final Iterable<T> items, final Functor<? super T, K> keyFunctor) {
 		assertNotNull(items, "items must not be null");
 		assertNotNull(keyFunctor, "keyFunctor must not be null");
 
 		final Map<K, T> map = new HashMap<K, T>();
 
+		int count = 0;
 		for (final T item : items) {
 			map.put(keyFunctor.execute(item), item);
+			count++;
 		}
 
-		assertEqual(items.size(), map.size(), "items and map should be the same size but are not");
+		assertEqual(count, map.size(), "items and map should be the same size but are not");
 
 		return map;
 	}
@@ -181,8 +214,7 @@ public class Coercions {
 	 * Make a list from the given parameters
 	 */
 	public static <T> List<T> list(final T... items) {
-		final T[] items1 = items;
-		return asList(items1);
+		return asList(items);
 	}
 
 	/**

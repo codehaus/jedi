@@ -7,7 +7,7 @@ public class ComposeableFunctor0<R> implements Functor0<R> {
 
     private final Functor0<R> functor;
 
-    public ComposeableFunctor0(final Functor0 functor) {
+    public ComposeableFunctor0(final Functor0<R> functor) {
         this.functor = functor;
     }
 

@@ -16,7 +16,7 @@ public class ConstantFunctor0<R> implements Functor0<R> {
      * @return a functor that will always return <code>constant</code>
      */
     public static <R> ConstantFunctor0<R> constant(R constant) {
-        return new ConstantFunctor0(constant);
+        return new ConstantFunctor0<R>(constant);
     }
 
     /**

@@ -16,7 +16,7 @@ public class Box {
 
 	private static final NotNullFilter<Object> NOT_NULL_FILTER = new NotNullFilter<Object>();
 
-	public static Boolean[] box(boolean... unboxed) {
+	public static Boolean[] boxBooleans(boolean... unboxed) {
 		assertNotNull(unboxed, "unboxed must not be null");
 
 		Boolean[] boxed = new Boolean[unboxed.length];
@@ -27,7 +27,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static boolean[] unbox(Boolean[] boxed) {
+	public static boolean[] unboxBooleans(Boolean... boxed) {
 		assertNothingNull(boxed);
 
 		boolean[] unboxed = new boolean[boxed.length];
@@ -40,10 +40,10 @@ public class Box {
 
 	public static boolean[] unboxBooleans(Collection<Boolean> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
-		return unbox(Coercions.asArray(boxed));
+		return unboxBooleans(Coercions.asArray(boxed));
 	}
 
-	public static Byte[] box(byte[] unboxed) {
+	public static Byte[] boxBytes(byte... unboxed) {
 		assertNotNull(unboxed, "unboxed must not be null");
 
 		Byte[] boxed = new Byte[unboxed.length];
@@ -54,7 +54,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static byte[] unbox(Byte[] boxed) {
+	public static byte[] unboxBytes(Byte... boxed) {
 		assertNothingNull(boxed);
 
 		byte[] unboxed = new byte[boxed.length];
@@ -67,10 +67,10 @@ public class Box {
 
 	public static byte[] unboxBytes(Collection<Byte> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
-		return unbox(Coercions.asArray(boxed));
+		return unboxBytes(Coercions.asArray(boxed));
 	}
 
-	public static Character[] box(char[] unboxed) {
+	public static Character[] boxChars(char... unboxed) {
 		assertNotNull(unboxed, "unboxed must not be null");
 
 		Character[] boxed = new Character[unboxed.length];
@@ -81,7 +81,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static char[] unbox(Character[] boxed) {
+	public static char[] unboxCharacters(Character... boxed) {
 		assertNothingNull(boxed);
 
 		char[] unboxed = new char[boxed.length];
@@ -94,7 +94,7 @@ public class Box {
 
 	public static char[] unboxCharacters(Collection<Character> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
-		return unbox(Coercions.asArray(boxed));
+		return unboxCharacters(Coercions.asArray(boxed));
 	}
 
 	public static Short[] boxShorts(short... unboxed) {
@@ -108,11 +108,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static Short[] box(short[] unboxed) {
-		return boxShorts(unboxed);
-	}
-
-	public static short[] unbox(Short... boxed) {
+	public static short[] unboxShorts(Short... boxed) {
 		assertNothingNull(boxed);
 
 		short[] unboxed = new short[boxed.length];
@@ -125,7 +121,7 @@ public class Box {
 
 	public static short[] unboxShorts(Collection<Short> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
-		return unbox(Coercions.asArray(boxed));
+		return unboxShorts(Coercions.asArray(boxed));
 	}
 
 	public static Integer[] boxInts(int... unboxed) {
@@ -139,11 +135,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static Integer[] box(int[] unboxed) {
-		return boxInts(unboxed);
-	}
-
-	public static int[] unbox(Integer... boxed) {
+	public static int[] unboxIntegers(Integer... boxed) {
 		assertNothingNull(boxed);
 
 		int[] unboxed = new int[boxed.length];
@@ -156,11 +148,7 @@ public class Box {
 
 	public static int[] unboxIntegers(Collection<Integer> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
-		return unbox(Coercions.asArray(boxed));
-	}
-
-	public static Long[] box(long[] unboxed) {
-		return boxLongs(unboxed);
+		return unboxIntegers(Coercions.asArray(boxed));
 	}
 
 	public static Long[] boxLongs(long... unboxed) {
@@ -174,7 +162,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static long[] unbox(Long... boxed) {
+	public static long[] unboxLongs(Long... boxed) {
 		assertNothingNull(boxed);
 
 		long[] unboxed = new long[boxed.length];
@@ -187,11 +175,7 @@ public class Box {
 
 	public static long[] unboxLongs(Collection<Long> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
-		return unbox(Coercions.asArray(boxed));
-	}
-
-	public static Float[] box(float[] unboxed) {
-		return boxFloats(unboxed);
+		return unboxLongs(Coercions.asArray(boxed));
 	}
 
 	public static Float[] boxFloats(float... unboxed) {
@@ -205,7 +189,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static float[] unbox(Float... boxed) {
+	public static float[] unboxFloats(Float... boxed) {
 		assertNothingNull(boxed);
 
 		float[] unboxed = new float[boxed.length];
@@ -218,7 +202,7 @@ public class Box {
 
 	public static float[] unboxFloats(Collection<Float> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
-		return unbox(Coercions.asArray(boxed));
+		return unboxFloats(Coercions.asArray(boxed));
 	}
 
 	public static Double[] boxDoubles(double... unboxed) {
@@ -232,11 +216,7 @@ public class Box {
 		return boxed;
 	}
 
-	public static Double[] box(double[] unboxed) {
-		return boxDoubles(unboxed);
-	}
-
-	public static double[] unbox(Double... boxed) {
+	public static double[] unboxDoubles(Double... boxed) {
 		assertNothingNull(boxed);
 
 		double[] unboxed = new double[boxed.length];
@@ -249,7 +229,7 @@ public class Box {
 
 	public static double[] unboxDoubles(Collection<Double> boxed) {
 		assertNotNull(boxed, "boxed must not be null");
-		return unbox(Coercions.asArray(boxed));
+		return unboxDoubles(Coercions.asArray(boxed));
 	}
 
 	private static void assertNothingNull(Object[] boxed) {

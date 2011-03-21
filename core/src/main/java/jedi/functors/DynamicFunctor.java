@@ -34,7 +34,8 @@ public class DynamicFunctor<T, R> implements Functor2<T, List<?>, R>, Functor<T,
         return execute(t, Collections.<Object>emptyList());
     }
 
-    public R execute(T t, List<?> u) {
+    @SuppressWarnings("unchecked")
+	public R execute(T t, List<?> u) {
         try {
             if (method.getParameterTypes() == null || method.getParameterTypes().length == 0) {
                 return (R) method.invoke(t);

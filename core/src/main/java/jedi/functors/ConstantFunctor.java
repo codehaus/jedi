@@ -15,7 +15,7 @@ public class ConstantFunctor<R> implements Functor<Object, R> {
      * @return a functor that will always return <code>c</code>
      */
     public static <R> ConstantFunctor<R> constant(R c) {
-        return new ConstantFunctor(c);
+        return new ConstantFunctor<R>(c);
     }
 
     public ConstantFunctor(R r) {

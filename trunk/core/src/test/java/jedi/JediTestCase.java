@@ -16,10 +16,10 @@ public abstract class JediTestCase extends MockObjectTestCase {
 	protected static final String BAR = "bar";
 
 	protected Mock mockFunctor = mock(Functor.class);
-	@SuppressWarnings("unchecked")
 	protected Functor functor = (Functor) mockFunctor.proxy();
+    protected Mock mockFunctor2 = mock(Functor2.class);
+	protected Functor2 functor2 = (Functor2) mockFunctor2.proxy();
 
-	@SuppressWarnings("unchecked")
 	protected Functor setUpFunctorExpectations(List in, List out) {
 		for (int i = 0; i < in.size(); i++) {
 			mockFunctor.expects(once()).method("execute").with(same(in.get(i))).will(returnValue(out.get(i)));

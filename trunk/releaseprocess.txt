@@ -15,3 +15,4 @@ Maven
 =====
 
 Read http://docs.codehaus.org/display/HAUSMATES/Codehaus+Maven+Repository+Usage+Guide
+To release a snapshot you must add -SNAPSHOT to the version and then: mvn clean deploy

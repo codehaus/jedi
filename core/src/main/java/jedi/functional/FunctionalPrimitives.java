@@ -243,6 +243,37 @@ public class FunctionalPrimitives {
 		return accumulated;
 	}
 
+    /**
+	 * Reduce passes each item of a collection with an accumulated value to a functor yielding a single result.
+     * The first value from the collection applied to the functor is used as the initial accumulator value.
+	 * <p/>
+	 * For example, to sum the elements of a non-empty list:
+	 * <p/>
+	 *
+	 * <pre>
+	 *           Functor2&lt;Integer, Integer, Integer&gt; summer = new Functor2&lt;Integer, Integer, Integer&gt;() {
+	 *           	public Integer execute(Integer accumulator, Integer value) {
+	 *           		return accumulator + value;
+	 *           	}
+	 *           };
+	 *           reduce(summer, list(1, 2, 3, 4)) will return 10
+	 * </pre>
+	 *
+	 * <p/>
+	 * For a more comprehensive description, see <a
+	 * href="http://srfi.schemers.org/srfi-1/srfi-1.html#FoldUnfoldMap"
+	 * >SRFI-1</a>
+     * @param collection the collection over which to fold
+     * @param functor2 the function to apply to values of the collection collected in Acc
+	 */
+    public static <Acc, T extends Acc> Acc reduce(final Iterable<T> collection, final Functor2<Acc, ? super T, Acc> functor2) {
+		assertNotNull(collection, "collection must not be null");
+		assertNotNull(functor2, "functor2 must not be null");
+        assertTrue(hasItems(collection), "items must not be empty");
+
+		return fold(head(collection), tail(collection), functor2);
+	}
+
 	/**
 	 * Iterate over a collection of <code>items</code> applying the given
 	 * <code>command</code> to each
@@ -991,5 +1022,33 @@ public class FunctionalPrimitives {
                 return f2.execute(f0.execute(), value);
             }
         };
+    }
+
+    /**
+     * Find the 0-based index of the first value of a collection satisfying the filter.
+     * @param all
+     * @param filter
+     * @param <T>
+     * @return the 0-based index of the first value of a <code>all</code> satisfying <code>filter</code> or -1
+     */
+    public static <T> int indexWhere(Iterable<T> all, final Filter<? super T> filter) {
+        int c = 0;
+        for (T t : all) {
+            if (filter.execute(t)) return c;
+            c += 1;
+        }
+        return -1;
+    }
+    /**
+     * Find the 0-based index of the last value of a collection satisfying the filter.
+     * @param all
+     * @param filter
+     * @param <T>
+     * @return the 0-based index of the last value of a <code>all</code> satisfying <code>filter</code> or -1
+     */
+    public static <T> int lastIndexWhere(Iterable<T> all, final Filter<? super T> filter) {
+        List<T> reversed = reverse(all);
+        int i = indexWhere(reversed, filter);
+        return i == -1 ? -1 : reversed.size() -1 - i;
     }
 }

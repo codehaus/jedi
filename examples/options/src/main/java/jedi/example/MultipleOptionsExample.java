@@ -21,16 +21,18 @@ public class MultipleOptionsExample {
                 for (String zv : z)
                     System.out.println("All values are something: " + xv + yv + zv);
 
-        // iterate over all values in non-None options
+        // iterate over all values of non-None options
         for (String v : flatten(list(x,y,z))) System.out.println(v);
 
         // or process all non-None options, eg concatenate them:
         System.out.println(
-                fold("Concatenate: ", flatten(list(x, y, z)), new Functor2<String, String, String>() {
-                    @Override
-                    public String execute(String acc, String next) {
-                        return acc + next;
-                    }
-                }));
+                fold("Concatenate: ", flatten(list(x, y, z)), new Appender()));
+    }
+
+    private static class Appender implements Functor2<String, String, String> {
+        @Override
+        public String execute(String s1, String s2) {
+            return s1 + s2;
+        }
     }
 }

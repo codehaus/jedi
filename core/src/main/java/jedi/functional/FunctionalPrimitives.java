@@ -1,6 +1,7 @@
 package jedi.functional;
 
 import jedi.assertion.AssertionError;
+import jedi.functors.ComposeableFunctor;
 import jedi.functors.IdentityFunctor;
 import jedi.option.None;
 import jedi.option.Option;
@@ -16,8 +17,10 @@ import static jedi.functional.Coercions.*;
 import static jedi.functional.Comparables.sort;
 import static jedi.functional.Comparables.sortInPlace;
 import static jedi.functional.FirstOrderLogic.invert;
+import static jedi.functors.ComposeableFunctor.composeable;
 import static jedi.option.Options.option;
 import static jedi.option.Options.some;
+import static jedi.tuple.Tuples.pair;
 
 /**
  * I provide operations of the kind found in Functional Programming languages.
@@ -863,10 +866,12 @@ public class FunctionalPrimitives {
 	}
 
 	/**
-	 * Removes the last item (in iteration order) from a collection. The
-	 * collection must contain at least one item or an
+	 * Removes the last item (in iteration order) from a collection.
+     * The collection must contain at least one item or an
 	 * {@link jedi.assertion.AssertionError AssertionError} will be thrown.
 	 * Emulates Array.pop in Ruby.
+     *
+     * The original collection is unaltered.
 	 * 
 	 * @return the last item in the collection
 	 * @throws jedi.assertion.AssertionError
@@ -900,8 +905,8 @@ public class FunctionalPrimitives {
 	 *         the filter, the second item is a list of elements that did not
 	 *         pass the filter.
 	 */
-	public static <T> List<List<T>> partition(Iterable<T> items, Filter<T> filter) {
-		return list(select(items, filter), select(items, invert(filter)));
+	public static <T> Tuple2<List<T>, List<T>> partition(Iterable<T> items, Filter<T> filter) {
+		return pair(select(items, filter), select(items, invert(filter)));
 	}
 
 	/**
@@ -1016,12 +1021,12 @@ public class FunctionalPrimitives {
      * @param f2
      * @param f0
      */
-    public static <T, U, R> Functor<U, R> curry(final Functor2<T, U, R> f2, final Functor0<? extends T> f0) {
-        return new Functor<U, R>() {
+    public static <T, U, R> ComposeableFunctor<U, R> curry(final Functor2<T, U, R> f2, final Functor0<? extends T> f0) {
+        return composeable(new Functor<U, R>() {
             public R execute(U value) {
                 return f2.execute(f0.execute(), value);
             }
-        };
+        });
     }
 
     /**

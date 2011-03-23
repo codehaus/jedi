@@ -3,8 +3,6 @@ package jedi.functors;
 import jedi.JediTestCase;
 import jedi.functional.Functor;
 import jedi.functional.Functor0;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.junit.Test;
 
 import static jedi.functors.ComposeableFunctor.c;
@@ -52,5 +50,4 @@ public class ComposeableFunctorTest extends JediTestCase {
         Functor<A, C> simpleCase2 = c(fbc).o(fac);
         Functor<A, C> firstFunctorReturnsSubtypeOfSecondFunctorsInputType = c(fbc).o(fac);
     }
-
 }

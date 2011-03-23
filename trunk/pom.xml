@@ -50,21 +50,21 @@
         <url>http://svn.jedi.codehaus.org/browse/jedi/trunk</url>
     </scm>
 
-	<modules>
-		<module>core</module>
-		<module>codegen</module>
-		<module>examples</module>
-	</modules>
+    <modules>
+        <module>core</module>
+        <module>codegen</module>
+        <module>examples</module>
+    </modules>
 
     <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

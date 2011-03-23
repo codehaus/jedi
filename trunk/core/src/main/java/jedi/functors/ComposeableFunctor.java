@@ -7,15 +7,17 @@ import jedi.functional.Functor2;
 /**
  * A functor that can be composed with other Functors.
  * For example, given:
- * <br/>Functor f that takes T and returns R
- * <br/>Functor g that takes R and returns NEW_R
- * <br/>new ComposeableFunctor(f).andThen(g).execute(x) == g(f(x))
- * <br/>or
- * <br/>composeable(f).andThen(g)
- * <br/>or
- * <br/>composeable(f).o(g)
- * <br/>or
- * <br/>c(f).o(g)
+ * <pre>
+ * Functor f that takes T and returns R
+ * Functor g that takes R and returns NEW_R
+ * new ComposeableFunctor(f).andThen(g).execute(x) == g(f(x))
+ * or
+ * composeable(f).andThen(g)
+ * or
+ * composeable(f).o(g)
+ * or
+ * c(f).o(g)
+ * </pre>
  * @param <T>
  * @param <R>
  */

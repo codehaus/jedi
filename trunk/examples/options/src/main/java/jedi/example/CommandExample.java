@@ -21,6 +21,6 @@ public class CommandExample {
 		CommandExample example = new CommandExample();
 		
 		Option<String> thing = some("thing");
-		//thing.match(CommandExampleStaticClosureFactory.doXProxyCommand(example), CommandExampleStaticClosureFactory.doYProxyCommand0(example));
+		thing.match(CommandExampleStaticClosureFactory.doXProxyCommand(example), CommandExampleStaticClosureFactory.doYProxyCommand0(example));
 	}
 }

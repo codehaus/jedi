@@ -434,6 +434,7 @@
     <dictionary name="channing">
       <words>
         <w>composeable</w>
+        <w>functors</w>
         <w>iterable</w>
         <w>powersets</w>
       </words>

@@ -1,26 +1,19 @@
 package jedi.example;
 
-import static jedi.assertion.Assert.assertEqual;
-import static jedi.assertion.Assert.assertTrue;
-import static jedi.example.ProjectEulerStaticClosureFactory.divProxyFilter;
-import static jedi.example.ProjectEulerStaticClosureFactory.isPalindromeProxyFilter;
-import static jedi.example.ProjectEulerStaticClosureFactory.multiplyProxyFunctor2;
-import static jedi.example.ProjectEulerStaticClosureFactory.sumProxyFunctor2;
-import static jedi.functional.Coercions.list;
-import static jedi.functional.Comparables.sort;
-import static jedi.functional.FirstOrderLogic.or;
-import static jedi.functional.FunctionalPrimitives.fold;
-import static jedi.functional.FunctionalPrimitives.head;
-import static jedi.functional.FunctionalPrimitives.produce;
-import static jedi.functional.FunctionalPrimitives.reverse;
-import static jedi.functional.FunctionalPrimitives.select;
+import jedi.annotation.JediCut;
+import jedi.annotation.JediFilter;
+import jedi.annotation.JediFunctor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jedi.annotation.JediCut;
-import jedi.annotation.JediFilter;
-import jedi.annotation.JediFunctor;
+import static jedi.assertion.Assert.assertEqual;
+import static jedi.assertion.Assert.assertTrue;
+import static jedi.example.ProjectEulerStaticClosureFactory.*;
+import static jedi.functional.Coercions.list;
+import static jedi.functional.Comparables.sort;
+import static jedi.functional.FirstOrderLogic.or;
+import static jedi.functional.FunctionalPrimitives.*;
 
 public class ProjectEuler {
 	
@@ -45,11 +38,11 @@ public class ProjectEuler {
 	 */
 	public void problemTwo() {
 		assertEqual(new Integer(4613732), 		//
-				fold(0, 						//
-					select(						//
-						fib(4000000), 			//
-						divProxyFilter(this, 2)), 	//
-					sumProxyFunctor2(this)),			//
+				reduce(
+                        select(                        //
+                                fib(4000000),             //
+                                divProxyFilter(this, 2)),     //
+                        sumProxyFunctor2(this)),			//
 					"Problem two: The sum of the even Fibonacci numbers which are at most 4,000,000");
 	}
 	

@@ -452,8 +452,7 @@ public class FunctionalPrimitivesTest extends JediTestCase {
     @Test
     public void testTake() throws Exception {
         List<Integer> in = list(1, 2, 3, 4);
-        final List<Integer> result = take(2, in);
-        assertEquals(list(1, 2), result);
+        assertEquals(list(1, 2), take(2, in));
         assertEquals("original list should not be changed", 4, in.size());
     }
 
@@ -575,7 +574,7 @@ public class FunctionalPrimitivesTest extends JediTestCase {
             }
         };
         List<Integer> list = asList(boxInts(1, 2, 3, 4, 5));
-        List<List<Integer>> expected = list(asList(boxInts(1, 2)), asList(boxInts(3, 4, 5)));
+        Tuple2<List<Integer>, List<Integer>> expected = pair(asList(boxInts(1, 2)), asList(boxInts(3, 4, 5)));
         assertEquals(expected, partition(list, filter));
         assertEquals(asList(boxInts(1, 2, 3, 4, 5)), list);
     }
@@ -583,14 +582,14 @@ public class FunctionalPrimitivesTest extends JediTestCase {
     @Test
     public void testPartitionWithAllPassFilter() {
         List<Integer> list = asList(boxInts(1, 2, 3, 4, 5));
-        List<List<Integer>> expected = list(list, Collections.<Integer>emptyList());
+        Tuple2<List<Integer>, List<Integer>> expected = pair(list, Collections.<Integer>emptyList());
         assertEquals(expected, partition(list, new AllPassFilter<Integer>()));
     }
 
     @Test
     public void testPartitionWithNoPassFilter() {
         List<Integer> list = asList(boxInts(1, 2, 3, 4, 5));
-        List<List<Integer>> expected = list(Collections.<Integer>emptyList(), list);
+        Tuple2<List<Integer>, List<Integer>> expected = pair(Collections.<Integer>emptyList(), list);
         assertEquals(expected, partition(list, FirstOrderLogic.not(new AllPassFilter<Integer>())));
     }
 

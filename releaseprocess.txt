@@ -15,4 +15,17 @@ Maven
 =====
 
 Read http://docs.codehaus.org/display/HAUSMATES/Codehaus+Maven+Repository+Usage+Guide
-To release a snapshot you must add -SNAPSHOT to the version and then: mvn clean deploy
+
+Leave the version number with the -SNAPSHOT suffix or you will not be able to release.
+
+on the command line or something do the following:
+mvn clean deploy
+mvn release:clean
+mvn release:prepare
+mvn release:perform
+
+Go to the stagin nexus at https://nexus.codehaus.org/
+1. Find jedi and close it
+2. Then release it.
+
+Copy jars etc up to https://dav.codehaus.org/dist/jedi/ and javadoc to https://dav.codehaus.org/jedi/

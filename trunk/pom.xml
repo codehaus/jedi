@@ -12,7 +12,7 @@
     <artifactId>jedi</artifactId>
     <packaging>pom</packaging>
     <name>Jedi</name>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <url>http://jedi.codehaus.org/</url>
     <licenses>
         <license>
@@ -44,9 +44,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org/jedi/tags/jedi-3.0.0</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/jedi/tags/jedi-3.0.0</developerConnection>
-        <url>http://svn.jedi.codehaus.org/browse/jedi/tags/jedi-3.0.0</url>
+        <connection>scm:svn:http://svn.codehaus.org/jedi/trunk</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/jedi/trunk</developerConnection>
+        <url>http://svn.jedi.codehaus.org/browse/jedi/trunk</url>
     </scm>
 
     <modules>

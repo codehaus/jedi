@@ -8,18 +8,18 @@ public class ProcessorOptions {
 	}
 
 	public boolean includeAccessorVerbs() {
-		return !accessor.isOption("-AjediSuppressAccessorVerbs");
+		return !accessor.isOption("jediSuppressAccessorVerbs");
 	}
 
 	public boolean includeSuffixes() {
-		return !accessor.isOption("-AjediSuppressSuffixes");
+		return !accessor.isOption("jediSuppressSuffixes");
 	}
 
 	public boolean includeClosureTypeSuffix() {
-		return !accessor.isOption("-AjediSuppressClosureTypeSuffix");
+		return !accessor.isOption("jediSuppressClosureTypeSuffix");
 	}
 
 	public boolean includeProxySuffix() {
-		return !accessor.isOption("-AjediSuppressProxySuffix");
+		return !accessor.isOption("jediSuppressProxySuffix");
 	}
 }

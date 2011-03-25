@@ -12,6 +12,6 @@ public class OptionAccessor5 implements ProcessorOptionAccessor {
 	}
 
 	public boolean isOption(String key) {
-		return environment.getOptions().containsKey(key);
+		return environment.getOptions().containsKey("-A" + key);
 	}
 }

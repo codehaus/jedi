@@ -28,4 +28,4 @@ Go to the stagin nexus at https://nexus.codehaus.org/
 1. Find jedi and close it
 2. Then release it.
 
-Copy javadoc to https://dav.codehaus.org/jedi/
+Copy javadoc to https://dav.codehaus.org/jedi/ and copy the changes to http://docs.codehaus.org/display/JEDI/Changes

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.codehaus.jedi</groupId>
+        <artifactId>jedi</artifactId>
+        <version>3.0.2</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.codehaus.jedi</groupId>
+    <artifactId>codegen</artifactId>
+    <packaging>pom</packaging>
+    <name>codegen</name>
+    <version>3.0.2</version>
+    <url>http://jedi.codehaus.org/</url>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+
+	<modules>
+		<module>annotations</module>
+		<module>jdk5</module>
+		<module>jdk6</module>
+	</modules>
+</project>

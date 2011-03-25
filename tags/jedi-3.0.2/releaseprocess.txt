@@ -1,0 +1,31 @@
+Ant
+===
+1. Change the version.number property in build.xml to be the one you want to release
+2. Update changes.txt (with svn log comments since last release)
+3. Check in!
+4. Wait for a build on the Codehaus Bamboo: http://bamboo.ci.codehaus.org/browse/JEDI-DEF
+5. In Bamboo, go to the latest build and select the 'Artifacts' tab
+6. Download the jedi.zip file
+7. Strip the timestamp from the end of the file so it looks like 'jedi_x.y'
+8. Copy the downloaded jedi.zip to the Codehaus webdav location: https://dav.codehaus.org/dist/jedi/
+9. Copy the Javadoc up to https://dav.codehaus.org/jedi/
+10.Tag it in svn
+
+Maven
+=====
+
+Read http://docs.codehaus.org/display/HAUSMATES/Codehaus+Maven+Repository+Usage+Guide
+
+Leave the version number with the -SNAPSHOT suffix or you will not be able to release.
+
+on the command line or something do the following:
+mvn clean deploy
+mvn release:clean
+mvn release:prepare
+mvn release:perform
+
+Go to the stagin nexus at https://nexus.codehaus.org/
+1. Find jedi and close it
+2. Then release it.
+
+Copy javadoc to https://dav.codehaus.org/jedi/

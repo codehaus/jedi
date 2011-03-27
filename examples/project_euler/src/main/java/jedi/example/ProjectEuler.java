@@ -99,7 +99,7 @@ public class ProjectEuler {
 	}
 	
 	private List<Integer> fibh(List<Integer> c, int limit) {
-		if (c.isEmpty()) return fibh(list(new Integer(1), new Integer(0)), limit);
+		if (c.isEmpty()) return fibh(list(1,0), limit);
 		final int sum = c.get(0) + c.get(1);
 		if (sum > limit) return c;
 		c.add(0, sum);

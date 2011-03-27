@@ -45,9 +45,10 @@ public class Tuple4<A,B,C,D> {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Tuple3)) {
+		if (!(obj instanceof Tuple4)) {
 			return false;
 		}
+		@SuppressWarnings("rawtypes")
 		Tuple4 other = (Tuple4) obj;
 		return option(a).equals(option(other.a)) && option(b).equals(option(other.b)) && option(c).equals(option(other.c)) && option(d).equals(option(other.d));
 	}

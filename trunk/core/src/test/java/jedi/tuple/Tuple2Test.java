@@ -7,6 +7,12 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 
 public class Tuple2Test {
+	@Test
+	public void testFactory() {
+		Tuple2<String, Integer> tuple = tuple2("a", 1);
+		assertEquals("a", tuple.a());
+		assertEquals(Integer.valueOf(1), tuple.b());
+	}
 
 	@Test
 	public void testEquals() {
@@ -27,5 +33,4 @@ public class Tuple2Test {
 
 		assertFalse(tuple2(null, null).withOptions().equals(tuple2("a", null).withOptions()));
 	}
-
 }

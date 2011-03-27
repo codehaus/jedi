@@ -5,8 +5,8 @@ import java.util.Date;
 import static jedi.option.Options.option;
 
 public class EqualsAndHashcode {
-    private String f;
-    private Date d;
+    private String f = "something";
+    private Date d = new Date();
 
     @Override
     public int hashCode() {

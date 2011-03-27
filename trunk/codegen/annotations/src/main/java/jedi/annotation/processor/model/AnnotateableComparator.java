@@ -1,9 +1,10 @@
 package jedi.annotation.processor.model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
-public class AnnotateableComparator implements Comparator<Annotateable> {
+public class AnnotateableComparator implements Comparator<Annotateable>, Serializable {
 	public int compare(Annotateable annotateable1, Annotateable annotateable2) {
 		int comparison = annotateable1.getName(true).compareToIgnoreCase(annotateable2.getName(true));
 		if (comparison != 0) {

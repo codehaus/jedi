@@ -1,20 +1,17 @@
 package jedi.option;
 
+import jedi.functional.*;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import jedi.functional.Command;
-import jedi.functional.Command0;
-import jedi.functional.EmptyIterator;
-import jedi.functional.Filter;
-import jedi.functional.Functor;
-import jedi.functional.Functor0;
 
 /**
  * None represents a non existent value.
  */
 public final class None<T> implements Option<T> {
+
+    public static final long serialVersionUID = 1L;
 
 	private final EmptyIterator<T> iterator = new EmptyIterator<T>();
 

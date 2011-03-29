@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public final class EmptyIterator<T> implements Iterator<T>, Serializable {
+
+    public static final long serialVersionUID = 1L;
+
 	public boolean hasNext() {
 		return false;
 	}

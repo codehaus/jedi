@@ -4,6 +4,7 @@ import jedi.JediException;
 import jedi.functional.Functor;
 import jedi.functional.Functor2;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +42,9 @@ public class DynamicFunctor<T, R> implements Functor2<T, List<?>, R>, Functor<T,
                 return (R) method.invoke(t);
             }
             return (R) method.invoke(t, u.toArray());
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
+            throw new JediException(e);
+        } catch (InvocationTargetException e) {
             throw new JediException(e);
         }
     }

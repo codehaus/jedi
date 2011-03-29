@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class AnnotateableComparator implements Comparator<Annotateable>, Serializable {
+    public static final long serialVersionUID = 1L;
 	public int compare(Annotateable annotateable1, Annotateable annotateable2) {
 		int comparison = annotateable1.getName(true).compareToIgnoreCase(annotateable2.getName(true));
 		if (comparison != 0) {

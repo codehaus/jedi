@@ -10,7 +10,7 @@ import static jedi.functional.Comparables.lessThan;
 import static jedi.functional.FunctionalPrimitives.*;
 
 public class QuickSort {
-
+    
 	public static <T> List<T> sort(final List<T> collection, final Comparator<T> comparator) {
 		if (collection.size() < 2) {
 			return collection;

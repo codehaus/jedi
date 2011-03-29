@@ -1,17 +1,19 @@
 package jedi.either;
 
-import static java.util.Collections.singletonList;
+import jedi.functional.Command;
+import jedi.functional.Functor;
 
 import java.util.List;
 
-import jedi.functional.Command;
-import jedi.functional.Functor;
+import static java.util.Collections.singletonList;
 
 /**
  * Left typically represents a failure condition of Either - but not
  * necessarily.
  */
 public final class Left<A, B> extends Either<A, B> {
+
+    public static final long serialVersionUID = 1L;
 
 	private final A a;
 

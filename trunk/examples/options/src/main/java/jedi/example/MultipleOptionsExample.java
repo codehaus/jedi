@@ -4,8 +4,8 @@ import jedi.annotation.JediFunctor;
 import jedi.option.Option;
 import jedi.option.Options;
 
-import static jedi.example.MultipleOptionsExampleStaticClosureFactory.appendProxyFunctor2;
-import static jedi.functional.FunctionalPrimitives.flatten;
+import static jedi.example.MultipleOptionsExampleStaticClosureFactory.addProxyFunctor2;
+import static jedi.functional.FunctionalPrimitives.append;
 import static jedi.functional.FunctionalPrimitives.fold;
 import static jedi.option.Options.option;
 
@@ -23,14 +23,14 @@ public class MultipleOptionsExample {
                     System.out.println("All values are something: " + xv + yv + zv);
 
         // iterate over all values excluding Nones
-        for (String v : flatten(x,y,z, Options.<String>none())) System.out.println(v);
+        for (String v : append(x, y, z, Options.<String>none())) System.out.println(v);
 
         // Fold excluding Nones, eg concatenate them:
-        System.out.println(fold("Concatenate: ", flatten(x, y, z), appendProxyFunctor2(this)));
+        System.out.println(fold("Concatenate: ", append(x, y, z), addProxyFunctor2(this)));
     }
 
     @JediFunctor
-    public String append(String a, String b) {
+    public String add(String a, String b) {
         return a + b;
     }
 

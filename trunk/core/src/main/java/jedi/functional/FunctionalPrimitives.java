@@ -64,26 +64,27 @@ public class FunctionalPrimitives {
 	 * <code>collections</code> are appended first, then the items in the second
 	 * collection, etc.
 	 * 
-	 * @see #append(java.util.Collection[])
+	 * @see #append(java.util.Iterable[])
 	 */
-	public static <T> List<T> append(final Iterable<? extends Iterable<? extends T>> collections) {
-		return  flatten(collections, new Functor<Iterable<? extends T>, Iterable<T>>() {
-			public Iterable<T> execute(final Iterable<? extends T> value) {
-				return (Iterable<T>) value;
-			}
-		});
+	public static <T> List<T> append(final Iterable<? extends Iterable<? extends T>> iterables) {
+		List<T> result = new ArrayList<T>();
+		for (Iterable<? extends T> iter : iterables) {
+			addAll(result, iter);
+		}
+		return result;
 	}
 
 	/**
 	 * Append all of the elements in all of the given <code>collections</code>
 	 * into one list. All of the elements of the first item in
 	 * <code>collections</code> are appended first, then the items in the second
-	 * collection, etc. Equivalent to <code>append(list(collections))</code>
+	 * collection, etc. Equivalent to <code>{@link #append(Iterable) append}({@link Coercions#list(T...) list}(iterables))</code>.
 	 * 
 	 * @see #append(Iterable)
+	 * @see Coercions#list(T...)
 	 */
-	public static <T> List<T> append(final Iterable<? extends T>... collections) {
-		return append(list(collections));
+	public static <T> List<T> append(final Iterable<? extends T>... iterables) {
+		return append(list(iterables));
 	}
 
 	/**
@@ -166,6 +167,8 @@ public class FunctionalPrimitives {
 	 * c2_2, ...). I can produce a collection containing all of the 'leaf' items
      * applied to <i>functor</i>
 	 * <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2)
+	 * <p>Synonymous with {@link #flatMap(Iterable, Functor)}
+	 * <p>Equivalent to {@link #append(Iterable) append}({@link #collect(Iterable) collect}(items, functor))
 	 * 
 	 * @param items
 	 *            The collection of items containing the collection of leaves
@@ -174,29 +177,22 @@ public class FunctionalPrimitives {
 	 *            collection of 'leaf' objects to accumulate
 	 */
 	public static <T, R> List<R> flatten(final Iterable<T> items, final Functor<? super T, ? extends Iterable<? extends R>> functor) {
-		assertNotNull(items, "items must not be null");
-		assertNotNull(functor, "functor must not be null");
-
-		final List<R> list = new ArrayList<R>();
-
-		for (final T t : items) {
-			addAll(list, functor.execute(t));
-		}
-
-		return list;
+		return append(collect(items, functor));
 	}
 
     /**
 	 * Given a collection of items (c1, c2, c3), each of which
 	 * contains a collection <i>i.e.</i> (c1 = (c1_1, c1_2, ...), c2=(c2_1,
 	 * c2_2, ...). I produce a collection containing all of the 'leaf' items
-	 * <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2)
+	 * <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2).
+	 * <p>Equivalent to {@link #flatten(Iterable, Functor)} and
+	 * {@link #flatMap(Iterable, Functor)} with the {@link IdentityFunctor}</p>
 	 *
 	 * @param items
 	 *            The collection of items containing the collection of leaves
 	 */
     public static <T> List<T> flatten(Iterable<? extends Iterable<T>> items) {
-        return flatMap(items, IdentityFunctor.<Iterable<T>>identity());
+        return flatten(items, IdentityFunctor.<Iterable<T>>identity());
     }
 
 	/**
@@ -999,18 +995,13 @@ public class FunctionalPrimitives {
 
     /**
      * Builds a new collection by applying a function to all elements of list and concatenating the results.
+	 * <p>Synonymous with {@link #flatten(Iterable, Functor)}
      * @param iter the collection to map
      * @param functor a functor yielding a collection from the application of an element from iter
      * @return a flattened List
      */
-    public static <T, R> List<R> flatMap(Iterable<T> iter, final Functor<? super T, ? extends Iterable<R>> functor) {
-        return fold(new ArrayList<R>(), iter, new Functor2<List<R>, T, List<R>>() {
-            public List<R> execute(List<R> acc, T t) {
-                Iterable<R> iterable = functor.execute(t);
-                for(R i : iterable) acc.add(i);
-                return acc;
-            }
-        });
+    public static <T, R> List<R> flatMap(Iterable<T> iter, final Functor<? super T, ? extends Iterable<? extends R>> functor) {
+        return flatten(iter, functor);
     }
 
     /**

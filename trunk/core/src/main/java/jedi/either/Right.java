@@ -1,15 +1,17 @@
 package jedi.either;
 
-import java.util.Collections;
-import java.util.List;
-
 import jedi.functional.Command;
 import jedi.functional.Functor;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Right typically represents a success value of Either - but not necessarily.
  */
 public final class Right<A, B> extends Either<A, B> {
+
+    public static final long serialVersionUID = 1L;
 
 	private final B b;
 

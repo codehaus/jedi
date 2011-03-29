@@ -117,7 +117,13 @@ public class FunctionalPrimitivesTest extends JediTestCase {
     public void testFlattenIterables() {
         List<List<Integer>> in = list(list(1, 2), list(3, 4));
         assertEquals(list(1, 2, 3, 4), flatten(in));
-        assertEquals(list(1, 2, 3, 4), flatMap(in, IdentityFunctor.<List<Integer>>identity()));
+        assertEquals(list(1, 2, 3, 4), flatten(in, IdentityFunctor.<List<Integer>>identity()));
+        assertEquals(list(1, 2, 3, 4), flatten(list(1, 2), list(3, 4)));
+    }
+
+    @Test
+    public void testFlattenVarargIterables() {
+        assertEquals(list(1, 2, 3, 4), flatten(list(1, 2), list(3, 4)));
     }
 
     @Test

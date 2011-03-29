@@ -199,6 +199,10 @@ public class FunctionalPrimitives {
         return flatMap(items, IdentityFunctor.<Iterable<T>>identity());
     }
 
+    public static <T> List<T> flatten(Iterable<T>... items) {
+        return flatten(asList(items));
+    }
+
 	/**
 	 * Add all the elements of an iterable to a collection.
 	 */
@@ -719,7 +723,7 @@ public class FunctionalPrimitives {
 	/**
 	 * Create a list of string by splitting on a regex.
 	 * 
-	 * @see java.lang.String#split
+	 * @see java.lang.String#split(String)
 	 */
 	public static List<String> split(final String item, final String regex) {
 		assertNotNull(item, "item must not be null");

@@ -20,5 +20,8 @@ public class OptionExample {
 				System.out.println("matched " + value);
 			}
 		});
+
+        // match with for if you're only interested in Some
+        for (String v : x) System.out.println("Got " + v);
 	}
 }

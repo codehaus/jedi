@@ -1,22 +1,20 @@
 package jedi.option;
 
-import static java.util.Collections.singletonList;
-import static jedi.assertion.Assert.assertNotNull;
-import static jedi.option.Options.some;
+import jedi.functional.*;
 
 import java.util.Iterator;
 import java.util.List;
 
-import jedi.functional.Command;
-import jedi.functional.Command0;
-import jedi.functional.Filter;
-import jedi.functional.Functor;
-import jedi.functional.Functor0;
+import static java.util.Collections.singletonList;
+import static jedi.assertion.Assert.assertNotNull;
+import static jedi.option.Options.some;
 
 /**
  * Some represents a value of type <code>T</code> that exists.
  */
 public final class Some<T> implements Option<T> {
+
+    public static final long serialVersionUID = 1L;
 
 	private final T value;
 

@@ -1,15 +1,11 @@
 package jedi.either;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import jedi.functional.Coercions;
-import jedi.functional.Command;
-import jedi.functional.EmptyIterator;
-import jedi.functional.Functor;
-import jedi.functional.NullCommand;
+import jedi.functional.*;
 import jedi.option.Option;
 import jedi.option.Options;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Projects an <code>Either</code> into a <code>Left</code>.
@@ -58,13 +54,21 @@ public final class LeftProjection<A, B> implements Iterable<A> {
 	 * @param c
 	 *            The side-effect to execute.
 	 */
-	public void foreach(final Command<A> c) {
+	public void forEach(final Command<A> c) {
 		either.execute(new Command<A>() {
 			public void execute(A value) {
 				c.execute(value);
 			}
 		}, new NullCommand<B>());
 	}
+
+    /**
+     * @deprecated please use {@link #forEach(jedi.functional.Command)}
+     * @see {@link #forEach(jedi.functional.Command)}
+     */
+    public void foreach(final Command<A> c) {
+        forEach(c);
+    }
 
 	/**
 	 * Returns the value from this <code>Left</code> or the given argument if

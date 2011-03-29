@@ -67,7 +67,7 @@ public class FunctionalPrimitives {
 	 * @see #append(java.util.Collection[])
 	 */
 	public static <T> List<T> append(final Iterable<? extends Iterable<? extends T>> collections) {
-		return flatten(collections, new Functor<Iterable<? extends T>, Iterable<T>>() {
+		return  flatten(collections, new Functor<Iterable<? extends T>, Iterable<T>>() {
 			public Iterable<T> execute(final Iterable<? extends T> value) {
 				return (Iterable<T>) value;
 			}
@@ -82,7 +82,7 @@ public class FunctionalPrimitives {
 	 * 
 	 * @see #append(Iterable)
 	 */
-	public static <T> List<T> append(final Collection<? extends T>... collections) {
+	public static <T> List<T> append(final Iterable<? extends T>... collections) {
 		return append(list(collections));
 	}
 
@@ -197,10 +197,6 @@ public class FunctionalPrimitives {
 	 */
     public static <T> List<T> flatten(Iterable<? extends Iterable<T>> items) {
         return flatMap(items, IdentityFunctor.<Iterable<T>>identity());
-    }
-
-    public static <T> List<T> flatten(Iterable<T>... items) {
-        return flatten(asList(items));
     }
 
 	/**

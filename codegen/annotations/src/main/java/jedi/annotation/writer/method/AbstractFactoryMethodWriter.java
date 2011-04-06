@@ -47,8 +47,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	private Functor<Attribute, String> createFactoryMethodParameterEqualityFunctor(final String prefix) {
 		return new Functor<Attribute, String>() {
 			public String execute(final Attribute attribute) {
-				final String field = getCorrespondingFieldName(attribute);
-				return "(" + prefix + field + " == null ? " + field + " == null : " + prefix + field + ".equals(" + field + "))";
+				return "(" + attribute.getEqualsMethodExpression(prefix) + ")";
 			}
 		};
 	}
@@ -56,7 +55,7 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	private Functor<Attribute, Attribute> createAttributeNamePrefixingFunctor(final String prefix) {
 		return new Functor<Attribute, Attribute>() {
 			public Attribute execute(Attribute value) {
-				return new Attribute(value.getBoxedType(), prefix + value.getName());
+				return new Attribute(value.getType(), prefix + value.getName());
 			}
 		};
 	}
@@ -64,12 +63,11 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 	private Functor2<String, Attribute, String> createHashCodeFoldFunctor() {
 		return new Functor2<String, Attribute, String>() {
 			public String execute(final String accumulator, final Attribute attribute) {
-				final String field = getCorrespondingFieldName(attribute);
-				return "(" + accumulator + ") * 37 + (" + field + " == null ? 0 : " + field + ".hashCode())";
+				return "(" + accumulator + ") * 37 + (" + attribute.getHashCodeExpression() + ")";
 			}
 		};
 	}
-
+	
 	public final void execute(final Annotateable method) {
 		this.method = method;
 
@@ -78,14 +76,6 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 		factoryType.writeMethodBody(this, writer);
 
 		this.method = null;
-	}
-
-	private String getCorrespondingFieldName(final Attribute attribute) {
-		return getCorrespondingFieldName(attribute.getName());
-	}
-
-	protected String getCorrespondingFieldName(final String parameterName) {
-		return parameterName;
 	}
 
 	protected final String getDelegateMethodDeclaringTypeWithoutBounds() {

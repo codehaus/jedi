@@ -15,7 +15,7 @@ public class EqualsFilterFactoryMethodWriter extends AbstractBasicFactoryMethodW
 
 	public EqualsFilterFactoryMethodWriter(ProcessorOptions options) {
 		super(options);
-		setReceiverInvocationWriter(new EqualsFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
+		setReceiverInvocationWriter(new EqualsFilterReceiverInvocationWriter(TEST_VALUE_PARAMETER_NAME));
 	}
 
 	@Override

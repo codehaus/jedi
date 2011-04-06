@@ -15,7 +15,7 @@ public class MembershipFilterFactoryMethodWriter extends AbstractBasicFactoryMet
 
 	public MembershipFilterFactoryMethodWriter(ProcessorOptions options) {
 		super(options);
-		setReceiverInvocationWriter(new MembershipFilterReceiverInvocationWriter(getCorrespondingFieldName(TEST_VALUE_PARAMETER_NAME)));
+		setReceiverInvocationWriter(new MembershipFilterReceiverInvocationWriter(TEST_VALUE_PARAMETER_NAME));
 	}
 
 	@Override

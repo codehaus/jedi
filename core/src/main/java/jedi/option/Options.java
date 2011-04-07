@@ -40,8 +40,8 @@ public final class Options {
 	 *            the map to retrieve a value from
 	 * @param key
 	 *            the key to use
-	 * @return None if the map did not contain a value for <code>key</code>,
-	 *         Some(value) if the map did contain the value.
+	 * @return None if the map does not contain a value for <code>key</code> or the value is <code>null</code>.
+	 *         Some(value) if the map did contain a non-<code>null</code> value for <code>key</code>.
 	 */
 	public static <K, V> Option<V> get(Map<K, V> map, K key) {
 		return option(map.get(key));

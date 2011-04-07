@@ -9,6 +9,8 @@ import java.util.List;
 import jedi.annotation.processor.ProcessorOptions;
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor.model.Attribute;
+import jedi.annotation.processor.model.AttributeNameFunctor;
+import jedi.functional.Functor;
 
 public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMethodWriter {
 	public AbstractBasicFactoryMethodWriter(ProcessorOptions options) {
@@ -30,5 +32,10 @@ public abstract class AbstractBasicFactoryMethodWriter extends AbstractFactoryMe
 	@Override
 	protected List<Attribute> getFactoryMethodAdditionalFormalParameters() {
 		return list();
+	}
+	
+	@Override
+	protected Functor<Attribute, String> getExecuteMethodInvocationAttributeNameFunctor() {
+		return new AttributeNameFunctor();
 	}
 }

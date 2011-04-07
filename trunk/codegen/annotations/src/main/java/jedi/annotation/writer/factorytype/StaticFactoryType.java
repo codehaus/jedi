@@ -1,6 +1,7 @@
 package jedi.annotation.writer.factorytype;
 
 import jedi.annotation.processor.model.Annotateable;
+import jedi.annotation.processor.model.AttributeNameFunctor;
 import jedi.annotation.writer.JavaWriter;
 import jedi.assertion.Assert;
 
@@ -21,7 +22,7 @@ public class StaticFactoryType extends ConcreteFactoryType {
 	public void writeMethodBody(ClosureFragmentWriter fragmentWriter, JavaWriter javaWriter) {
 		javaWriter.openBlock();
 		javaWriter.print("return " + DELEGATE_NAME + "." + fragmentWriter.getFactoryMethodName() + "(");
-		fragmentWriter.writeFactoryMethodActualParameters();
+		fragmentWriter.writeFactoryMethodActualParameters(new AttributeNameFunctor());
 		javaWriter.println(");");
 		javaWriter.closeBlock();
 	}

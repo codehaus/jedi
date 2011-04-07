@@ -5,6 +5,7 @@ import static jedi.functional.Coercions.list;
 import java.util.List;
 
 import jedi.annotation.writer.JavaWriter;
+import jedi.functional.Functor;
 
 public class JediField extends AbstractAnnotateable {
 	public JediField(MemberDeclaration declaration, Class<?> annotationClass, String name) {
@@ -26,7 +27,7 @@ public class JediField extends AbstractAnnotateable {
 	public void writeGenericTypeParameters(JavaWriter writer) {
 	}
 
-	public void writeInvocation(JavaWriter writer, String receiverName) {
+	public void writeInvocation(JavaWriter writer, String receiverName, Functor<Attribute, String> attributeNameFunctor) {
 		writer.print(receiverName + "." + getOriginalName());
 	}
 }

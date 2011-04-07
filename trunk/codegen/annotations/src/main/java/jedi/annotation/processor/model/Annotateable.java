@@ -4,6 +4,7 @@ import java.util.List;
 
 import jedi.annotation.processor.Environment;
 import jedi.annotation.writer.JavaWriter;
+import jedi.functional.Functor;
 
 public interface Annotateable {
 	String getPackage();
@@ -30,7 +31,7 @@ public interface Annotateable {
 
 	List<Attribute> getCutParameters();
 
-	void writeInvocation(JavaWriter printWriter, String receiverName);
+	void writeInvocation(JavaWriter printWriter, String receiverName, Functor<Attribute, String> attributeNameFunctor);
 
 	void writeGenericTypeParameters(JavaWriter writer);
 

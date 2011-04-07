@@ -10,8 +10,8 @@ import java.util.List;
 
 import jedi.annotation.processor.model.Attribute;
 import jedi.annotation.processor.model.AttributeBoxedTypeFunctor;
-import jedi.annotation.processor.model.AttributeNameFunctor;
 import jedi.functional.Command;
+import jedi.functional.Functor;
 
 public class JavaWriter {
 	private final PrintWriter writer;
@@ -73,17 +73,17 @@ public class JavaWriter {
 		writer.close();
 	}
 
-	public void printSimpleNamesAsActualParameterList(Collection<Attribute> vs) {
+	public void printSimpleNamesAsActualParameterList(Collection<Attribute> vs, Functor<Attribute, String> attributeNameFunctor) {
 		print('(');
-		printSimpleNamesAsActualParameterListWithoutBrackets(vs, false);
+		printSimpleNamesAsActualParameterListWithoutBrackets(vs, false, attributeNameFunctor);
 		print(')');
 	}
 
-	public void printSimpleNamesAsActualParameterListWithoutBrackets(Collection<Attribute> declarations, boolean requiresLeadingComma) {
+	public void printSimpleNamesAsActualParameterListWithoutBrackets(Collection<Attribute> declarations, boolean requiresLeadingComma, Functor<Attribute, String> attributeNameFunctor) {
 		if (requiresLeadingComma && !declarations.isEmpty()) {
 			print(", ");
 		}
-		print(join(collect(declarations, new AttributeNameFunctor()), ", "));
+		print(join(collect(declarations, attributeNameFunctor), ", "));
 	}
 
 	public void printCommaSeparatedList(List<String> list) {

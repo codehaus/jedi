@@ -67,9 +67,8 @@ public final class Some<T> implements Option<T> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj) {
-		return obj instanceof Some && get().equals(((Some) obj).get());
+		return obj instanceof Some && get().equals(((Some<?>) obj).get());
 	}
 
 	@Override

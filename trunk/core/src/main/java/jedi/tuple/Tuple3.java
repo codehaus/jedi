@@ -42,8 +42,7 @@ public class Tuple3<A,B,C> {
 		if (!(obj instanceof Tuple3)) {
 			return false;
 		}
-		@SuppressWarnings("rawtypes")
-		Tuple3 other = (Tuple3) obj;
+		Tuple3<?, ?, ?> other = (Tuple3<?, ?, ?>) obj;
 		return option(a).equals(option(other.a)) && option(b).equals(option(other.b)) && option(c).equals(option(other.c));
 	}
 

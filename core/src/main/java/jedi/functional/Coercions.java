@@ -47,6 +47,7 @@ public class Coercions {
 	 * @param items to convert to array
 	 * @return an array
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T[] asArray(Class<T> clazz, Collection<T> items) {
 		assertNotNull(items, "items must not be null");
 		return items.toArray((T[]) Array.newInstance(clazz, items.size()));

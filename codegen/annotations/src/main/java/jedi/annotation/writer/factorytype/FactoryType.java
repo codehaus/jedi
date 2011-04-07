@@ -9,7 +9,8 @@ public abstract class FactoryType {
 		if (packageName.startsWith("java.")) {
 			packageName = "sith" + packageName.substring(4);
 		}
-		return packageName + "." + getSimpleTypeName(annotateable);
+        final String packageNameWithDot = packageName.length() > 0 ? packageName + "." : "";
+        return packageNameWithDot + getSimpleTypeName(annotateable);
 	}
 
 	public abstract String getSimpleTypeName(Annotateable annotateable);

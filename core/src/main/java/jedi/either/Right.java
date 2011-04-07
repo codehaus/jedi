@@ -39,7 +39,6 @@ public final class Right<A, B> extends Either<A, B> {
 		return new Left<B, A>(b);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -48,7 +47,7 @@ public final class Right<A, B> extends Either<A, B> {
 		if (obj == null || !getClass().equals(obj.getClass())) {
 			return false;
 		}
-		Right<A, B> other = (Right<A, B>) obj;
+		Right<?, ?> other = (Right<?, ?>) obj;
 		return b.equals(other.b);
 	}
 

@@ -13,7 +13,6 @@ public abstract class AbstractCompositeFilter<T> implements Filter<T> {
 		this.components = components;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -24,7 +23,7 @@ public abstract class AbstractCompositeFilter<T> implements Filter<T> {
 			return false;
 		}
 
-		final AbstractCompositeFilter<T> that = (AbstractCompositeFilter<T>) obj;
+		final AbstractCompositeFilter<?> that = (AbstractCompositeFilter<?>) obj;
 
 		return asSet(getComponents()).equals(asSet(that.getComponents()));
 	}

@@ -20,7 +20,6 @@ public abstract class AbstractUnaryFilter<T, U> implements Filter<T> {
 		return testValue.hashCode();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -31,7 +30,7 @@ public abstract class AbstractUnaryFilter<T, U> implements Filter<T> {
 			return false;
 		}
 
-		return getTestValue().equals(((AbstractUnaryFilter<T, U>) obj).getTestValue());
+		return getTestValue().equals(((AbstractUnaryFilter<?, ?>) obj).getTestValue());
 	}
 
 	@Override

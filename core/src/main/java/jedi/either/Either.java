@@ -12,6 +12,7 @@ import jedi.functional.Functor0;
  * (a disjoint union) and was Inspired by Scala's Either.
  */
 public abstract class Either<A, B> implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * If the condition satisfies, return the given A in <code>Left</code>,

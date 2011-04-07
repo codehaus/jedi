@@ -9,6 +9,7 @@ import java.util.Set;
 
 import jedi.annotation.writer.JavaWriter;
 import jedi.functional.Filter;
+import jedi.functional.Functor;
 
 public class JediMethod extends AbstractAnnotateable {
 	private final Set<String> cutParameterNames;
@@ -59,9 +60,9 @@ public class JediMethod extends AbstractAnnotateable {
 		return name.startsWith(prefix) && name.length() > prefix.length() && Character.isUpperCase(name.charAt(prefix.length()));
 	}
 
-	public void writeInvocation(JavaWriter writer, String receiverName) {
+	public void writeInvocation(JavaWriter writer, String receiverName, Functor<Attribute, String> attributeNameFunctor) {
 		writer.print(receiverName + "." + getOriginalName());
-		writer.printSimpleNamesAsActualParameterList(declaration.getParameters());
+		writer.printSimpleNamesAsActualParameterList(declaration.getParameters(), attributeNameFunctor);
 	}
 
 	public String getName(boolean simplified) {

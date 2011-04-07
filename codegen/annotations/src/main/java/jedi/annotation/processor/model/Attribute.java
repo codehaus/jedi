@@ -38,4 +38,8 @@ public class Attribute {
 	public boolean isPrimitive() {
 		return !getBoxedType().equals(getType());
 	}
+
+	public String unboxed() {
+		return isPrimitive() ? name + "." + type + "Value()" : name;
+	}
 }

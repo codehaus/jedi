@@ -15,4 +15,10 @@ public interface Stormtrooper {
     
     @JediFunctor
     int getDistance(RebelBase base);
+    
+    @JediFunctor(name = "getNearestBaseInteger")
+    RebelBase getNearestBase(Integer limit);
+
+    @JediFunctor(name = "getNearestBaseInt")
+    RebelBase getNearestBase(int limit);
 }

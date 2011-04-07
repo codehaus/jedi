@@ -8,6 +8,7 @@ import java.util.List;
 import jedi.annotation.processor.ProcessorOptions;
 import jedi.annotation.processor.model.Annotateable;
 import jedi.annotation.processor.model.Attribute;
+import jedi.functional.Functor;
 
 public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMethodWriter {
 	public AbstractProxyFactoryMethodWriter(ProcessorOptions options) {
@@ -32,5 +33,14 @@ public abstract class AbstractProxyFactoryMethodWriter extends AbstractFactoryMe
 	@Override
 	protected final String getFactoryMethodNameReturnTypeSuffix() {
 		return (options.includeProxySuffix() ? "Proxy" : "") + super.getFactoryMethodNameReturnTypeSuffix();
+	}
+	
+	@Override
+	protected Functor<Attribute, String> getExecuteMethodInvocationAttributeNameFunctor() {
+		return new Functor<Attribute, String>() {
+			public String execute(Attribute value) {
+				return value.unboxed();
+			}
+		};
 	}
 }

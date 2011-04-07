@@ -228,12 +228,14 @@ public abstract class AbstractFactoryMethodWriter implements ClosureFragmentWrit
 			.print(" execute(")
 			.printBoxedFormalParameters(getExecuteMethodParameters(method), false)
 			.print(")").openBlock();
-		receiverInvocationWriter.write(method, writer, isReturnRequired());
+		receiverInvocationWriter.write(method, writer, isReturnRequired(), getExecuteMethodInvocationAttributeNameFunctor());
 		getWriter().closeBlock();
 	}
 
-	public final void writeFactoryMethodActualParameters() {
-		getWriter().printSimpleNamesAsActualParameterListWithoutBrackets(getFactoryMethodParameters(), false);
+	protected abstract Functor<Attribute, String> getExecuteMethodInvocationAttributeNameFunctor();
+
+	public final void writeFactoryMethodActualParameters(Functor<Attribute, String> attributeNameFunctor) {
+		getWriter().printSimpleNamesAsActualParameterListWithoutBrackets(getFactoryMethodParameters(), false, attributeNameFunctor);
 	}
 
 	private void writeFactoryMethodFormalParameters() {

@@ -56,12 +56,20 @@ public final class RightProjection<A, B> implements Iterable<B> {
 	}
 
 	/**
+     * @deprecated please use {@link #forEach(jedi.functional.Command)}
+     * @see {@link #forEach(jedi.functional.Command)}
+	 */
+	public void foreach(final Command<B> c) {
+		forEach(c);
+	}
+	
+	/**
 	 * Executes the given side-effect if this is a <code>Right</code>.
 	 * 
 	 * @param c
 	 *            The side-effect to execute.
 	 */
-	public void foreach(final Command<B> c) {
+	public void forEach(final Command<B> c) {
 		either.execute(new NullCommand<A>(), new Command<B>() {
 			public void execute(B value) {
 				c.execute(value);
@@ -78,10 +86,18 @@ public final class RightProjection<A, B> implements Iterable<B> {
 	}
 
 	/**
+     * @deprecated please use {@link #forAll(jedi.functional.Command)}
+     * @see {@link #forAll(jedi.functional.Command)}
+	 */
+	public Boolean forall(Functor<? super B, Boolean> f) {
+		return forAll(f);
+	}
+	
+	/**
 	 * Returns <code>true</code> if <code>Left</code> or returns the result of
 	 * the application of the given function to the <code>Right</code> value.
 	 */
-	public Boolean forall(Functor<? super B, Boolean> f) {
+	public Boolean forAll(Functor<? super B, Boolean> f) {
 		return either.isRight() ? f.execute(get()) : true;
 	}
 

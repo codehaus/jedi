@@ -79,10 +79,18 @@ public final class LeftProjection<A, B> implements Iterable<A> {
 	}
 
 	/**
+     * @deprecated please use {@link #forAll(jedi.functional.Command)}
+     * @see {@link #forAll(jedi.functional.Command)}
+	 */
+	public Boolean forall(Functor<? super A, Boolean> f) {
+		return forAll(f);
+	}
+	
+	/**
 	 * Returns <code>true</code> if <code>Right</code> or returns the result of
 	 * the application of the given function to the <code>Left</code> value.
 	 */
-	public Boolean forall(Functor<? super A, Boolean> f) {
+	public Boolean forAll(Functor<? super A, Boolean> f) {
 		return either.isLeft() ? f.execute(get()) : true;
 	}
 

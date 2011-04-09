@@ -20,7 +20,7 @@ public class ConstantFunctor0<R> implements Functor0<R> {
     }
 
     /**
-     * @see {@link #constant(Object)}
+     * @see #constant(Object)
      */
     public static <R> ConstantFunctor0<R> constantFunctor0(R constant) {
         return constant(constant);

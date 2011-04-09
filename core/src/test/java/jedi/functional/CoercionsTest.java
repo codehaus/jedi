@@ -270,7 +270,7 @@ public class CoercionsTest extends JediTestCase {
 	}
 
 	/**
-	 * @see http://jira.codehaus.org/browse/JEDI-22
+	 * See <a href="http://jira.codehaus.org/browse/JEDI-22">JEDI-22</a>
 	 */
 	@Test
 	public void testAsArrayWithSubclassesButTypeSpecified() throws Exception {

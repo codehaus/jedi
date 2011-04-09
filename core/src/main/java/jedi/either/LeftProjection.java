@@ -64,7 +64,7 @@ public final class LeftProjection<A, B> implements Iterable<A> {
 
     /**
      * @deprecated please use {@link #forEach(jedi.functional.Command)}
-     * @see {@link #forEach(jedi.functional.Command)}
+     * @see #forEach(jedi.functional.Command)
      */
     public void foreach(final Command<A> c) {
         forEach(c);
@@ -79,8 +79,8 @@ public final class LeftProjection<A, B> implements Iterable<A> {
 	}
 
 	/**
-     * @deprecated please use {@link #forAll(jedi.functional.Command)}
-     * @see {@link #forAll(jedi.functional.Command)}
+     * @deprecated please use {@link #forAll(Functor)}
+     * @see #forAll(Functor)
 	 */
 	public Boolean forall(Functor<? super A, Boolean> f) {
 		return forAll(f);
@@ -105,8 +105,7 @@ public final class LeftProjection<A, B> implements Iterable<A> {
 	/**
 	 * Binds the given function across <code>Left</code>.
 	 * 
-	 * @param The
-	 *            function to bind across <code>Left</code>.
+	 * @param f The function to bind across <code>Left</code>.
 	 */
 	public <X> Either<X, B> flatMap(Functor<? super A, Either<X, B>> f) {
 		return either.isLeft() ? f.execute(get()) : new Right<X, B>(getRight());

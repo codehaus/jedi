@@ -204,9 +204,12 @@ public class Coercions {
 		assertNotNull(returnType, "returnType must not be null");
 
 		return FunctionalPrimitives.collect(items, new Functor<T, R>() {
-			@SuppressWarnings("unchecked")
 			public R execute(final T value) {
-				return (R) value;
+				if (value == null || returnType.isInstance(value)) {
+				    return returnType.cast(value);
+				} else {
+				    throw new ClassCastException("Attempt to cast " + value.getClass() + " to " + returnType);
+				}
 			}
 		});
 	}

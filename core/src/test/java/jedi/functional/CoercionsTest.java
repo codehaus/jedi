@@ -258,6 +258,14 @@ public class CoercionsTest extends JediTestCase {
 		List<CharSequence> expected = list((CharSequence) "a");
 		assertEquals(expected, cast(CharSequence.class, list("a")));
 	}
+	
+	public void testCastThrowsClassCastExceptionWhenAppropriate() throws Exception {
+		try {
+			cast(Integer.class, list("a", "b"));
+			fail();
+		} catch (ClassCastException cex) {
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	private void verifyAsFunctorWithValidArgument(final int key, final Integer returnValue, final boolean containsKey,

@@ -64,7 +64,7 @@ public class FunctionalPrimitives {
 	 * <code>collections</code> are appended first, then the items in the second
 	 * collection, etc.
 	 * 
-	 * @see #append(java.util.Iterable[])
+	 * @see #append(Iterable...)
 	 */
 	public static <T> List<T> append(final Iterable<? extends Iterable<? extends T>> iterables) {
 		List<T> result = new ArrayList<T>();
@@ -78,10 +78,10 @@ public class FunctionalPrimitives {
 	 * Append all of the elements in all of the given <code>collections</code>
 	 * into one list. All of the elements of the first item in
 	 * <code>collections</code> are appended first, then the items in the second
-	 * collection, etc. Equivalent to <code>{@link #append(Iterable) append}({@link Coercions#list(T...) list}(iterables))</code>.
+	 * collection, etc. Equivalent to <code>{@link #append(Iterable)} ({@link Coercions#list(Object...) list}(iterables))</code>.
 	 * 
 	 * @see #append(Iterable)
-	 * @see Coercions#list(T...)
+	 * @see Coercions#list(Object...)
 	 */
 	public static <T> List<T> append(final Iterable<? extends T>... iterables) {
 		return append(list(iterables));
@@ -168,7 +168,7 @@ public class FunctionalPrimitives {
      * applied to <i>functor</i>
 	 * <i>i.e.</i>(c1_1, c1_2, ..., c2_1, c2_2)
 	 * <p>Synonymous with {@link #flatMap(Iterable, Functor)}
-	 * <p>Equivalent to {@link #append(Iterable) append}({@link #collect(Iterable) collect}(items, functor))
+	 * <p>Equivalent to {@link #append(Iterable) append}({@link #collect(Iterable, Functor) collect}(items, functor))
 	 * 
 	 * @param items
 	 *            The collection of items containing the collection of leaves

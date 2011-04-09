@@ -57,7 +57,7 @@ public final class RightProjection<A, B> implements Iterable<B> {
 
 	/**
      * @deprecated please use {@link #forEach(jedi.functional.Command)}
-     * @see {@link #forEach(jedi.functional.Command)}
+     * @see #forEach(jedi.functional.Command)
 	 */
 	public void foreach(final Command<B> c) {
 		forEach(c);
@@ -86,8 +86,8 @@ public final class RightProjection<A, B> implements Iterable<B> {
 	}
 
 	/**
-     * @deprecated please use {@link #forAll(jedi.functional.Command)}
-     * @see {@link #forAll(jedi.functional.Command)}
+     * @deprecated please use {@link #forAll(Functor)}
+     * @see #forAll(Functor)
 	 */
 	public Boolean forall(Functor<? super B, Boolean> f) {
 		return forAll(f);
